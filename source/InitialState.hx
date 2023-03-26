@@ -43,7 +43,7 @@ class InitialState extends MusicBeatState
             video.playVideo(Paths.video('Intro'));
         });
 
-        //FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursorlmao')));
+        FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursorlmao')));
         FlxG.mouse.useSystemCursor = true;
     }
 

@@ -33,10 +33,8 @@ class InitialState extends MusicBeatState
         new FlxTimer().start(0.01, function(tmr:FlxTimer) {
             var video:MP4Handler = new MP4Handler();
             video.readyCallback = function() {
-                new FlxTimer().start(0.85, function(tmr:FlxTimer)
-                {
+                new FlxTimer().start(0.85, function(tmr:FlxTimer) {
                     native.WinAPI.setDarkMode(true);
-                    bg.color = 0xff000000;
                 });
             }
             video.finishCallback = function() {

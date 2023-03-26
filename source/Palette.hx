@@ -1,10 +1,19 @@
 package;
 
+import haxe.Json;
 import sys.FileSystem;
 import sys.io.File;
 import flixel.util.FlxColor;
 
 using StringTools;
+
+typedef PaletteFile = 
+{
+    var bgColor:String;
+    var releaseColor:String;
+    var pressColor:String;
+    var confirmColor:String;
+}
 
 class Palette
 {
@@ -17,13 +26,12 @@ class Palette
     {
         if (FileSystem.exists(file))
         {
-            var array:Array<String> = File.getContent(file).split('\n');
-            bg = Std.parseInt('0xff' + array[0]);
-            
-            var butts:Array<String> = array[1].split(' ');
-            released = Std.parseInt('0xff' + butts[0]);
-            pressed = Std.parseInt('0xff' + butts[1]);
-            confirmed = Std.parseInt('0xff' + butts[2]);
+            var rawJson:String = File.getContent(file);
+            var json:PaletteFile = cast Json.parse(rawJson);
+            bg = Std.parseInt('0xff' + json.bgColor);
+            released = Std.parseInt('0xff' + json.releaseColor);
+            pressed = Std.parseInt('0xff' + json.pressColor);
+            confirmed = Std.parseInt('0xff' + json.confirmColor);
         }
     }
 }

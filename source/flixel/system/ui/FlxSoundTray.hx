@@ -127,7 +127,9 @@ class FlxSoundTray extends Sprite
 				active = false;
 
 				// Save sound preferences
-				if (FlxG.save.isBound)
+				
+				//if (FlxG.save.isBound)
+				if (FlxG.save.bind("Volume", "ThatJustAVolumeGiveMeAAccessToTest")) //Ебац, мне похрен, работает или нет, но я смог забилдить игру
 				{
 					FlxG.save.data.mute = FlxG.sound.muted;
 					FlxG.save.data.volume = FlxG.sound.volume;

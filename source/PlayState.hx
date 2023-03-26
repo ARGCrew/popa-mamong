@@ -57,7 +57,7 @@ class PlayState extends MusicBeatState
             FlxG.switchState(new NoteOffsetState(songName));
 
         if (justPressed.ESCAPE)
-            FlxG.switchState(new InitialState());
+            FlxG.switchState(new MainMenuState());
 
         if (justPressed.W)
             Settings.openWindow();

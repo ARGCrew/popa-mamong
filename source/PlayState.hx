@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import sys.io.File;
 import haxeparser.HaxeParser;
 import flixel.FlxObject;
@@ -23,14 +24,19 @@ class PlayState extends MusicBeatState
     public var notes:Array<Dynamic> = [
         [0, 0, '']
     ];
-    public static var songName:String = 'MOLLY';
+    public static var songName:String = 'Tribute';
     public static var curDifficulty:String = 'normal';
+
+    var inst:FlxSound;
 
     override function create()
     {
         persistentDraw = persistentUpdate = true;
 
-        Palette.parse('assets/palette.txt');
+        inst = new FlxSound().loadEmbedded(Paths.music('Tribute')).play();
+        inst.volume = Settings.getMusicVolume();
+
+        Palette.parse('assets/palette.json');
 
         add(new FlxSprite().makeGraphic(FlxG.width, FlxG.height, Palette.bg));
         

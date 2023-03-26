@@ -1,11 +1,7 @@
 package;
 
+import flixel.FlxG;
 import flixel.ui.FlxButton;
-import flixel.FlxState;
-import openfl.geom.Matrix;
-import flixel.util.FlxColor;
-import flixel.FlxSprite;
-import openfl.display.Sprite;
 import lime.graphics.RenderContextType;
 import lime.app.Application;
 import lime.ui.Window;
@@ -62,7 +58,7 @@ class Settings
     }
 }
 
-class SetState extends FlxState
+class SetState extends MusicBeatState
 {
     var squareSkin:Bool = (Settings.skin == 'squares');
 
@@ -71,7 +67,15 @@ class SetState extends FlxState
         var skinButton = new FlxButton(10, 10, "Skin", function() {
             squareSkin = !squareSkin;
             Settings.skin = squareSkin ? 'square' : 'circle';
+            trace(Settings.skin);
         });
         add(skinButton);
+    }
+
+    override function update(elapsed:Float)
+    {
+        if (FlxG.keys.justPressed.ESCAPE)
+            FlxG.switchState(new PlayState());
+        super.update(elapsed);
     }
 }

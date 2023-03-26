@@ -5,12 +5,12 @@ import hxAddons.HxBitmapSprite;
 
 class MenuButton extends HxBitmapSprite
 {
-    public var onMouseDown:()->Void = null;
-    public var onMouseUp:()->Void = null;
-    public var onMouseOver:()->Void = null;
-    public var onMouseOut:()->Void = null;
-
-    private var outed:Bool = false;
+    public var onMouseDown:()->Void = null; // если нажать
+    public var onMouseUp:()->Void = null; // если отпустить
+    public var onMouseOver:()->Void = null; // если навести
+    public var onMouseOut:()->Void = null; // если убрать
+    
+    private var over:Bool = false;
 
     public function new(x:Float = 0, y:Float = 0)
     {
@@ -20,10 +20,9 @@ class MenuButton extends HxBitmapSprite
     override function update(elapsed:Float)
     {
         if (FlxG.mouse.overlaps(this)) onMouseOver();
-        if (!FlxG.mouse.overlaps(this) && !outed)
+        if (!FlxG.mouse.overlaps(this) && over)
         {
             mouseOut();
-            outed = true;
         }
         super.update(elapsed);
     }
@@ -39,12 +38,14 @@ class MenuButton extends HxBitmapSprite
 
     private function mouseOver()
     {
-        if (onMouseOver !- null) onMouseOver();
+        if (onMouseOver != null) onMouseOver();
         if (FlxG.mouse.justPressed) mouseDown();
         if (FlxG.mouse.justReleased) mouseUp();
+        over = true;
     }
 
     private function mouseOut() {
         if (onMouseOut != null) onMouseOut();
+        over = false;
     }
 }

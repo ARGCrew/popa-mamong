@@ -60,17 +60,34 @@ class PlayState extends MusicBeatState
         var pressed = FlxG.keys.pressed;
 
         if (justPressed.SEVEN)
+        {
             FlxG.switchState(new NoteOffsetState(songName));
+            inst.stop();
+        }
 
         if (justPressed.ESCAPE)
+        {
             FlxG.switchState(new MainMenuState());
+            inst.stop();
+        }
 
         if (justPressed.W)
             Settings.openWindow();
 
+        if (justPressed.S)
+        {
+            FlxG.switchState(new Settings.SetState());
+            inst.stop();
+        }
+
         // the sexiest easter egg code
-        if (pressed.NUMPADONE && pressed.NUMPADFIVE && pressed.NUMPADSIX && pressed.NUMPADEIGHT)
-            if (FlxG.random.bool(0.01)) FlxG.switchState(new TicTacToe());
+        if (pressed.NUMPADONE && pressed.NUMPADFIVE && pressed.NUMPADSIX && pressed.NUMPADEIGHT && FlxG.random.bool(0.01))
+        {
+            FlxG.switchState(new TicTacToe());
+            inst.stop();
+        }
+
+        inst.volume = Settings.getMusicVolume();
 
         super.update(elapsed);
 

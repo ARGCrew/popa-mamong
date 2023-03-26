@@ -1,5 +1,6 @@
 package;
 
+import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.media.Sound;
 import sys.FileSystem;
 
@@ -31,5 +32,10 @@ class Paths
     public static function video(key:String)
     {
         return 'assets/videos/$key.mp4';
+    }
+
+    public static function sparrowAtlas(key:String)
+    {
+        return FlxAtlasFrames.fromSparrow(image(key), 'assets/images/$key.xml');
     }
 }

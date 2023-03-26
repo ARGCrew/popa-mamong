@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
 
 class MusicBeatState extends FlxUIState
@@ -24,7 +25,7 @@ class MusicBeatState extends FlxUIState
             if (Std.int((60 / Conductor.curBpm) / curBeat) % Conductor.curBpm == 0)
                 beatHit();
         } : {
-            if (60 / Conductor.curBpm % Conductor.curBpm == 0)
+            if (Std.int(60 / Conductor.curBpm) % Conductor.curBpm == 0)
                 beatHit();
         }
     }

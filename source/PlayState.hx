@@ -81,7 +81,7 @@ class PlayState extends MusicBeatState
         }
 
         // the sexiest easter egg code
-        if (pressed.NUMPADONE && pressed.NUMPADFIVE && pressed.NUMPADSIX && pressed.NUMPADEIGHT && FlxG.random.bool(0.01))
+        if (pressed.NUMPADONE && pressed.NUMPADTHREE && pressed.NUMPADSIX && pressed.NUMPADEIGHT && FlxG.random.bool(0.01))
         {
             FlxG.switchState(new TicTacToe());
             inst.stop();

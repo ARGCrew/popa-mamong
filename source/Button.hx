@@ -67,7 +67,7 @@ class Button extends HxBitmapSprite
                         sound.volume = Settings.getSoundVolume();
                     }
                 }
-            }
+            }// Убрать в будущем...
             else
             {
                 if (FlxG.keys.pressed.F)

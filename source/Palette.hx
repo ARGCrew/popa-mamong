@@ -19,8 +19,8 @@ class Palette
 {
     public static var bg:FlxColor = 0xff000000;
     public static var released:FlxColor = 0xffFFFFFF;
-    public static var pressed:FlxColor = 0xffFF0000;
-    public static var confirmed:FlxColor = 0xff66FF33;
+    public static var pressed:FlxColor = 0xffD64933;
+    public static var confirmed:FlxColor = 0x00CC99;
 
     public static function parse(file:String)
     {

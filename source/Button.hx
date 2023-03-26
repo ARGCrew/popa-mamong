@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.FlxSound;
 import flash.media.Sound;
 import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxColor;
@@ -55,12 +56,16 @@ class Button extends HxBitmapSprite
                     {
                         color = Palette.confirmed;
                         PlayState.instance.notes.shift();
-                        Sound.fromFile('assets/sounds/Pressed.ogg').play();
+                        //Sound.fromFile('assets/sounds/Pressed.ogg').play();
+                        var sound:FlxSound = new FlxSound().loadEmbedded(Sound.fromFile('assets/sounds/Pressed.ogg')).play();
+                        sound.volume = Settings.getSoundVolume();
                     }
                     else
                     {
                         color = Palette.pressed;
-                        Sound.fromFile('assets/sounds/Miss.ogg').play();
+                        //Sound.fromFile('assets/sounds/Miss.ogg').play();
+                        var sound:FlxSound = new FlxSound().loadEmbedded(Sound.fromFile('assets/sounds/Miss.ogg')).play();
+                        sound.volume = Settings.getSoundVolume();
                     }
                 }
             }
@@ -69,12 +74,16 @@ class Button extends HxBitmapSprite
                 if (FlxG.keys.pressed.F)
                 {
                     color = Palette.confirmed;
-                    Sound.fromFile('assets/sounds/Pressed.ogg').play();
+                    //Sound.fromFile('assets/sounds/Pressed.ogg').play();
+                    var sound:FlxSound = new FlxSound().loadEmbedded(Sound.fromFile('assets/sounds/Pressed.ogg')).play();
+                    sound.volume = Settings.getSoundVolume();
                 }
                 else
                 {
                     color = Palette.pressed;
-                    Sound.fromFile('assets/sounds/Miss.ogg').play();
+                    //Sound.fromFile('assets/sounds/Miss.ogg').play();
+                    var sound:FlxSound = new FlxSound().loadEmbedded(Sound.fromFile('assets/sounds/Miss.ogg')).play();
+                    sound.volume = Settings.getSoundVolume();
                 }
             }
         }

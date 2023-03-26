@@ -58,5 +58,7 @@ class Main extends openfl.display.Sprite
 
 		addChild(new flixel.FlxGame(window.width, window.height, InitialState, #if (flixel < "5.0.0") window.zoom, #end 120, 120, true, false));
 		addChild(new FlxCrashHandler());
+
+		native.WinAPI.setDarkMode(true);
 	}
 }

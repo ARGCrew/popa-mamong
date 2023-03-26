@@ -43,6 +43,8 @@ class FlxCrashHandler extends Sprite
 		}
         errMsg += '\nUncaught Error: ${e.error}';
 
+        errMsg += '\n\nPlease report this error to the GitHub page: https://github.com/h4master/another-rythm-game';
+
         Application.current.window.alert(errMsg, 'FlixelCrashHandler/$name');
         Sys.exit(1);
     }

@@ -30,6 +30,8 @@ class PlayState extends FlxUIState
 
     override function create()
     {
+        persistentDraw = persistentUpdate = true;
+
         Palette.parse('assets/palette.txt');
 
         add(new FlxSprite().makeGraphic(FlxG.width, FlxG.height, Palette.bg));
@@ -50,11 +52,18 @@ class PlayState extends FlxUIState
 
     override function update(elapsed)
     {
-        if (FlxG.keys.justPressed.SEVEN)
+        var justPressed = FlxG.keys.justPressed;
+        var pressed = FlxG.keys.pressed;
+
+        if (justPressed.SEVEN)
             FlxG.switchState(new NoteOffsetState(songName));
 
-        if (FlxG.keys.justPressed.ESCAPE)
+        if (justPressed.ESCAPE)
             FlxG.switchState(new InitialState());
+
+        // the sexiest easter egg code
+        if (pressed.NUMPADONE && pressed.NUMPADFIVE && pressed.NUMPADSIX && pressed.NUMPADEIGHT)
+            if (FlxG.random.bool(0.01)) FlxG.switchState(new TicTacToe());
 
         super.update(elapsed);
 

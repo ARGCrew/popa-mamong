@@ -11,7 +11,6 @@ class Main extends openfl.display.Sprite
 	var window = {
 		width: 1280,
 		height: 720,
-		zoom: -1.0
 	};
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
@@ -52,13 +51,8 @@ class Main extends openfl.display.Sprite
 
 		var ratioX:Float = stageWidth / 1280;
 		var ratioY:Float = stageHeight / 720;
-		window.zoom = Math.min(ratioX, ratioY);
-		window.width = Math.ceil(stageWidth / window.zoom);
-		window.height = Math.ceil(stageHeight / window.zoom);
 
-		addChild(new flixel.FlxGame(window.width, window.height, InitialState, #if (flixel < "5.0.0") window.zoom, #end 120, 120, true, false));
+		addChild(new flixel.FlxGame(window.width, window.height, InitialState, 120, 120, true, false));
 		addChild(new FlxCrashHandler());
-
-		native.WinAPI.setDarkMode(true);
 	}
 }

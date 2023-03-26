@@ -1,7 +1,6 @@
 package;
 
 import flixel.system.FlxSound;
-import flash.media.Sound;
 import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxColor;
 import flixel.FlxG;
@@ -18,13 +17,13 @@ class Button extends HxBitmapSprite
         this.id = id;
         this.skin = skin;
 
-        var offsetX:Float = 100;
-        var offsetY:Float = 100;
+        var offsetX:Float = 400;
+        var offsetY:Float = 125;
 
         var spaceX:Float = 20;
         var spaceY:Float = 20;
 
-        loadBitmap('assets/images/buttons/$skin.png');
+        loadBitmap(Paths.image('buttons/$skin'));
         setGraphicSize(Std.int(width * 0.7));
         updateHitbox();
         antialiasing = true;
@@ -57,14 +56,14 @@ class Button extends HxBitmapSprite
                         color = Palette.confirmed;
                         PlayState.instance.notes.shift();
                         //Sound.fromFile('assets/sounds/Pressed.ogg').play();
-                        var sound:FlxSound = new FlxSound().loadEmbedded(Sound.fromFile('assets/sounds/Pressed.ogg')).play();
+                        var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Pressed')).play();
                         sound.volume = Settings.getSoundVolume();
                     }
                     else
                     {
                         color = Palette.pressed;
                         //Sound.fromFile('assets/sounds/Miss.ogg').play();
-                        var sound:FlxSound = new FlxSound().loadEmbedded(Sound.fromFile('assets/sounds/Miss.ogg')).play();
+                        var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
                         sound.volume = Settings.getSoundVolume();
                     }
                 }
@@ -75,14 +74,14 @@ class Button extends HxBitmapSprite
                 {
                     color = Palette.confirmed;
                     //Sound.fromFile('assets/sounds/Pressed.ogg').play();
-                    var sound:FlxSound = new FlxSound().loadEmbedded(Sound.fromFile('assets/sounds/Pressed.ogg')).play();
+                    var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Pressed')).play();
                     sound.volume = Settings.getSoundVolume();
                 }
                 else
                 {
                     color = Palette.pressed;
                     //Sound.fromFile('assets/sounds/Miss.ogg').play();
-                    var sound:FlxSound = new FlxSound().loadEmbedded(Sound.fromFile('assets/sounds/Miss.ogg')).play();
+                    var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
                     sound.volume = Settings.getSoundVolume();
                 }
             }

@@ -26,9 +26,11 @@ package native;
 #include <shellapi.h>
 #include <uxtheme.h>
 ')
+#end
 
 @:dox(hide)
 class WinAPI {
+    #if windows
     @:functionCode('
         int darkMode = enable ? 1 : 0;
         HWND window = GetActiveWindow();
@@ -36,6 +38,6 @@ class WinAPI {
             DwmSetWindowAttribute(window, 20, &darkMode, sizeof(darkMode));
         }
     ')
+    #end
     public static function setDarkMode(enable:Bool) {}
 }
-#end

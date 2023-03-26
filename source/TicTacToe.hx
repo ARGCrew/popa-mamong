@@ -3,9 +3,8 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.FlxState;
 
-class TicTacToe extends FlxState
+class TicTacToe extends MusicBeatState
 {
     var butts:FlxTypedGroup<FlxSprite>;
 
@@ -22,5 +21,6 @@ class TicTacToe extends FlxState
 
     override function update(elapsed:Float)
     {
+        
     }
 }

@@ -20,6 +20,7 @@
 	<haxelib name="flixel-addons" />
 	<haxelib name="flixel-ui" />
 	<haxelib name="hxAddons" />
+	<haxelib name="hxCodec" />
 
 	<haxelib name="faxe" if='switch'/>
 

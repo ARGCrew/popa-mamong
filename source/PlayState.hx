@@ -6,12 +6,10 @@ import flixel.FlxObject;
 import flixel.FlxG;
 import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxColor;
-import flixel.input.mouse.FlxMouseEventManager;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.addons.ui.FlxUIState;
 
-class PlayState extends FlxUIState
+class PlayState extends MusicBeatState
 {
     //BUTTONS
     var butts:FlxTypedGroup<FlxSprite>;
@@ -45,7 +43,7 @@ class PlayState extends FlxUIState
         super.create();
 
         instance = this;
-        hscript = new HaxeParser('assets/maps/$level.hx');
+        hscript = new HaxeParser(Paths.hscript(level));
         hscript.addCallback('this', instance);
         hscript.callFunction('create', []);
     }
@@ -60,6 +58,9 @@ class PlayState extends FlxUIState
 
         if (justPressed.ESCAPE)
             FlxG.switchState(new InitialState());
+
+        if (justPressed.W)
+            Settings.openWindow();
 
         // the sexiest easter egg code
         if (pressed.NUMPADONE && pressed.NUMPADFIVE && pressed.NUMPADSIX && pressed.NUMPADEIGHT)

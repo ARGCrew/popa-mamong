@@ -1,5 +1,9 @@
 package;
 
+import flixel.FlxSprite;
+import openfl.display.BitmapData;
+import flixel.util.FlxTimer;
+import vlc.MP4Handler;
 import flixel.FlxG;
 import flixel.math.FlxRect;
 import flixel.math.FlxPoint;
@@ -8,9 +12,8 @@ import flixel.addons.transition.TransitionData;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.graphics.FlxGraphic;
-import flixel.addons.ui.FlxUIState;
 
-class InitialState extends FlxUIState
+class InitialState extends MusicBeatState
 {
     override function create()
     {
@@ -18,17 +21,31 @@ class InitialState extends FlxUIState
 		diamond.persist = true;
 		diamond.destroyOnNoUse = false;
         FlxTransitionableState.defaultTransIn = new TransitionData(TILES, FlxColor.WHITE, 0.3, new FlxPoint(-1, 1),
-            {asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
-		FlxTransitionableState.defaultTransOut = new TransitionData(TILES, FlxColor.WHITE, 0.3, new FlxPoint(-1, 1),
 			{asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
         
         transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
-    }
 
-    override function update(elapsed:Float)
-    {
-        if (FlxG.keys.justPressed.ENTER)
-            FlxG.switchState(new PlayState());
+        var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE);
+        add(bg);
+
+        Paths.video('Intro');
+
+        new FlxTimer().start(0.01, function(tmr:FlxTimer) {
+            var video:MP4Handler = new MP4Handler();
+            video.readyCallback = function() {
+                new FlxTimer().start(0.85, function(tmr:FlxTimer)
+                {
+                    native.WinAPI.setDarkMode(true);
+                    bg.color = 0xff000000;
+                });
+            }
+            video.finishCallback = function() {
+                FlxG.switchState(new MainMenuState());
+            }
+            video.playVideo(Paths.video('Intro'));
+        });
+
+        //FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursorlmao')));
+        FlxG.mouse.useSystemCursor = true;
     }
 }

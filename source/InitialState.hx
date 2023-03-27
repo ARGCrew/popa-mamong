@@ -1,5 +1,8 @@
 package;
 
+import hxAddons.HxBitmapSprite;
+import flixel.system.FlxSound;
+import SoundOverlay.BitmapSoundOverlay;
 import flixel.FlxSprite;
 import openfl.display.BitmapData;
 import flixel.util.FlxTimer;
@@ -15,6 +18,8 @@ import vlc.MP4Handler;
 
 class InitialState extends MusicBeatState
 {
+    var introSound:FlxSound;
+    var intro:FlxSprite;
     var video:MP4Handler;
 
     override function create()
@@ -36,8 +41,23 @@ class InitialState extends MusicBeatState
 
         Paths.video('Intro');
 
+/*
+        intro = new FlxSprite().loadGraphic(FlxGraphic.fromBitmapData(BitmapData.fromFile(Paths.image('intro'))), true, 1920, 1080);
+        var framesArray:Array<Int> = [];
+        for (i in 0...intro.frames.frames.length)
+            framesArray.push(i);
+        intro.animation.add('intro', framesArray, 48, false);
+        intro.animation.play('intro');
+        intro.setGraphicSize(FlxG.width);
+        intro.updateHitbox();
+        add(intro);
+
+        introSound = new FlxSound().loadEmbedded(Paths.sound('Intro')).play();
+*/
+
         new FlxTimer().start(0.01, function(tmr:FlxTimer) {
             video = new MP4Handler();
+            video.volume = Settings.masterVolume;
             video.finishCallback = function() {
                 FlxG.switchState(new MainMenuState());
             }
@@ -46,5 +66,14 @@ class InitialState extends MusicBeatState
 
         FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursorlmao')));
         // FlxG.mouse.useSystemCursor = true;
+    }
+
+    override function update(elapsed:Float)
+    {
+        /*
+        if (intro.animation.curAnim.finished) FlxG.switchState(new MainMenuState());
+        introSound.volume = Settings.masterVolume;
+        */
+        super.update(elapsed);
     }
 }

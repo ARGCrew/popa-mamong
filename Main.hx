@@ -1,5 +1,6 @@
 package;
 
+import SoundOverlay.BitmapSoundOverlay;
 import flixel.FlxGame;
 import openfl.events.Event;
 import flixel.custom.system.FlxCrashHandler;
@@ -13,6 +14,9 @@ class Main extends openfl.display.Sprite
 		height: 720,
 	};
 
+	public static var instance:Main;
+	public var overlay:BitmapSoundOverlay;
+
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
 	public static function main():Void
@@ -23,6 +27,8 @@ class Main extends openfl.display.Sprite
 	public function new()
 	{
 		super();
+
+		instance = this;
 
 		if (stage != null)
 		{

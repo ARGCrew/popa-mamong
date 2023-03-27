@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxSave;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUICheckBox;
@@ -25,31 +26,30 @@ class Settings
 
     public static function save()
     {
-        FlxG.save.bind('arg-save', 'ARG');
+        var save:FlxSave = new FlxSave();
+        save.bind('arg-save');
 
-        FlxG.save.data.skin = skin;
-        FlxG.save.data.camBeat = camBeat;
+        save.data.skin = skin;
+        save.data.camBeat = camBeat;
 
-        FlxG.save.data.masterVolume = masterVolume;
-        FlxG.save.data.musicVolume = musicVolume;
-        FlxG.save.data.soundVolume = soundVolume;
+        save.data.masterVolume = masterVolume;
+        save.data.musicVolume = musicVolume;
+        save.data.soundVolume = soundVolume;
 
-        FlxG.save.flush();
+        save.flush();
     }
 
     public static function load()
     {
-        FlxG.save.bind('arg-save', 'ARG');
-        if (FlxG.save == null) save();
+        var save:FlxSave = new FlxSave();
+        save.bind('arg-save');
 
-        if (FlxG.save.data.skin != null) skin = FlxG.save.data.skin;
-        if (FlxG.save.data.camBeat != null) skin = FlxG.save.data.camBeat;
+        if (save.data.skin != null) skin = save.data.skin;
+        if (save.data.camBeat != null) camBeat = save.data.camBeat;
 
-        if (FlxG.save.data.masterVolume != null) skin = FlxG.save.data.masterVolume;
-        if (FlxG.save.data.musicVolume != null) skin = FlxG.save.data.musicVolume;
-        if (FlxG.save.data.soundVolume != null) skin = FlxG.save.data.soundVolume;
-
-        FlxG.save.flush();
+        if (save.data.masterVolume != null) masterVolume = save.data.masterVolume;
+        if (save.data.musicVolume != null) musicVolume = save.data.musicVolume;
+        if (save.data.soundVolume != null) soundVolume = save.data.soundVolume;
     }
 
     public static function openWindow()

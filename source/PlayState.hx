@@ -55,9 +55,6 @@ class PlayState extends MusicBeatState
         add(butts);
         for (i in 0...9) butts.add(new Button(i, Settings.skin));
 
-        var overlay:SoundOverlay = new SoundOverlay();
-        add(overlay);
-
         super.create();
 
         instance = this;

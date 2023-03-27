@@ -18,6 +18,8 @@ class MainMenuState extends MusicBeatState
                 so...", 16);
         cooltext.screenCenter();
         add(cooltext);
+
+        super.create();
     }
 
     public function new()
@@ -37,6 +39,9 @@ class MainMenuState extends MusicBeatState
     {
         if (FlxG.keys.justPressed.ENTER || FlxG.mouse.justPressed)
             FlxG.switchState(new PlayState());
+
+        if (FlxG.keys.justPressed.ESCAPE)
+            FlxG.switchState(new InitialState());
 
         super.update(elapsed);
     }

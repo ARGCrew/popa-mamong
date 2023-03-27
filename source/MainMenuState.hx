@@ -35,7 +35,7 @@ class MainMenuState extends MusicBeatState
 
     override function update(elapsed:Float)
     {
-        if (FlxG.keys.justPressed.ENTER)
+        if (FlxG.keys.justPressed.ENTER || FlxG.mouse.justPressed)
             FlxG.switchState(new PlayState());
     }
 }

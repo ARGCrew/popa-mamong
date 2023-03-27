@@ -148,5 +148,17 @@ class Button extends HxBitmapSprite
                 if (release.NUMPADTHREE)
                     color = Palette.released;
         }
+
+        if (FlxG.mouse.x > x && FlxG.mouse.x < x + width &&
+            FlxG.mouse.y > y && FlxG.mouse.y < y + height)
+        {
+            if (FlxG.mouse.justPressed)
+                keyPress();
+            if (FlxG.mouse.justReleased)
+                color = Palette.released;
+        }
+        else
+            color = Palette.released;
+        
     }
 }

@@ -42,7 +42,7 @@ class PlayState extends MusicBeatState
 
         camGame = new FlxCamera();
         FlxG.cameras.reset(camGame);
-        FlxCamera.defaultCameras = [camGame];
+        FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
         music = MusicBeat.loadFromJson(curDifficulty, songName);
         Conductor.changeBPM(95);

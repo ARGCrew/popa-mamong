@@ -24,6 +24,21 @@ class Settings
         return soundVolume * masterVolume;
     }
 
+    public static function save()
+    {
+        FlxG.save.bind('arg-save');
+
+        FlxG.save.data.skin = skin;
+
+        FlxG.save.data.mouse = mouse;
+
+        FlxG.save.data.masterVolume = masterVolume;
+        FlxG.save.data.musicVolume = musicVolume;
+        FlxG.save.data.soundVolume = soundVolume;
+
+        FlxG.save.data.flush();
+    }
+
     public static function openWindow()
     {
         var window:Window = Application.current.createWindow({

@@ -19,8 +19,9 @@ class InitialState extends MusicBeatState
 
     override function create()
     {
-        FlxG.save.bind("Volume", "ThatJustAVolumeGiveMeAAccessToTest");
         Settings.masterVolume = FlxG.sound.volume;
+
+        native.WinAPI.setDarkMode(true);
 
         var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 		diamond.persist = true;
@@ -37,11 +38,6 @@ class InitialState extends MusicBeatState
 
         new FlxTimer().start(0.01, function(tmr:FlxTimer) {
             video = new MP4Handler();
-            video.readyCallback = function() {
-                new FlxTimer().start(0.85, function(tmr:FlxTimer) {
-                    native.WinAPI.setDarkMode(true);
-                });
-            }
             video.finishCallback = function() {
                 FlxG.switchState(new MainMenuState());
             }

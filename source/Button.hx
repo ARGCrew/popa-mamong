@@ -10,6 +10,8 @@ class Button extends HxBitmapSprite
 {
     public var id:Int = 0;
     public var skin:String;
+    
+    private var overlap:Bool = true;
 
     public function new(id:Int, skin:String)
     {
@@ -156,9 +158,13 @@ class Button extends HxBitmapSprite
                 keyPress();
             if (FlxG.mouse.justReleased)
                 color = Palette.released;
+
+            overlap = true;
         }
         else
-            color = Palette.released;
-        
+        {
+            if (overlap) color = Palette.released;
+            overlap = false;
+        }
     }
 }

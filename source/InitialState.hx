@@ -3,7 +3,6 @@ package;
 import flixel.FlxSprite;
 import openfl.display.BitmapData;
 import flixel.util.FlxTimer;
-import vlc.MP4Handler;
 import flixel.FlxG;
 import flixel.math.FlxRect;
 import flixel.math.FlxPoint;
@@ -12,11 +11,17 @@ import flixel.addons.transition.TransitionData;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.graphics.FlxGraphic;
+import vlc.MP4Handler;
 
 class InitialState extends MusicBeatState
 {
+    var video:MP4Handler;
+
     override function create()
     {
+        FlxG.save.bind("Volume", "ThatJustAVolumeGiveMeAAccessToTest");
+        Settings.masterVolume = FlxG.sound.volume;
+
         var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 		diamond.persist = true;
 		diamond.destroyOnNoUse = false;
@@ -31,7 +36,7 @@ class InitialState extends MusicBeatState
         Paths.video('Intro');
 
         new FlxTimer().start(0.01, function(tmr:FlxTimer) {
-            var video:MP4Handler = new MP4Handler();
+            video = new MP4Handler();
             video.readyCallback = function() {
                 new FlxTimer().start(0.85, function(tmr:FlxTimer) {
                     native.WinAPI.setDarkMode(true);
@@ -45,5 +50,11 @@ class InitialState extends MusicBeatState
 
         FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursorlmao')));
         // FlxG.mouse.useSystemCursor = true;
+    }
+
+    override function update(elapsed:Float)
+    {
+        //video.volume = Settings.getSoundVolume();
+        super.update(elapsed);
     }
 }

@@ -1,7 +1,8 @@
 package;
 
+import flixel.FlxSprite;
 import flixel.FlxG;
-import flixel.ui.FlxButton;
+import flixel.addons.ui.FlxUIButton;
 import lime.graphics.RenderContextType;
 import lime.app.Application;
 import lime.ui.Window;
@@ -64,7 +65,7 @@ class SetState extends MusicBeatState
 
     override function create()
     {
-        var skinButton = new FlxButton(10, 10, "Skin", function() {
+        var skinButton = new FlxUIButton(10, 10, "Skin", function() {
             squareSkin = !squareSkin;
             Settings.skin = squareSkin ? 'square' : 'circle';
             trace(Settings.skin);

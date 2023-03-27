@@ -39,6 +39,7 @@ class PlayState extends MusicBeatState
         persistentDraw = persistentUpdate = true;
 
         FlxG.sound.playMusic(Paths.music('Tribute'));
+        FlxG.sound.music.volume = Settings.masterVolume;
 
         camGame = new FlxCamera();
         FlxG.cameras.reset(camGame);
@@ -70,7 +71,7 @@ class PlayState extends MusicBeatState
         musicManage();
         manage.PlayKeyManager.manage();
 
-        FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, 0.95);
+        if (Settings.camBeat) FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, 0.95);
 
         super.update(elapsed);
 
@@ -85,7 +86,7 @@ class PlayState extends MusicBeatState
 
     override function beatHit()
     {
-        if (curBeat % 4 == 0)
+        if (curBeat % 4 == 0 && Settings.camBeat)
             FlxG.camera.zoom += 0.015;
         super.beatHit();
     }

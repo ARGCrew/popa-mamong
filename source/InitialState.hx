@@ -19,7 +19,7 @@ class InitialState extends MusicBeatState
 
     override function create()
     {
-        Settings.masterVolume = FlxG.sound.volume;
+        Settings.load();
 
         native.WinAPI.setDarkMode(true);
 
@@ -46,11 +46,5 @@ class InitialState extends MusicBeatState
 
         FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursorlmao')));
         // FlxG.mouse.useSystemCursor = true;
-    }
-
-    override function update(elapsed:Float)
-    {
-        //video.volume = Settings.getSoundVolume();
-        super.update(elapsed);
     }
 }

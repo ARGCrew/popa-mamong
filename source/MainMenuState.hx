@@ -15,7 +15,7 @@ class MainMenuState extends MusicBeatState
     override public function create()
     {
         var cooltext = new FlxText("Welcome to menu... yea...
-                so...");
+                so...", 16);
         cooltext.screenCenter();
         add(cooltext);
     }
@@ -37,5 +37,7 @@ class MainMenuState extends MusicBeatState
     {
         if (FlxG.keys.justPressed.ENTER || FlxG.mouse.justPressed)
             FlxG.switchState(new PlayState());
+
+        super.update(elapsed);
     }
 }

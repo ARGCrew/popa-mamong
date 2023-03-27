@@ -25,7 +25,7 @@ class FlxCrashHandler extends Sprite
 
     function onCrash(e:UncaughtErrorEvent)
     {
-        var name:String = format(Application.current.meta.get('title'));
+        var name:String = format("Another Rhythm Game");
 
         var errMsg:String = "";
 

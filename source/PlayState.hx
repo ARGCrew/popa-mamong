@@ -1,5 +1,8 @@
 package;
 
+import MusicBeat.Music;
+import flixel.FlxCamera;
+import flixel.math.FlxMath;
 import flixel.system.FlxSound;
 import sys.io.File;
 import haxeparser.HaxeParser;
@@ -27,15 +30,22 @@ class PlayState extends MusicBeatState
     public static var songName:String = 'Tribute';
     public static var curDifficulty:String = 'normal';
 
-    var inst:FlxSound;
+    var music:MusicBeat.Music = null;
+
+    var camGame:FlxCamera;
 
     override function create()
     {
         persistentDraw = persistentUpdate = true;
 
-        inst = new FlxSound().loadEmbedded(Paths.music('Tribute')).play();
-        inst.volume = Settings.getMusicVolume();
+        FlxG.sound.playMusic(Paths.music('Tribute'));
 
+        camGame = new FlxCamera();
+        FlxG.cameras.reset(camGame);
+        FlxCamera.defaultCameras = [camGame];
+
+        music = MusicBeat.loadFromJson(curDifficulty, songName);
+        Conductor.changeBPM(95);
         Palette.parse('assets/palette.json');
 
         add(new FlxSprite().makeGraphic(FlxG.width, FlxG.height, Palette.bg));
@@ -44,7 +54,6 @@ class PlayState extends MusicBeatState
         add(butts);
         for (i in 0...9) butts.add(new Button(i, Settings.skin));
 
-        parseChart(songName, curDifficulty);
 
         super.create();
 
@@ -56,19 +65,21 @@ class PlayState extends MusicBeatState
 
     override function update(elapsed)
     {
+        musicManage();
+
         var justPressed = FlxG.keys.justPressed;
         var pressed = FlxG.keys.pressed;
 
         if (justPressed.SEVEN)
         {
             FlxG.switchState(new NoteOffsetState(songName));
-            inst.stop();
+            FlxG.sound.music.stop();
         }
 
         if (justPressed.ESCAPE)
         {
             FlxG.switchState(new MainMenuState());
-            inst.stop();
+            FlxG.sound.music.stop();
         }
 
         if (justPressed.W)
@@ -77,31 +88,33 @@ class PlayState extends MusicBeatState
         if (justPressed.S)
         {
             FlxG.switchState(new Settings.SetState());
-            inst.stop();
+            FlxG.sound.music.stop();
         }
 
         // the sexiest easter egg code
         if (pressed.NUMPADONE && pressed.NUMPADTHREE && pressed.NUMPADSIX && pressed.NUMPADEIGHT && FlxG.random.bool(0.01))
         {
             FlxG.switchState(new TicTacToe());
-            inst.stop();
+            FlxG.sound.music.stop();
         }
 
-        inst.volume = Settings.getMusicVolume();
+        FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, 0.95);
 
         super.update(elapsed);
 
         hscript.callFunction('update', [elapsed]);
     }
 
-    function parseChart(music:String, difficulty:String = 'normal')
+    function musicManage()
     {
-        var raw:Array<String> = File.getContent('assets/charts/$music/$difficulty.txt').split('\n');
-        for (i in raw)
-        {
-            var note = i.split(' ');
-            notes.push([Std.parseInt(note[0]), Std.parseFloat(note[1]), note[2]]);
-            trace('' + Std.parseInt(note[0]) + ', ' + Std.parseFloat(note[1]) + ', ' + note[2]);
-        }
+        Conductor.songPosition = FlxG.sound.music.time;
+        FlxG.sound.music.volume = Settings.getMusicVolume();
+    }
+
+    override function beatHit()
+    {
+        if (curBeat % 4 == 0)
+            FlxG.camera.zoom += 0.015;
+        super.beatHit();
     }
 }

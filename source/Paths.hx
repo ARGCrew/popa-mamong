@@ -34,6 +34,11 @@ class Paths
         return 'assets/videos/$key.mp4';
     }
 
+    public static function chart(name:String, diff:String)
+    {
+        return 'assets/charts/$name/$diff.json';
+    }
+
     public static function sparrowAtlas(key:String)
     {
         return FlxAtlasFrames.fromSparrow(image(key), 'assets/images/$key.xml');

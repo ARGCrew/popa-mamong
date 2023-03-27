@@ -14,10 +14,10 @@ class MainMenuState extends MusicBeatState
 {
     override public function create()
     {
-    var cooltext = new FlxText("Welcome to menu... yea...
-            so...");
-    cooltext.screenCenter();
-    add(cooltext);
+        var cooltext = new FlxText("Welcome to menu... yea...
+                so...");
+        cooltext.screenCenter();
+        add(cooltext);
     }
 
     public function new()

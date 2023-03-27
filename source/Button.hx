@@ -67,6 +67,13 @@ class Button extends HxBitmapSprite
                         sound.volume = Settings.getSoundVolume();
                     }
                 }
+                else
+                {
+                    color = Palette.pressed;
+                    //Sound.fromFile('assets/sounds/Miss.ogg').play();
+                    var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
+                    sound.volume = Settings.getSoundVolume();
+                }
             }// Убрать в будущем...
             else
             {

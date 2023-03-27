@@ -1,5 +1,11 @@
 package;
 
+typedef ChartNote = 
+{
+	var time:Float;
+	var id:Int;
+}
+
 typedef ChartFrag =
 {
 	var sectionNotes:Array<Dynamic>;

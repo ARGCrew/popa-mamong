@@ -46,10 +46,4 @@ class InitialState extends MusicBeatState
         FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursorlmao')));
         // FlxG.mouse.useSystemCursor = true;
     }
-
-    override function update(elapsed:Float)
-        {
-            if (FlxG.keys.justPressed.ENTER)
-                FlxG.switchState(new MainMenuState());
-        }
 }

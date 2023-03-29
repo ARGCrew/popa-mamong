@@ -51,51 +51,55 @@ class Button extends HxBitmapSprite
         {
             if (FlxG.sound.music != null && FlxG.sound.music.playing)
             {
-                // * [DEPRECATED] if (PlayState.instance.notes.length > 0 && PlayState.instance.notes[0][1] == id)
-                if (PlayState.instance.spawnNotes.members.length > 0 && PlayState.instance.spawnNotes.members[0].id == id)
-                {
-                    // * [DEPRECATED] if (PlayState.instance.notes[0][0] <= Conductor.songPosition)
-                    if (PlayState.instance.spawnNotes.members[0].time <= Conductor.songPosition)
-                    {
-                        color = Palette.confirmed;
-                        //Sound.fromFile('assets/sounds/Pressed.ogg').play();
-                        var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Pressed')).play();
-                        sound.volume = Settings.getSoundVolume();
+                var daNoteList:Array<Note> = [];
+                PlayState.instance.spawnNotes.forEachAlive(function(note:Note) {
+                    daNoteList.push(note);
+                });
+                
+                if (daNoteList.length > 0)
+                    PlayState.instance.spawnNotes.forEachAlive(function(note:Note) {
+                        if (note.time <= Conductor.songPosition)
+                        {
+                            color = Palette.confirmed;
+                            // * [DEPRECATED] Sound.fromFile('assets/sounds/Pressed.ogg').play();
+                            var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Pressed')).play();
+                            sound.volume = Settings.getSoundVolume();
 
-                        var note = PlayState.instance.spawnNotes.members[0];
-                        note.kill();
-                        note.destroy();
-                        PlayState.instance.spawnNotes.remove(note);
-                    }
-                    else
-                    {
-                        color = Palette.pressed;
-                        //Sound.fromFile('assets/sounds/Miss.ogg').play();
-                        var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
-                        sound.volume = Settings.getSoundVolume();
-                    }
-                }
+                            PlayState.instance.goodHit(note);
+                        }
+                        else
+                        {
+                            color = Palette.pressed;
+                            // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
+                            var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
+                            sound.volume = Settings.getSoundVolume();
+
+                            PlayState.instance.missHit();
+                        }
+                    });
                 else
                 {
                     color = Palette.pressed;
-                    //Sound.fromFile('assets/sounds/Miss.ogg').play();
+                    // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
                     var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
                     sound.volume = Settings.getSoundVolume();
+
+                    PlayState.instance.missHit();
                 }
-            }// Убрать в будущем...
+            } // TODO: Убрать в будущем...
             else
             {
                 if (FlxG.keys.pressed.F)
                 {
                     color = Palette.confirmed;
-                    //Sound.fromFile('assets/sounds/Pressed.ogg').play();
+                    // * [DEPRECATED] Sound.fromFile('assets/sounds/Pressed.ogg').play();
                     var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Pressed')).play();
                     sound.volume = Settings.getSoundVolume();
                 }
                 else
                 {
                     color = Palette.pressed;
-                    //Sound.fromFile('assets/sounds/Miss.ogg').play();
+                    // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
                     var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
                     sound.volume = Settings.getSoundVolume();
                 }

@@ -112,9 +112,7 @@ class PlayState extends MusicBeatState
             }
             else
             {
-                note.kill();
-                note.destroy();
-                spawnNotes.remove(note);
+                miss(note);
             }
         });
 
@@ -134,5 +132,24 @@ class PlayState extends MusicBeatState
         if (curBeat % 4 == 0 && Settings.camBeat)
             FlxG.camera.zoom += 0.015;
         super.beatHit();
+    }
+
+    public function goodHit(note:Note)
+    {
+        note.kill();
+        note.destroy();
+        PlayState.instance.spawnNotes.remove(note);
+    }
+
+    public function missHit()
+    {
+        // * here will be something
+    }
+
+    public function miss(note:Note)
+    {
+        note.kill();
+        note.destroy();
+        spawnNotes.remove(note);
     }
 }

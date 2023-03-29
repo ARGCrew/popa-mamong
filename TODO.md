@@ -6,7 +6,6 @@ Project Description
 
 ### Todo
 
-- [ ] Fix note bug  
 - [ ] Chart editor  
 - [ ] Notes position  
 - [ ] Options menu  
@@ -19,4 +18,5 @@ Project Description
 
 ### Done ✓
 
+- [x] Fix note bug  
 

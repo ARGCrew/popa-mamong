@@ -4,55 +4,12 @@
 
     "notes": [
         {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
+            "sectionNotes": [
+                {
+                    "time": 2000,
+                    "id": 0
+                }
+            ],
             "lengthInSteps": 16,
             "bpm": 95,
             "changeBPM": true

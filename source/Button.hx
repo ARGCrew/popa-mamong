@@ -51,15 +51,21 @@ class Button extends HxBitmapSprite
         {
             if (FlxG.sound.music != null && FlxG.sound.music.playing)
             {
-                if (PlayState.instance.notes[0][0] == id)
+                // * [DEPRECATED] if (PlayState.instance.notes.length > 0 && PlayState.instance.notes[0][1] == id)
+                if (PlayState.instance.spawnNotes.members.length > 0 && PlayState.instance.spawnNotes.members[0].id == id)
                 {
-                    if (PlayState.instance.notes[0][0][1] == FlxG.sound.music.time)
+                    // * [DEPRECATED] if (PlayState.instance.notes[0][0] <= Conductor.songPosition)
+                    if (PlayState.instance.spawnNotes.members[0].time <= Conductor.songPosition)
                     {
                         color = Palette.confirmed;
-                        PlayState.instance.notes.shift();
                         //Sound.fromFile('assets/sounds/Pressed.ogg').play();
                         var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Pressed')).play();
                         sound.volume = Settings.getSoundVolume();
+
+                        var note = PlayState.instance.spawnNotes.members[0];
+                        note.kill();
+                        note.destroy();
+                        PlayState.instance.spawnNotes.remove(note);
                     }
                     else
                     {

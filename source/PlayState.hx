@@ -16,7 +16,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 class PlayState extends MusicBeatState
 {
     //BUTTONS
-    var butts:FlxTypedGroup<FlxSprite>;
+    public var butts:FlxTypedGroup<FlxSprite>;
 
     // CUSTOM LEVELS
     public static var instance:PlayState;
@@ -24,9 +24,16 @@ class PlayState extends MusicBeatState
     public var level:String = 'default';
 
     // CHARTS
-    public var notes:Array<Dynamic> = [
-        [0, 0, '']
-    ];
+    /*
+    * [DEPRECATED]
+    * public var notes:Array<Dynamic> = [
+    *    [0, 0, '']
+    * ];
+    */
+    public var unspawnNotes:Array<Note> = [];
+    public var spawnNotes:FlxTypedGroup<Note>;
+    public var songSpeed:Float = 0.5;
+
     public static var songName:String = 'Tribute';
     public static var curDifficulty:String = 'normal';
 
@@ -50,6 +57,21 @@ class PlayState extends MusicBeatState
         Palette.parse('assets/palette.json');
 
         add(new FlxSprite().makeGraphic(FlxG.width, FlxG.height, Palette.bg));
+
+        spawnNotes = new FlxTypedGroup<Note>();
+        add(spawnNotes);
+
+        for (i in 0...music.notes.length)
+        {
+            var section = music.notes[i];
+            for (b in 0...section.sectionNotes.length)
+            {
+                var daNote = section.sectionNotes[b];
+                var note:Note = new Note(daNote.time, daNote.id);
+                note.scale.set(0.01, 0.01);
+                unspawnNotes.push(note);
+            }
+        }
         
         butts = new FlxTypedGroup<FlxSprite>();
         add(butts);
@@ -69,6 +91,32 @@ class PlayState extends MusicBeatState
         manage.PlayKeyManager.manage();
 
         if (Settings.camBeat) FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, 0.95);
+
+        for (i in 0...unspawnNotes.length)
+        {
+            var note = unspawnNotes[i];
+
+            if (note.time <= Conductor.songPosition + ((1 / songSpeed) * 1000))
+            {
+                spawnNotes.add(note);
+                unspawnNotes.shift();
+            }
+        }
+
+        spawnNotes.forEachAlive(function(note:Note)
+        {
+            if (note.time <= Conductor.songPosition + ((1 / songSpeed) * 1000))
+            {
+                note.scale.x += (0.01 / songSpeed) / 5;
+                note.scale.y = note.scale.x;
+            }
+            else
+            {
+                note.kill();
+                note.destroy();
+                spawnNotes.remove(note);
+            }
+        });
 
         super.update(elapsed);
 

@@ -2,7 +2,6 @@ package;
 
 import hxAddons.HxBitmapSprite;
 import flixel.system.FlxSound;
-import SoundOverlay.BitmapSoundOverlay;
 import flixel.FlxSprite;
 import openfl.display.BitmapData;
 import flixel.util.FlxTimer;
@@ -25,8 +24,6 @@ class InitialState extends MusicBeatState
     override function create()
     {
         Settings.load();
-
-        native.WinAPI.setDarkMode(true);
 
         var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 		diamond.persist = true;
@@ -66,6 +63,7 @@ class InitialState extends MusicBeatState
 
         FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursorlmao')));
         // FlxG.mouse.useSystemCursor = true;
+
     }
 
     override function update(elapsed:Float)
@@ -74,6 +72,7 @@ class InitialState extends MusicBeatState
         if (intro.animation.curAnim.finished) FlxG.switchState(new MainMenuState());
         introSound.volume = Settings.masterVolume;
         */
+
         super.update(elapsed);
     }
 }

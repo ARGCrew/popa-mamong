@@ -89,8 +89,6 @@ class Settings
 
 class SetState extends MusicBeatState
 {
-    var squareSkin:Bool = (Settings.skin == 'squares');
-
     override function create()
     {
         var circleCheckBox:FlxUICheckBox = new FlxUICheckBox(10, 10, null, null, "Circle Buttons", 100);

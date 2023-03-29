@@ -1,6 +1,5 @@
 package;
 
-import SoundOverlay.BitmapSoundOverlay;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.addons.transition.FlxTransitionableState;
@@ -16,19 +15,12 @@ class MusicBeatState extends FlxUIState
 	private var curStep:Int = 0;
 	private var curBeat:Int = 0;
 
-	var overlay:BitmapSoundOverlay;
+	var overlay:SoundOverlay;
 
 	override function create()
 	{
-		overlay = new BitmapSoundOverlay();
-		Main.instance.addChild(overlay);
+		overlay = new SoundOverlay();
 		super.create();
-	}
-
-	override function destroy()
-	{
-		Main.instance.removeChild(overlay);
-		super.destroy();
 	}
 
 	override function update(elapsed:Float)

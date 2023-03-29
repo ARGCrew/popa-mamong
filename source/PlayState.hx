@@ -32,7 +32,7 @@ class PlayState extends MusicBeatState
     */
     public var unspawnNotes:Array<Note> = [];
     public var spawnNotes:FlxTypedGroup<Note>;
-    public var songSpeed:Float = 0.5;
+    public var songSpeed:Float = 2;
 
     public static var songName:String = 'Tribute';
     public static var curDifficulty:String = 'normal';
@@ -96,7 +96,7 @@ class PlayState extends MusicBeatState
         {
             var note = unspawnNotes[i];
 
-            if (note.time <= Conductor.songPosition + ((1 / songSpeed) * 1000))
+            if (note.time <= Conductor.songPosition + (songSpeed * 1000))
             {
                 spawnNotes.add(note);
                 unspawnNotes.shift();
@@ -105,15 +105,11 @@ class PlayState extends MusicBeatState
 
         spawnNotes.forEachAlive(function(note:Note)
         {
-            if (note.time <= Conductor.songPosition + ((1 / songSpeed) * 1000))
-            {
-                note.scale.x += (0.01 / songSpeed) / 5;
-                note.scale.y = note.scale.x;
-            }
-            else
-            {
+            note.scale.x += (0.01 * songSpeed) / (10 / songSpeed);
+            note.scale.y = note.scale.x;
+
+            if (note.scale.x >= 0.6)
                 miss(note);
-            }
         });
 
         super.update(elapsed);

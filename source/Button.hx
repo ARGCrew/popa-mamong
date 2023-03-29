@@ -28,7 +28,6 @@ class Button extends HxBitmapSprite
         loadBitmap(Paths.image('buttons/$skin'));
         setGraphicSize(Std.int(width * 0.7));
         updateHitbox();
-        antialiasing = true;
         color = Palette.released;
 
         switch(id)

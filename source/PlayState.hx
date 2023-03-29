@@ -12,6 +12,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.tweens.FlxTween;
 
 class PlayState extends MusicBeatState
 {
@@ -27,7 +28,8 @@ class PlayState extends MusicBeatState
     public var notes:Array<Dynamic> = [
         [0, 0, '']
     ];
-    public static var songName:String = 'Tribute';
+    //public static var songName:String = 'tribute';
+    public static var songName:String = 'credits';
     public static var curDifficulty:String = 'normal';
 
     var music:MusicBeat.Music = null;
@@ -38,7 +40,7 @@ class PlayState extends MusicBeatState
     {
         persistentDraw = persistentUpdate = true;
 
-        FlxG.sound.playMusic(Paths.music('Tribute'));
+        FlxG.sound.playMusic(Paths.music(songName));
         FlxG.sound.music.volume = Settings.masterVolume;
 
         camGame = new FlxCamera();
@@ -61,6 +63,19 @@ class PlayState extends MusicBeatState
         hscript = new HaxeParser(Paths.hscript(level));
         hscript.addCallback('this', instance);
         hscript.callFunction('create', []);
+
+        var effectTween:FlxTween;
+
+        if(songName == 'credits')
+            {
+                var backdrop = new FlxSprite(250, 250, "assets/images/indicators/CIRCLE.png");
+		        add(backdrop);
+
+		        var effect = new MosaicEffect();
+		        backdrop.shader = effect.shader;
+
+                effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 5);
+            }
     }
 
     override function update(elapsed)
@@ -87,4 +102,5 @@ class PlayState extends MusicBeatState
             FlxG.camera.zoom += 0.015;
         super.beatHit();
     }
+    
 }

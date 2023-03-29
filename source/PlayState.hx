@@ -12,12 +12,11 @@ import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.tweens.FlxTween;
 
 class PlayState extends MusicBeatState
 {
     //BUTTONS
-    var butts:FlxTypedGroup<FlxSprite>;
+    public var butts:FlxTypedGroup<FlxSprite>;
 
     // CUSTOM LEVELS
     public static var instance:PlayState;
@@ -25,11 +24,17 @@ class PlayState extends MusicBeatState
     public var level:String = 'default';
 
     // CHARTS
-    public var notes:Array<Dynamic> = [
-        [0, 0, '']
-    ];
-    //public static var songName:String = 'tribute';
-    public static var songName:String = 'credits';
+    /*
+    * [DEPRECATED]
+    * public var notes:Array<Dynamic> = [
+    *    [0, 0, '']
+    * ];
+    */
+    public var unspawnNotes:Array<Note> = [];
+    public var spawnNotes:FlxTypedGroup<Note>;
+    public var songSpeed:Float = 0.5;
+
+    public static var songName:String = 'Tribute';
     public static var curDifficulty:String = 'normal';
 
     var music:MusicBeat.Music = null;
@@ -40,7 +45,7 @@ class PlayState extends MusicBeatState
     {
         persistentDraw = persistentUpdate = true;
 
-        FlxG.sound.playMusic(Paths.music(songName));
+        FlxG.sound.playMusic(Paths.music('Tribute'));
         FlxG.sound.music.volume = Settings.masterVolume;
 
         camGame = new FlxCamera();
@@ -52,6 +57,21 @@ class PlayState extends MusicBeatState
         Palette.parse('assets/palette.json');
 
         add(new FlxSprite().makeGraphic(FlxG.width, FlxG.height, Palette.bg));
+
+        spawnNotes = new FlxTypedGroup<Note>();
+        add(spawnNotes);
+
+        for (i in 0...music.notes.length)
+        {
+            var section = music.notes[i];
+            for (b in 0...section.sectionNotes.length)
+            {
+                var daNote = section.sectionNotes[b];
+                var note:Note = new Note(daNote.time, daNote.id);
+                note.scale.set(0.01, 0.01);
+                unspawnNotes.push(note);
+            }
+        }
         
         butts = new FlxTypedGroup<FlxSprite>();
         add(butts);
@@ -63,19 +83,6 @@ class PlayState extends MusicBeatState
         hscript = new HaxeParser(Paths.hscript(level));
         hscript.addCallback('this', instance);
         hscript.callFunction('create', []);
-
-        var effectTween:FlxTween;
-
-        if(songName == 'credits')
-            {
-                var backdrop = new FlxSprite(250, 250, "assets/images/indicators/CIRCLE.png");
-		        add(backdrop);
-
-		        var effect = new MosaicEffect();
-		        backdrop.shader = effect.shader;
-
-                effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 5);
-            }
     }
 
     override function update(elapsed)
@@ -84,6 +91,32 @@ class PlayState extends MusicBeatState
         manage.PlayKeyManager.manage();
 
         if (Settings.camBeat) FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, 0.95);
+
+        for (i in 0...unspawnNotes.length)
+        {
+            var note = unspawnNotes[i];
+
+            if (note.time <= Conductor.songPosition + ((1 / songSpeed) * 1000))
+            {
+                spawnNotes.add(note);
+                unspawnNotes.shift();
+            }
+        }
+
+        spawnNotes.forEachAlive(function(note:Note)
+        {
+            if (note.time <= Conductor.songPosition + ((1 / songSpeed) * 1000))
+            {
+                note.scale.x += (0.01 / songSpeed) / 5;
+                note.scale.y = note.scale.x;
+            }
+            else
+            {
+                note.kill();
+                note.destroy();
+                spawnNotes.remove(note);
+            }
+        });
 
         super.update(elapsed);
 
@@ -102,5 +135,4 @@ class PlayState extends MusicBeatState
             FlxG.camera.zoom += 0.015;
         super.beatHit();
     }
-    
 }

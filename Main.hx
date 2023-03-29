@@ -1,9 +1,9 @@
 package;
 
-import SoundOverlay.BitmapSoundOverlay;
+import flixel.FlxG;
+import flixel.custom.system.FlxCrashHandler;
 import flixel.FlxGame;
 import openfl.events.Event;
-import flixel.custom.system.FlxCrashHandler;
 
 using StringTools;
 
@@ -15,7 +15,6 @@ class Main extends openfl.display.Sprite
 	};
 
 	public static var instance:Main;
-	public var overlay:BitmapSoundOverlay;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -60,5 +59,10 @@ class Main extends openfl.display.Sprite
 
 		addChild(new flixel.FlxGame(window.width, window.height, InitialState, 120, 120, true, false));
 		addChild(new FlxCrashHandler());
+
+		addChild(new SoundOverlay());
+		FlxG.sound.muteKeys = [];
+
+		native.WinAPI.setDarkMode(true);
 	}
 }

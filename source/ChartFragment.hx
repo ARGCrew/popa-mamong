@@ -8,7 +8,7 @@ typedef ChartNote =
 
 typedef ChartFrag =
 {
-	var sectionNotes:Array<Dynamic>;
+	var sectionNotes:Array<ChartNote>;
 	var lengthInSteps:Int;
 	var bpm:Int;
 	var changeBPM:Bool;
@@ -16,7 +16,7 @@ typedef ChartFrag =
 
 class ChartFragment
 {
-	public var sectionNotes:Array<Dynamic> = [];
+	public var sectionNotes:Array<ChartNote> = [];
 
 	public var lengthInSteps:Int = 16;
 

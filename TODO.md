@@ -6,17 +6,19 @@ Project Description
 
 ### Todo
 
+- [ ] Transparent text in main menu (ImageOutline)  
 - [ ] Chart editor  
-- [ ] Notes position  
 - [ ] Options menu  
 - [ ] Song Select menu  
 
 ### In Progress
 
 - [ ] Main menu  
-- [ ] Notes  
 
 ### Done ✓
 
+- [x] Notes  
+- [x] Notes position  
 - [x] Fix note bug  
+- [x] Fix sound overlay bug  
 

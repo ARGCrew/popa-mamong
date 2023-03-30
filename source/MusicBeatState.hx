@@ -20,6 +20,7 @@ class MusicBeatState extends FlxUIState
 	override function create()
 	{
 		overlay = new SoundOverlay();
+		insert(9999, overlay);
 		super.create();
 	}
 

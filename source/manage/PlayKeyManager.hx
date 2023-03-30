@@ -11,13 +11,13 @@ class PlayKeyManager
 
         if (justPressed.SEVEN)
         {
-            FlxG.switchState(new NoteOffsetState(PlayState.songName));
+            Tools.switchState(NoteOffsetState, [PlayState.songName]);
             FlxG.sound.music.stop();
         }
 
         if (justPressed.ESCAPE)
         {
-            FlxG.switchState(new MainMenuState());
+            Tools.switchState(MainMenuState);
             FlxG.sound.music.stop();
         }
 
@@ -26,14 +26,14 @@ class PlayKeyManager
 
         if (justPressed.S)
         {
-            FlxG.switchState(new Settings.SetState());
+            Tools.switchState(Settings.SetState, [true]);
             FlxG.sound.music.stop();
         }
 
         // the sexiest easter egg code
         if (pressed.NUMPADONE && pressed.NUMPADTHREE && pressed.NUMPADSIX && pressed.NUMPADEIGHT && FlxG.random.bool(0.01))
         {
-            FlxG.switchState(new TicTacToe());
+            Tools.switchState(TicTacToe);
             FlxG.sound.music.stop();
         }
     }

@@ -89,6 +89,14 @@ class Settings
 
 class SetState extends MusicBeatState
 {
+    var daPlaying:Bool;
+
+    public function new(game:Bool)
+    {
+        super();
+        daPlaying = game;
+    }
+
     override function create()
     {
         var circleCheckBox:FlxUICheckBox = new FlxUICheckBox(10, 10, null, null, "Circle Buttons", 100);
@@ -113,7 +121,13 @@ class SetState extends MusicBeatState
     override function update(elapsed:Float)
     {
         if (FlxG.keys.justPressed.ESCAPE)
-            FlxG.switchState(new PlayState());
+        {
+            daPlaying ? {
+                Tools.switchState(PlayState);
+            } : {
+                Tools.switchState(MainMenuState);
+            }
+        }
         super.update(elapsed);
     }
 

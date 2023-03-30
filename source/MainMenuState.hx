@@ -1,5 +1,11 @@
 package;
 
+import flixel.group.FlxSpriteGroup;
+import openfl.display.BitmapData;
+import openfl.display.Bitmap;
+import flixel.FlxObject;
+import flixel.input.mouse.FlxMouseEventManager;
+import hxAddons.HxBitmapSprite;
 import flixel.FlxG;
 import flixel.math.FlxRect;
 import flixel.math.FlxPoint;
@@ -12,12 +18,70 @@ import flixel.text.FlxText;
 
 class MainMenuState extends MusicBeatState
 {
+    var mouseEvent:FlxMouseEventManager;
+
+    var optionShit:Array<String> = [
+        'play',
+        'options'
+    ];
+    var grpOptions:FlxSpriteGroup;
+
+    function onMouseDown(object:FlxObject)
+    {
+        for (i in 0...optionShit.length)
+        {
+            if (object == grpOptions.members[i])
+            {
+                switch(optionShit[i].toLowerCase())
+                {
+                    case 'play':
+                        Tools.switchState(PlayState);
+                    case 'options':
+                        Tools.switchState(Settings.SetState, [false]);
+                }
+            }
+        }
+    }
+
+    function onMouseOver(object:FlxObject)
+    {
+        for (i in 0...optionShit.length)
+            if (object == grpOptions.members[i])
+                grpOptions.members[i].alpha = 1;
+    }
+
+    function onMouseOut(object:FlxObject)
+    {
+        for (i in 0...optionShit.length)
+            if (object == grpOptions.members[i])
+               grpOptions.members[i].alpha = 0.4;
+    }
+
     override public function create()
     {
-        var cooltext = new FlxText("Welcome to menu... yea...
-                so...", 16);
-        cooltext.screenCenter();
-        add(cooltext);
+        mouseEvent = new FlxMouseEventManager();
+        add(mouseEvent);
+
+        grpOptions = new FlxSpriteGroup();
+        add(grpOptions);
+
+        for (i in 0...optionShit.length)
+        {
+            var offset:Float = FlxG.height / 3 + (new Bitmap(BitmapData.fromFile(Paths.image('menu/Buttonb'))).height * 0.75) * i;
+
+            var button:HxBitmapSprite = new HxBitmapSprite(15, offset).loadBitmap(Paths.image('menu/Buttonb'));
+            button.scale.set(0.4, 0.4);
+            button.updateHitbox();
+            button.alpha = 0.4;
+            grpOptions.add(button);
+            mouseEvent.add(button, onMouseDown, null, onMouseOver, onMouseOut);
+
+            var text:FlxText = new FlxText(0, 0, button.width, optionShit[i].toUpperCase());
+            text.setFormat(Paths.font('Nord-Star-Deco.ttf'), 32, FlxColor.BLACK);
+            text.x = button.x + button.width / 2 - text.fieldWidth / 4;
+            text.y = button.y + button.height / 2 - text.height / 2;
+            add(text);
+        }
 
         super.create();
     }
@@ -37,7 +101,7 @@ class MainMenuState extends MusicBeatState
 
     override function update(elapsed:Float)
     {
-        if (FlxG.keys.justPressed.ENTER || FlxG.mouse.justPressed)
+        if (FlxG.keys.justPressed.ENTER)
             FlxG.switchState(new PlayState());
 
         if (FlxG.keys.justPressed.ESCAPE)

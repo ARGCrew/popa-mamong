@@ -43,4 +43,9 @@ class Paths
     {
         return FlxAtlasFrames.fromSparrow(image(key), 'assets/images/$key.xml');
     }
+
+    public static function font(key:String)
+    {
+        return 'assets/font/$key';
+    }
 }

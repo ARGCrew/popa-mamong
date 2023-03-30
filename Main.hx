@@ -61,11 +61,9 @@ class Main extends openfl.display.Sprite
 		addChild(new flixel.FlxGame(window.width, window.height, InitialState, 120, 120, true, false));
 		addChild(new FlxCrashHandler());
 
-		addChild(new SoundOverlay());
 		FlxG.sound.muteKeys = [];
 		FlxG.sound.volumeDownKeys = [];
 		FlxG.sound.volumeUpKeys = [];
-
 		FlxSprite.defaultAntialiasing = true;
 		native.WinAPI.setDarkMode(true);
 	}

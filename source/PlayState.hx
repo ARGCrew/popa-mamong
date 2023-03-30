@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.FlxTimer;
+import flixel.tweens.FlxTween;
 import MusicBeat.Music;
 import flixel.FlxCamera;
 import flixel.math.FlxMath;
@@ -33,6 +35,8 @@ class PlayState extends MusicBeatState
     public var unspawnNotes:Array<Note> = [];
     public var spawnNotes:FlxTypedGroup<Note>;
     public var songSpeed:Float = 2;
+    public var speedMS:Float = 0;
+    var noteTweens:Map<Note, FlxTween> = [];
 
     public static var songName:String = 'Tribute';
     public static var curDifficulty:String = 'normal';
@@ -47,6 +51,8 @@ class PlayState extends MusicBeatState
 
         FlxG.sound.playMusic(Paths.music('Tribute'));
         FlxG.sound.music.volume = Settings.masterVolume;
+
+        speedMS = songSpeed * 1000;
 
         camGame = new FlxCamera();
         FlxG.cameras.reset(camGame);
@@ -72,6 +78,10 @@ class PlayState extends MusicBeatState
                 unspawnNotes.push(note);
             }
         }
+
+        new FlxTimer().start(5, function(tmr:FlxTimer) {
+            camGame.flash();
+        });
         
         butts = new FlxTypedGroup<FlxSprite>();
         add(butts);
@@ -96,19 +106,26 @@ class PlayState extends MusicBeatState
         {
             var note = unspawnNotes[i];
 
-            if (note.time <= Conductor.songPosition + (songSpeed * 1000))
+            if (note.time <= Conductor.songPosition - speedMS && !note.spawned)
             {
                 spawnNotes.add(note);
                 unspawnNotes.shift();
+                noteTweens.set(note, FlxTween.tween(note.scale, {x: 1, y: 1}, songSpeed));
+                note.spawned = true;
+                /*
+                TODO: Это надо пофиксить
+                if (note.time < (songSpeed * 1000))
+                {
+                    note.scale.x = (songSpeed * 1000) / note.time * 0.6;
+                    note.scale.y = note.scale.x;
+                }
+                */
             }
         }
 
         spawnNotes.forEachAlive(function(note:Note)
         {
-            note.scale.x += (0.01 * songSpeed) / (10 / songSpeed);
-            note.scale.y = note.scale.x;
-
-            if (note.scale.x >= 0.6)
+            if (note.scale.x >= 1)
                 miss(note);
         });
 
@@ -130,20 +147,61 @@ class PlayState extends MusicBeatState
         super.beatHit();
     }
 
-    public function goodHit(note:Note)
+    public function checkHit(butt:Button)
     {
-        note.kill();
-        note.destroy();
-        PlayState.instance.spawnNotes.remove(note);
+        if (FlxG.sound.music != null && FlxG.sound.music.playing)
+        {
+            var daNoteList:Array<Note> = [];
+            spawnNotes.forEachAlive(function(note:Note) {
+                daNoteList.push(note);
+            });
+                
+            if (daNoteList.length > 0)
+                spawnNotes.forEachAlive(function(note:Note) {
+                    if (note.id == butt.id && note.scale.x > 0.7)
+                    {
+                        goodHit(note);
+                    }
+                    else
+                    {
+                        missHit(butt);
+                    }
+                });
+            else
+            {
+                missHit(butt);
+            }
+        }
     }
 
-    public function missHit()
+    public function goodHit(note:Note)
     {
-        // * here will be something
+        // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
+        var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Pressed')).play();
+        sound.volume = Settings.getSoundVolume();
+        butts.members[note.id].color = Palette.confirmed;
+
+        note.kill();
+        note.destroy();
+        remove(note);
+    }
+
+    public function release(butt:Button)
+    {
+        butt.color = Palette.released;
+    }
+
+    public function missHit(butt:Button)
+    {
+        butt.color = Palette.pressed;
+        // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
+        var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
+        sound.volume = Settings.getSoundVolume();
     }
 
     public function miss(note:Note)
     {
+        noteTweens.remove(note);
         note.kill();
         note.destroy();
         spawnNotes.remove(note);

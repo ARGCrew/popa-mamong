@@ -56,12 +56,12 @@ class InitialState extends MusicBeatState
             video = new MP4Handler();
             video.volume = Settings.masterVolume;
             video.finishCallback = function() {
-                FlxG.switchState(new MainMenuState());
+                Tools.switchState(MainMenuState);
             }
             video.playVideo(Paths.video('Intro'));
         });
 
-        FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursorlmao')));
+        FlxG.mouse.load(Paths.image('cursor/normal'));
         // FlxG.mouse.useSystemCursor = true;
 
     }

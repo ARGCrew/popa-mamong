@@ -18,6 +18,8 @@ class Note extends HxBitmapSprite
         this.time = time;
         this.id = id;
         loadBitmap(Paths.image('indicators/$skin'));
+
+        alpha = 0.4;
     }
 
     override function update(elapsed:Float)

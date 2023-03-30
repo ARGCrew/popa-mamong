@@ -1,9 +1,5 @@
 package;
 
-import openfl.text.TextField;
-import flixel.util.FlxColor;
-import openfl.display.Bitmap;
-import openfl.display.Sprite;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -11,20 +7,17 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 
-class SoundOverlay extends TextField
+class SoundOverlay extends FlxSpriteGroup
 {
-    public static var line:Bitmap;
-    public static var handle:Bitmap;
-    public static var hitbox:Bitmap;
+    public static var line:FlxSprite;
+    public static var handle:FlxSprite;
+    public static var hitbox:FlxSprite;
 
     public static var instance:SoundOverlay;
 
     var value:Float = Settings.masterVolume;
-    var offsetX:Float = FlxG.width - 50;
-    var dragging:Bool = false;
+    static var dragging:Bool = false;
     var valueLine:Float = 0;
-
-    public var onMouseUp:()->Void = null;
     
     public function new()
     {
@@ -32,17 +25,17 @@ class SoundOverlay extends TextField
 
         instance = this;
 
-        line = makeGraphic(5, FlxG.height / 3, FlxColor.WHITE);
-        Main.instance.addChild(line);
-        handle = makeGraphic(25, 5, FlxColor.WHITE);
+        line = new FlxSprite().makeGraphic(5, Std.int(FlxG.height / 3));
+        add(line);
+        handle = new FlxSprite().makeGraphic(25, 5);
         handle.y = line.y + line.height - (line.height * value);
-        Main.instance.addChild(handle);
-        hitbox = makeGraphic(handle.width, line.height, FlxColor.WHITE);
+        add(handle);
+        hitbox = new FlxSprite().makeGraphic(Std.int(handle.width), Std.int(line.height));
         hitbox.visible = false;
-        Main.instance.addChild(hitbox);
+        add(hitbox);
 
         FlxG.mouse.x >= FlxG.width - 100 ? {
-            line.x = offsetX;
+            line.x = FlxG.width - 50;
         } : {
             line.x = FlxG.width + 50;
         }
@@ -55,16 +48,16 @@ class SoundOverlay extends TextField
         valueLine = line.height - handle.height;
     }
 
-    private #if !flash override #end function __enterFrame(deltaTime:Float):Void
+    override function update(elapsed:Float)
     {
-        if (FlxG.mouse.x >= FlxG.width - 100)
-            FlxTween.tween(line, {x: offsetX}, 0.1, {ease: FlxEase.sineOut});
-        else {
+        FlxG.mouse.x >= FlxG.width - 100 ? {
+            FlxTween.tween(line, {x: FlxG.width - 50}, 0.1, {ease: FlxEase.sineOut});
+        } : {
             if (!dragging)
-            {
-                FlxTween.tween(line, {x: FlxG.width + 50}, 0.1, {ease: FlxEase.sineIn});
-                Settings.save();
-            }
+                {
+                    FlxTween.tween(line, {x: FlxG.width + 50}, 0.1, {ease: FlxEase.sineIn});
+                    Settings.save();
+                }
         }
 
         handle.x = line.x - 10;
@@ -87,9 +80,5 @@ class SoundOverlay extends TextField
         if (value > 1) value = 1;
 
         Settings.masterVolume = value;
-    }
-
-    function makeGraphic(width:Float, height:Float, color:FlxColor):Bitmap {
-        return new Bitmap(FlxG.bitmap.create(Std.int(width), Std.int(height), color).bitmap);
     }
 }

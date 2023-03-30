@@ -11,7 +11,19 @@ class Button extends HxBitmapSprite
     public var id:Int = 0;
     public var skin:String;
     
-    private var overlap:Bool = true;
+    private var overlap:Bool = false;
+
+    private var binds:Map<Int, String> = [
+        0 => 'NUMPADSEVEN',
+        1 => 'NUMPADEIGHT',
+        2 => 'NUMPADNINE',
+        3 => 'NUMPADFOUR',
+        4 => 'NUMPADFIVE',
+        5 => 'NUMPADSIX',
+        6 => 'NUMPADONE',
+        7 => 'NUMPADTWO',
+        8 => 'NUMPADTHREE'
+    ];
 
     public function new(id:Int, skin:String)
     {
@@ -26,7 +38,7 @@ class Button extends HxBitmapSprite
         var spaceY:Float = 20;
 
         loadBitmap(Paths.image('buttons/$skin'));
-        setGraphicSize(Std.int(width * 0.7));
+        // setGraphicSize(Std.int(width * 0.7));
         updateHitbox();
         color = Palette.released;
 
@@ -44,135 +56,29 @@ class Button extends HxBitmapSprite
         }
     }
 
-    public function keyPress()
-    {
-        if (active)
-        {
-            if (FlxG.sound.music != null && FlxG.sound.music.playing)
-            {
-                var daNoteList:Array<Note> = [];
-                PlayState.instance.spawnNotes.forEachAlive(function(note:Note) {
-                    daNoteList.push(note);
-                });
-                
-                if (daNoteList.length > 0)
-                    PlayState.instance.spawnNotes.forEachAlive(function(note:Note) {
-                        if (note.time <= Conductor.songPosition)
-                        {
-                            color = Palette.confirmed;
-                            // * [DEPRECATED] Sound.fromFile('assets/sounds/Pressed.ogg').play();
-                            var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Pressed')).play();
-                            sound.volume = Settings.getSoundVolume();
-
-                            PlayState.instance.goodHit(note);
-                        }
-                        else
-                        {
-                            color = Palette.pressed;
-                            // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
-                            var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
-                            sound.volume = Settings.getSoundVolume();
-
-                            PlayState.instance.missHit();
-                        }
-                    });
-                else
-                {
-                    color = Palette.pressed;
-                    // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
-                    var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
-                    sound.volume = Settings.getSoundVolume();
-
-                    PlayState.instance.missHit();
-                }
-            } // TODO: Убрать в будущем...
-            else
-            {
-                if (FlxG.keys.pressed.F)
-                {
-                    color = Palette.confirmed;
-                    // * [DEPRECATED] Sound.fromFile('assets/sounds/Pressed.ogg').play();
-                    var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Pressed')).play();
-                    sound.volume = Settings.getSoundVolume();
-                }
-                else
-                {
-                    color = Palette.pressed;
-                    // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
-                    var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
-                    sound.volume = Settings.getSoundVolume();
-                }
-            }
-        }
-    }
-
     override function update(elapsed:Float)
     {
-        var press = FlxG.keys.justPressed;
-        var release = FlxG.keys.justReleased;
-
-        switch(id)
-        {
-            case 0:
-                if (press.NUMPADSEVEN)
-                    keyPress();
-                if (release.NUMPADSEVEN)
-                    color = Palette.released;
-            case 1:
-                if (press.NUMPADEIGHT)
-                    keyPress();
-                if (release.NUMPADEIGHT)
-                    color = Palette.released;
-            case 2:
-                if (press.NUMPADNINE)
-                    keyPress();
-                if (release.NUMPADNINE)
-                    color = Palette.released;
-            case 3:
-                if (press.NUMPADFOUR)
-                    keyPress();
-                if (release.NUMPADFOUR)
-                    color = Palette.released;
-            case 4:
-                if (press.NUMPADFIVE)
-                    keyPress();
-                if (release.NUMPADFIVE)
-                    color = Palette.released;
-            case 5:
-                if (press.NUMPADSIX)
-                    keyPress();
-                if (release.NUMPADSIX)
-                    color = Palette.released;
-            case 6:
-                if (press.NUMPADONE)
-                    keyPress();
-                if (release.NUMPADONE)
-                    color = Palette.released;
-            case 7:
-                if (press.NUMPADTWO)
-                    keyPress();
-                if (release.NUMPADTWO)
-                    color = Palette.released;
-            case 8:
-                if (press.NUMPADTHREE)
-                    keyPress();
-                if (release.NUMPADTHREE)
-                    color = Palette.released;
-        }
+        if (Reflect.getProperty(FlxG.keys.justPressed, binds.get(id)))
+            PlayState.instance.checkHit(this);
+        if (Reflect.getProperty(FlxG.keys.justReleased, binds.get(id)))
+            PlayState.instance.release(this);
 
         if (FlxG.mouse.x > x && FlxG.mouse.x < x + width &&
             FlxG.mouse.y > y && FlxG.mouse.y < y + height)
         {
             if (FlxG.mouse.justPressed)
-                keyPress();
+            {
+                color = Palette.pressed;
+                PlayState.instance.checkHit(this);
+            }
             if (FlxG.mouse.justReleased)
-                color = Palette.released;
+                PlayState.instance.release(this);
 
             overlap = true;
         }
         else
         {
-            if (overlap) color = Palette.released;
+            if (overlap) PlayState.instance.release(this);
             overlap = false;
         }
     }

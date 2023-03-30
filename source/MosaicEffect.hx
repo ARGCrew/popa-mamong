@@ -66,8 +66,7 @@ class MosaicShader extends FlxShader
 		}
     ')
 
-	public function new()
-	{
+	public function new() {
 		super();
 	}
 }

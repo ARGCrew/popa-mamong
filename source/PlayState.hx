@@ -49,7 +49,7 @@ class PlayState extends MusicBeatState
     {
         persistentDraw = persistentUpdate = true;
 
-        FlxG.sound.playMusic(Paths.music('Tribute'));
+        FlxG.sound.playMusic(Paths.music(songName));
         FlxG.sound.music.volume = Settings.masterVolume;
 
         speedMS = songSpeed * 1000;
@@ -113,13 +113,12 @@ class PlayState extends MusicBeatState
                 noteTweens.set(note, FlxTween.tween(note.scale, {x: 1, y: 1}, songSpeed));
                 note.spawned = true;
                 /*
-                TODO: Это надо пофиксить
+                TODO: Это надо пофиксить*/
                 if (note.time < (songSpeed * 1000))
                 {
                     note.scale.x = (songSpeed * 1000) / note.time * 0.6;
                     note.scale.y = note.scale.x;
                 }
-                */
             }
         }
 

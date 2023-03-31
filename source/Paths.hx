@@ -9,6 +9,8 @@ class Paths
     static var libs:Array<String> = [];
     static var lib:String = 'shared';
 
+    public static var font:String = "assets/font/Nord-Star-Deco.ttf";
+
     public static function image(key:String)
     {
         return 'assets/images/$key.png';
@@ -42,10 +44,5 @@ class Paths
     public static function sparrowAtlas(key:String)
     {
         return FlxAtlasFrames.fromSparrow(image(key), 'assets/images/$key.xml');
-    }
-
-    public static function font(key:String)
-    {
-        return 'assets/font/$key';
     }
 }

@@ -8,7 +8,7 @@ class Tools
     public static var curState:FlxState = null;
     public static var curStateName:String = null;
 
-    public static function switchState(nextState:Class<FlxState>, args:Array<Dynamic> = null)
+    public static function switchState(nextState:Class<Dynamic>, args:Array<Dynamic> = null)
     {
         var stateStuff = null;
         if (args == null)

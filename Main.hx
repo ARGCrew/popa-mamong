@@ -58,8 +58,12 @@ class Main extends openfl.display.Sprite
 		var ratioX:Float = stageWidth / 1280;
 		var ratioY:Float = stageHeight / 720;
 
-		addChild(new flixel.FlxGame(window.width, window.height, InitialState, 120, 120, true, false));
+		addChild(new flixel.FlxGame(window.width, window.height, InitialState, 60, 60, true, false));
 		addChild(new FlxCrashHandler());
+
+		var fps = new openfl.display.FPS();
+		fps.textColor = 0xffFFFFFF;
+		addChild(fps);
 
 		FlxG.sound.muteKeys = [];
 		FlxG.sound.volumeDownKeys = [];

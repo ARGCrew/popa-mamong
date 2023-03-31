@@ -23,6 +23,9 @@ class InitialState extends MusicBeatState
 
     override function create()
     {
+        var menus:Array<Class<MusicBeatState>> = [
+            CreditsState
+        ];
         Settings.load();
 
         var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);

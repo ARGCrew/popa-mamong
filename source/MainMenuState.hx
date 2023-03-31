@@ -1,12 +1,13 @@
 package;
 
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
-import flixel.group.FlxSpriteGroup;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
 import flixel.FlxObject;
 import flixel.input.mouse.FlxMouseEventManager;
-import hxAddons.HxBitmapSprite;
 import flixel.FlxG;
 import flixel.math.FlxRect;
 import flixel.math.FlxPoint;
@@ -15,21 +16,22 @@ import flixel.addons.transition.TransitionData;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.graphics.FlxGraphic;
-import flixel.text.FlxText;
 
 class MainMenuState extends MusicBeatState
 {
     var mouseEvent:FlxMouseEventManager;
 
-    var optionShit:Array<String> = [
-        'play',
-        'settings',
-        'credits'
+    var optionShit:Array<Array<Dynamic>> = [
+        ['play', null, PlayState],
+        ['settings', [false], SettingsState],
+        ['credits', null, CreditsState]
     ];
-    var grpOptions:FlxSpriteGroup;
+    var grpOptions:FlxTypedGroup<MenuButton>;
 
     static var curSelected:Int = 0;
     var daChoiced:Bool = false;
+
+    var itemStartPoses:Array<Float> = [];
 
     function onMouseDown(object:FlxObject)
     {
@@ -55,20 +57,30 @@ class MainMenuState extends MusicBeatState
         mouseEvent = new FlxMouseEventManager();
         add(mouseEvent);
 
-        grpOptions = new FlxSpriteGroup();
+        grpOptions = new FlxTypedGroup<MenuButton>();
         add(grpOptions);
 
         for (i in 0...optionShit.length)
         {
-            var offsetY:Float = FlxG.height / 3 + (new Bitmap(BitmapData.fromFile(Paths.image('menu/Buttonb'))).height * 0.75) * i;
-            var offsetX:Float = 15 + (80 * i);
+            var itemOffsetX = 15 + (80 * i);
+            var itemOffsetY = FlxG.height / 3 + (new Bitmap(BitmapData.fromFile(Paths.image('menu/Buttonb'))).height * 0.75) * i;
 
-            var button:HxBitmapSprite = new HxBitmapSprite(offsetX, offsetY).loadBitmap(Paths.image('menu/${optionShit[i].toUpperCase()}'));
+            var line:OhLine = new OhLine(itemOffsetX, itemOffsetY);
+            line.loadBitmap(Paths.image('menu/jstfknln'));
+            line.scale.set(0.4, 0.4);
+            line.updateHitbox();
+            line.alpha = 0.4;
+            add(line);
+
+            var button:MenuButton = new MenuButton(itemOffsetX, itemOffsetY);
+            button.loadBitmap(Paths.image('menu/${optionShit[i][0].toUpperCase()}'));
             button.scale.set(0.4, 0.4);
             button.updateHitbox();
             button.alpha = 0.4;
             grpOptions.add(button);
             mouseEvent.add(button, onMouseDown, null, onMouseOver, onMouseOut);
+
+            line.targetSprite = button;
         }
 
         super.create();
@@ -118,15 +130,11 @@ class MainMenuState extends MusicBeatState
 
     function select()
     {
-        daChoiced = true;
-        switch(optionShit[curSelected].toLowerCase())
+        if (!daChoiced)
         {
-            case 'play':
-                Tools.switchState(PlayState);
-            case 'settings':
-                Tools.switchState(Settings.SetState, [false]);
-            default:
-                daChoiced = false;
+            daChoiced = true;
+            var daState = optionShit[curSelected][2];
+            Tools.switchState(daState, optionShit[curSelected][1]);
         }
     }
 
@@ -152,8 +160,10 @@ class MainMenuState extends MusicBeatState
         
             curSelected == i ? {
                 spr.alpha = 1;
+                spr.moveTween = FlxTween.tween(spr, {x: spr.offsetX + 10}, 0.2, {ease: FlxEase.sineOut});
             } : {
                 spr.alpha = 0.4;
+                spr.moveTween = FlxTween.tween(spr, {x: spr.offsetX}, 0.2, {ease: FlxEase.sineOut});
             }
         }
     }

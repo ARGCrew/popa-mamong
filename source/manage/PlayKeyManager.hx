@@ -26,7 +26,7 @@ class PlayKeyManager
 
         if (justPressed.S)
         {
-            Tools.switchState(Settings.SetState, [true]);
+            Tools.switchState(SettingsState, [true]);
             FlxG.sound.music.stop();
         }
 

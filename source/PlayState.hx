@@ -116,7 +116,7 @@ class PlayState extends MusicBeatState
                 TODO: Это надо пофиксить*/
                 if (note.time < speedMS)
                 {
-                    note.scale.x = (songSpeed * 1000) / note.time * 0.6;
+                    note.scale.x = speedMS / note.time * 0.6;
                     note.scale.y = note.scale.x;
                 }
             }

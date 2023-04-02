@@ -6,14 +6,14 @@ Project Description
 
 ### Todo
 
-- [ ] Transparent text in main menu (ImageOutline)  
+- [ ] Fix main menu bug  
 - [ ] Chart editor  
-- [ ] Options menu  
 - [ ] Song Select menu  
 
 ### In Progress
 
 - [ ] Main menu  
+- [ ] Options menu  
 
 ### Done ✓
 

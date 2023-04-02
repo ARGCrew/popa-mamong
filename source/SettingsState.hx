@@ -3,18 +3,15 @@ package;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUICheckBox;
 
-class SettingsState extends MusicBeatState
-{
+class SettingsState extends MusicBeatState {
     var daPlaying:Bool;
 
-    public function new(game:Bool)
-    {
+    public function new(game:Bool) {
         super();
         daPlaying = game;
     }
 
-    override function create()
-    {
+    override function create() {
         var circleCheckBox:FlxUICheckBox = new FlxUICheckBox(10, 10, null, null, "Circle Buttons", 100);
         circleCheckBox.checked = (Settings.skin == 'circle');
         circleCheckBox.callback = function() {
@@ -34,21 +31,18 @@ class SettingsState extends MusicBeatState
         add(beatCheckBox);
     }
 
-    override function update(elapsed:Float)
-    {
-        if (FlxG.keys.justPressed.ESCAPE)
-        {
+    override function update(elapsed:Float) {
+        if (FlxG.keys.justPressed.ESCAPE) {
             daPlaying ? {
-                Tools.switchState(PlayState);
+                FlxG.switchState(new PlayState());
             } : {
-                Tools.switchState(MainMenuState);
+                FlxG.switchState(new MainMenuState());
             }
         }
         super.update(elapsed);
     }
 
-    override function destroy()
-    {
+    override function destroy() {
         Settings.save();
         super.destroy();
     }

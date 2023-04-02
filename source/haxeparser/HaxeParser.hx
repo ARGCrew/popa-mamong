@@ -9,8 +9,7 @@ import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 #end
 
-class HaxeParser
-{
+class HaxeParser {
     public static var parser:Parser = new Parser();
 	public var interp:Interp = new Interp();
 
@@ -19,8 +18,7 @@ class HaxeParser
 		return interp.variables;
 	}
 
-    public function new(path:String)
-    {
+    public function new(path:String) {
         @:privateAccess
 		parser.line = 1;
 		parser.allowTypes = true;
@@ -32,8 +30,9 @@ class HaxeParser
 		    interp.execute(parser.parseString(Assets.getText(path)));
         #end
 
-        for (lib in ['StringTools', 'Std', 'Reflect', 'Type'])
+        for (lib in ['StringTools', 'Std', 'Reflect', 'Type']) {
             addCallback(lib, Type.resolveClass(lib));
+        }
 
         addCallback('import', function(lib:String, like:String) {
             var libPack:Array<String> = lib.split('.');
@@ -47,14 +46,12 @@ class HaxeParser
         });
     }
 
-    public function callFunction(event:String, args:Array<Dynamic>)
-    {
+    public function callFunction(event:String, args:Array<Dynamic>) {
         if (!variables.exists(event)) {
             return;
         }
         var method = variables.get(event);
-        switch(args.length)
-        {
+        switch(args.length) {
             case 0:
                 method();
             case 1:

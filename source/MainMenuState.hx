@@ -3,12 +3,6 @@ package;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import openfl.display.BitmapData;
-import openfl.display.Bitmap;
-import flixel.FlxObject;
-import flixel.input.mouse.FlxMouseEventManager;
-import flixel.FlxG;
 import flixel.math.FlxRect;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
@@ -16,64 +10,61 @@ import flixel.addons.transition.TransitionData;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.graphics.FlxGraphic;
+import flixel.FlxG;
+import flixel.FlxObject;
+import MenuButton.MenuLine;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.input.mouse.FlxMouseEventManager;
 
-class MainMenuState extends MusicBeatState
-{
+class MainMenuState extends MusicBeatState {
     var mouseEvent:FlxMouseEventManager;
 
-    var optionShit:Array<Array<Dynamic>> = [
-        ['play', null, PlayState],
-        ['settings', [false], SettingsState],
-        ['credits', null, CreditsState]
+    var optionShit:Array<String> = [
+        'play',
+        'settings',
+        'credits'
     ];
     var grpOptions:FlxTypedGroup<MenuButton>;
 
     static var curSelected:Int = 0;
     var daChoiced:Bool = false;
 
-    var itemStartPoses:Array<Float> = [];
-
-    function onMouseDown(object:FlxObject)
-    {
+    function onMouseDown(object:FlxObject) {
         select();
     }
 
-    function onMouseOver(object:FlxObject)
-    {
-        for (i in 0...optionShit.length)
-            if (object == grpOptions.members[i])
+    function onMouseOver(object:FlxObject) {
+        for (i in 0...optionShit.length) {
+            if (object == grpOptions.members[i]) {
                 changeSelection(i, true);
+            }
+        }
     }
 
-    function onMouseOut(object:FlxObject)
-    {
-        for (i in 0...optionShit.length)
-            if (object == grpOptions.members[i])
+    function onMouseOut(object:FlxObject) {
+        for (i in 0...optionShit.length) {
+            if (object == grpOptions.members[i]) {
                 changeSelection(-100, true);
+            }
+        }
     }
 
-    override public function create()
-    {
+    override public function create() {
         mouseEvent = new FlxMouseEventManager();
         add(mouseEvent);
 
         grpOptions = new FlxTypedGroup<MenuButton>();
         add(grpOptions);
 
-        for (i in 0...optionShit.length)
-        {
+        for (i in 0...optionShit.length) {
             var itemOffsetX = 15 + (80 * i);
-            var itemOffsetY = FlxG.height / 3 + (new Bitmap(BitmapData.fromFile(Paths.image('menu/Buttonb'))).height * 0.75) * i;
+            var itemOffsetY = FlxG.height / 3 + (Paths.image('menu/Buttonb').height * 0.75) * i;
 
-            var line:OhLine = new OhLine(itemOffsetX, itemOffsetY);
-            line.loadBitmap(Paths.image('menu/jstfknln'));
-            line.scale.set(0.4, 0.4);
-            line.updateHitbox();
-            line.alpha = 0.4;
+            var line:MenuLine = new MenuLine(itemOffsetX, itemOffsetY);
             add(line);
 
             var button:MenuButton = new MenuButton(itemOffsetX, itemOffsetY);
-            button.loadBitmap(Paths.image('menu/${optionShit[i][0].toUpperCase()}'));
+            button.loadGraphic(Paths.image('menu/${optionShit[i].toUpperCase()}'));
             button.scale.set(0.4, 0.4);
             button.updateHitbox();
             button.alpha = 0.4;
@@ -86,8 +77,7 @@ class MainMenuState extends MusicBeatState
         super.create();
     }
 
-    public function new()
-    {
+    public function new() {
         super();
 
         var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
@@ -99,26 +89,21 @@ class MainMenuState extends MusicBeatState
         transOut = FlxTransitionableState.defaultTransOut;
     }
 
-    override function update(elapsed:Float)
-    {
-        if (FlxG.keys.justPressed.ENTER)
-            FlxG.switchState(new PlayState());
-
-        if (FlxG.keys.justPressed.ESCAPE)
-            FlxG.switchState(new InitialState());
-
-        if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.UP)
+    override function update(elapsed:Float) {
+        if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.UP) {
             changeSelection(-1);
-        if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.DOWN)
+        }
+        if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.DOWN) {
             changeSelection(1);
-        if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER)
+        }
+        if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER) {
             select();
+        }
 
         super.update(elapsed);
     }
 
-    function mouseOverlaps(obj:FlxSprite)
-    {
+    function mouseOverlaps(obj:FlxSprite) {
         var mos = FlxG.mouse;
 
         if (mos.x > obj.x && mos.x < obj.x + obj.width
@@ -128,34 +113,36 @@ class MainMenuState extends MusicBeatState
         return false;
     }
 
-    function select()
-    {
-        if (!daChoiced)
-        {
+    function select() {
+        if (!daChoiced) {
             daChoiced = true;
-            var daState = optionShit[curSelected][2];
-            Tools.switchState(daState, optionShit[curSelected][1]);
+            switch(optionShit[curSelected]) {
+                case 'play': FlxG.switchState(new PlayState());
+                case 'settings': FlxG.switchState(new SettingsState(false));
+                case 'credits': FlxG.switchState(new CreditsState());
+                default: daChoiced = false;
+            }
         }
     }
 
-    function changeSelection(step:Int = 0, force:Bool = false)
-    {
+    function changeSelection(step:Int = 0, force:Bool = false) {
         force ? {
             curSelected = step;
         } : {
             curSelected != -100 ? {
                 curSelected += step;
-                if (curSelected > optionShit.length - 1)
+                if (curSelected > optionShit.length - 1) {
                     curSelected = 0;
-                if (curSelected < 0)
+                }
+                if (curSelected < 0) {
                     curSelected = optionShit.length - 1;
+                }
             } : {
                 curSelected = 0;
             }
         }
 
-        for (i in 0...grpOptions.members.length)
-        {
+        for (i in 0...grpOptions.members.length) {
             var spr = grpOptions.members[i];
         
             curSelected == i ? {

@@ -1,13 +1,9 @@
 package;
 
-import flixel.system.FlxSound;
-import flixel.input.keyboard.FlxKey;
-import flixel.util.FlxColor;
 import flixel.FlxG;
-import hxAddons.HxBitmapSprite;
+import flixel.FlxSprite;
 
-class Button extends HxBitmapSprite
-{
+class Button extends FlxSprite {
     public var id:Int = 0;
     public var skin:String;
     
@@ -25,8 +21,7 @@ class Button extends HxBitmapSprite
         8 => 'NUMPADTHREE'
     ];
 
-    public function new(id:Int, skin:String)
-    {
+    public function new(id:Int, skin:String) {
         super();
         this.id = id;
         this.skin = skin;
@@ -37,13 +32,11 @@ class Button extends HxBitmapSprite
         var spaceX:Float = 20;
         var spaceY:Float = 20;
 
-        loadBitmap(Paths.image('buttons/$skin'));
-        // setGraphicSize(Std.int(width * 0.7));
+        loadGraphic(Paths.image('buttons/${skin.toUpperCase()}'));
         updateHitbox();
         color = Palette.released;
 
-        switch(id)
-        {
+        switch(id) {
             case 0: setPosition(offsetX, offsetY);
             case 1: setPosition(offsetX + spaceX + width, offsetY);
             case 2: setPosition(offsetX + (spaceX + width) * 2, offsetY);
@@ -56,29 +49,29 @@ class Button extends HxBitmapSprite
         }
     }
 
-    override function update(elapsed:Float)
-    {
-        if (Reflect.getProperty(FlxG.keys.justPressed, binds.get(id)))
+    override function update(elapsed:Float) {
+        if (Reflect.getProperty(FlxG.keys.justPressed, binds.get(id))) {
             PlayState.instance.checkHit(this);
-        if (Reflect.getProperty(FlxG.keys.justReleased, binds.get(id)))
+        }
+        if (Reflect.getProperty(FlxG.keys.justReleased, binds.get(id))) {
             PlayState.instance.release(this);
+        }
 
         if (FlxG.mouse.x > x && FlxG.mouse.x < x + width &&
-            FlxG.mouse.y > y && FlxG.mouse.y < y + height)
-        {
-            if (FlxG.mouse.justPressed)
-            {
+            FlxG.mouse.y > y && FlxG.mouse.y < y + height) {
+            if (FlxG.mouse.justPressed) {
                 color = Palette.pressed;
                 PlayState.instance.checkHit(this);
             }
-            if (FlxG.mouse.justReleased)
+            if (FlxG.mouse.justReleased) {
                 PlayState.instance.release(this);
-
+            }
             overlap = true;
         }
-        else
-        {
-            if (overlap) PlayState.instance.release(this);
+        else {
+            if (overlap) {
+                PlayState.instance.release(this);
+            }
             overlap = false;
         }
     }

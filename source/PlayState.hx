@@ -1,22 +1,17 @@
 package;
 
-import flixel.util.FlxTimer;
-import flixel.tweens.FlxTween;
-import MusicBeat.Music;
-import flixel.FlxCamera;
-import flixel.math.FlxMath;
 import flixel.system.FlxSound;
-import sys.io.File;
-import haxeparser.HaxeParser;
-import flixel.FlxObject;
+import flixel.math.FlxMath;
+import flixel.util.FlxTimer;
 import flixel.FlxG;
-import flixel.input.keyboard.FlxKey;
-import flixel.util.FlxColor;
+import flixel.FlxCamera;
+import MusicBeat.Music;
+import flixel.tweens.FlxTween;
+import haxeparser.HaxeParser;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 
-class PlayState extends MusicBeatState
-{
+class PlayState extends MusicBeatState {
     //BUTTONS
     public var butts:FlxTypedGroup<FlxSprite>;
 
@@ -41,12 +36,11 @@ class PlayState extends MusicBeatState
     public static var songName:String = 'Tribute';
     public static var curDifficulty:String = 'normal';
 
-    var music:MusicBeat.Music = null;
+    var music:Music = null;
 
     var camGame:FlxCamera;
 
-    override function create()
-    {
+    override function create() {
         persistentDraw = persistentUpdate = true;
 
         FlxG.sound.playMusic(Paths.music(songName));
@@ -67,11 +61,9 @@ class PlayState extends MusicBeatState
         spawnNotes = new FlxTypedGroup<Note>();
         add(spawnNotes);
 
-        for (i in 0...music.notes.length)
-        {
+        for (i in 0...music.notes.length) {
             var section = music.notes[i];
-            for (b in 0...section.sectionNotes.length)
-            {
+            for (b in 0...section.sectionNotes.length) {
                 var daNote = section.sectionNotes[b];
                 var note:Note = new Note(daNote.time, daNote.id);
                 note.scale.set(0.01, 0.01);
@@ -95,37 +87,34 @@ class PlayState extends MusicBeatState
         hscript.callFunction('create', []);
     }
 
-    override function update(elapsed)
-    {
-        musicManage();
+    override function update(elapsed) {
+        Conductor.songPosition = FlxG.sound.music.time;
+        FlxG.sound.music.volume = Settings.getMusicVolume();
+        
         manage.PlayKeyManager.manage();
 
         if (Settings.camBeat) FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, 0.95);
 
-        for (i in 0...unspawnNotes.length)
-        {
+        for (i in 0...unspawnNotes.length)  {
             var note = unspawnNotes[i];
 
-            if (note.time <= Conductor.songPosition - speedMS && !note.spawned)
-            {
+            if (note.time <= Conductor.songPosition - speedMS && !note.spawned) {
                 spawnNotes.add(note);
                 unspawnNotes.shift();
                 noteTweens.set(note, FlxTween.tween(note.scale, {x: 1, y: 1}, songSpeed));
                 note.spawned = true;
-                /*
-                TODO: Это надо пофиксить*/
-                if (note.time < speedMS)
-                {
+                // TODO: Это надо пофиксить
+                if (note.time < speedMS) {
                     note.scale.x = speedMS / note.time * 0.6;
                     note.scale.y = note.scale.x;
                 }
             }
         }
 
-        spawnNotes.forEachAlive(function(note:Note)
-        {
-            if (note.scale.x >= 1)
+        spawnNotes.forEachAlive(function(note:Note) {
+            if (note.scale.x >= 1) {
                 miss(note);
+            }
         });
 
         super.update(elapsed);
@@ -133,48 +122,42 @@ class PlayState extends MusicBeatState
         hscript.callFunction('update', [elapsed]);
     }
 
-    function musicManage()
-    {
+    function musicManage() {
         Conductor.songPosition = FlxG.sound.music.time;
         FlxG.sound.music.volume = Settings.getMusicVolume();
     }
 
-    override function beatHit()
-    {
-        if (curBeat % 4 == 0 && Settings.camBeat)
+    override function beatHit() {
+        if (curBeat % 4 == 0 && Settings.camBeat) {
             FlxG.camera.zoom += 0.015;
+        }
         super.beatHit();
     }
 
-    public function checkHit(butt:Button)
-    {
-        if (FlxG.sound.music != null && FlxG.sound.music.playing)
-        {
+    public function checkHit(butt:Button) {
+        if (FlxG.sound.music != null && FlxG.sound.music.playing) {
             var daNoteList:Array<Note> = [];
             spawnNotes.forEachAlive(function(note:Note) {
                 daNoteList.push(note);
             });
                 
-            if (daNoteList.length > 0)
+            if (daNoteList.length > 0) {
                 spawnNotes.forEachAlive(function(note:Note) {
-                    if (note.id == butt.id && note.scale.x > 0.7)
-                    {
+                    if (note.id == butt.id && note.scale.x > 0.7) {
                         goodHit(note);
                     }
-                    else
-                    {
+                    else {
                         missHit(butt);
                     }
                 });
-            else
-            {
+            }
+            else {
                 missHit(butt);
             }
         }
     }
 
-    public function goodHit(note:Note)
-    {
+    public function goodHit(note:Note) {
         // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
         var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Pressed')).play();
         sound.volume = Settings.getSoundVolume();
@@ -185,21 +168,18 @@ class PlayState extends MusicBeatState
         remove(note);
     }
 
-    public function release(butt:Button)
-    {
+    public function release(butt:Button) {
         butt.color = Palette.released;
     }
 
-    public function missHit(butt:Button)
-    {
+    public function missHit(butt:Button) {
         butt.color = Palette.pressed;
         // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
         var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
         sound.volume = Settings.getSoundVolume();
     }
 
-    public function miss(note:Note)
-    {
+    public function miss(note:Note) {
         noteTweens.remove(note);
         note.kill();
         note.destroy();

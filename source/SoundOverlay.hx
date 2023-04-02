@@ -7,8 +7,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 
-class SoundOverlay extends FlxSpriteGroup
-{
+class SoundOverlay extends FlxSpriteGroup {
     public static var line:FlxSprite;
     public static var handle:FlxSprite;
     public static var hitbox:FlxSprite;
@@ -19,8 +18,7 @@ class SoundOverlay extends FlxSpriteGroup
     static var dragging:Bool = false;
     var valueLine:Float = 0;
     
-    public function new()
-    {
+    public function new() {
         super();
 
         instance = this;
@@ -48,8 +46,7 @@ class SoundOverlay extends FlxSpriteGroup
         valueLine = line.height - handle.height;
     }
 
-    override function update(elapsed:Float)
-    {
+    override function update(elapsed:Float) {
         FlxG.mouse.x >= FlxG.width - 100 ? {
             FlxTween.tween(line, {x: FlxG.width - 50}, 0.1, {ease: FlxEase.sineOut});
         } : {

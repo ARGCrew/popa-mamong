@@ -5,8 +5,7 @@ import lime.graphics.RenderContextType;
 import lime.app.Application;
 import lime.ui.Window;
 
-class Settings
-{
+class Settings {
     public static var skin:String = 'square';
     public static var camBeat:Bool = true;
 
@@ -21,8 +20,7 @@ class Settings
         return soundVolume * masterVolume;
     }
 
-    public static function save()
-    {
+    public static function save() {
         var save:FlxSave = new FlxSave();
         save.bind('arg-save');
 
@@ -36,8 +34,7 @@ class Settings
         save.flush();
     }
 
-    public static function load()
-    {
+    public static function load() {
         var save:FlxSave = new FlxSave();
         save.bind('arg-save');
 
@@ -49,8 +46,7 @@ class Settings
         if (save.data.soundVolume != null) soundVolume = save.data.soundVolume;
     }
 
-    public static function openWindow()
-    {
+    public static function openWindow() {
         var window:Window = Application.current.createWindow({
             allowHighDPI: true,
             alwaysOnTop: true,

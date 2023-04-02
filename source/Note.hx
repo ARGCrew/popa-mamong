@@ -1,9 +1,8 @@
 package;
 
-import hxAddons.HxBitmapSprite;
+import flixel.FlxSprite;
 
-class Note extends HxBitmapSprite
-{
+class Note extends FlxSprite {
     public var time:Float;
     public var id:Int;
 
@@ -12,18 +11,16 @@ class Note extends HxBitmapSprite
 
     public var skin:String = 'square';
 
-    public function new(time:Float, id:Int)
-    {
+    public function new(time:Float, id:Int) {
         super();
         this.time = time;
         this.id = id;
-        loadBitmap(Paths.image('indicators/$skin'));
 
+        loadGraphic(Paths.image('indicators/${skin.toUpperCase()}'));
         alpha = 0.4;
     }
 
-    override function update(elapsed:Float)
-    {
+    override function update(elapsed:Float) {
         var button = PlayState.instance.butts.members[id];
 
         x = button.x + button.width / 2 - width / 2;

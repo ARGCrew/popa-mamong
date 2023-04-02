@@ -2,18 +2,15 @@ package;
 
 import flixel.system.FlxAssets.FlxShader;
 
-class ScanlineEffect
-{
+class ScanlineEffect {
     public var shader:ScanlineShader;
 
-    public function new()
-    {
+    public function new() {
         shader = new ScanlineShader();
     }
 }
 
-class ScanlineShader extends FlxShader
-{
+class ScanlineShader extends FlxShader {
     @:glFragmentSource('
 		#pragma header
 		const float scale = 1.0;

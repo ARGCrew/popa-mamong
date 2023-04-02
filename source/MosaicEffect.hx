@@ -6,8 +6,7 @@ package;
 
 import flixel.system.FlxAssets.FlxShader;
 
-class MosaicEffect
-{
+class MosaicEffect {
 	/**
 	 * The effect's "start-value" on the x/y-axes (the effect is not visible with this value).
 	 */
@@ -28,8 +27,7 @@ class MosaicEffect
 	 */
 	public var strengthY(default, null):Float = DEFAULT_STRENGTH;
 
-	public function new():Void
-	{
+	public function new():Void {
 		shader = new MosaicShader();
 		#if (openfl >= "8.0.0")
 		shader.data.uBlocksize.value = [strengthX, strengthY];
@@ -38,8 +36,7 @@ class MosaicEffect
 		#end
 	}
 
-	public function setStrength(strengthX:Float, strengthY:Float):Void
-	{
+	public function setStrength(strengthX:Float, strengthY:Float):Void {
 		this.strengthX = strengthX;
 		this.strengthY = strengthY;
 		#if (openfl >= "8.0.0")
@@ -52,8 +49,7 @@ class MosaicEffect
 	}
 }
 
-class MosaicShader extends FlxShader
-{
+class MosaicShader extends FlxShader {
 	@:glFragmentSource('
 		#pragma header
         

@@ -7,15 +7,13 @@ import MusicBeat.Music;
  * @author
  */
 
-typedef BPMChangeEvent =
-{
+typedef BPMChangeEvent = {
 	var stepTime:Int;
 	var songTime:Float;
 	var bpm:Int;
 }
 
-class Conductor
-{
+class Conductor {
 	public static var bpm:Int = 100;
 	public static var crochet:Float = ((60 / bpm) * 1000); // beats in milliseconds
 	public static var stepCrochet:Float = crochet / 4; // steps in milliseconds
@@ -28,21 +26,16 @@ class Conductor
 
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
 
-	public function new()
-	{
-	}
+	public function new() {}
 
-	public static function mapBPMChanges(song:Music)
-	{
+	public static function mapBPMChanges(song:Music) {
 		bpmChangeMap = [];
 
 		var curBPM:Int = song.bpm;
 		var totalSteps:Int = 0;
 		var totalPos:Float = 0;
-		for (i in 0...song.notes.length)
-		{
-			if(song.notes[i].changeBPM && song.notes[i].bpm != curBPM)
-			{
+		for (i in 0...song.notes.length) {
+			if(song.notes[i].changeBPM && song.notes[i].bpm != curBPM) {
 				curBPM = song.notes[i].bpm;
 				var event:BPMChangeEvent = {
 					stepTime: totalSteps,
@@ -59,8 +52,7 @@ class Conductor
 		trace("new BPM map BUDDY " + bpmChangeMap);
 	}
 
-	public static function changeBPM(newBpm:Int)
-	{
+	public static function changeBPM(newBpm:Int) {
 		bpm = newBpm;
 
 		crochet = ((60 / bpm) * 1000);

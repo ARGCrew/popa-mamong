@@ -30,6 +30,8 @@
 	<haxelib name="hxcpp-debug-server" if="debug"/>
 	<haxedef name="webgl" />
 	<haxelib name="flixel" />
+	
+	<haxedef name="HXCPP_STACK_LINE" if="desktop" />
 
 	<icon path="ico/logo16.png" size='16'/>
 	<icon path="ico/logo32.png" size='32'/>

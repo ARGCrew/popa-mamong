@@ -1,5 +1,6 @@
 package;
 
+import openfl.display.BitmapData;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
@@ -58,7 +59,7 @@ class MainMenuState extends MusicBeatState {
 
         for (i in 0...optionShit.length) {
             var itemOffsetX = 15 + (80 * i);
-            var itemOffsetY = FlxG.height / 3 + (Paths.image('menu/Buttonb').height * 0.75) * i;
+            var itemOffsetY = FlxG.height / 3 + (BitmapData.fromFile(Paths.image('menu/Buttonb')).height * 0.75) * i;
 
             var line:MenuLine = new MenuLine(itemOffsetX, itemOffsetY);
             add(line);

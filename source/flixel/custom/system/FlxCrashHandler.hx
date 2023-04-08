@@ -22,8 +22,7 @@ class FlxCrashHandler extends Sprite
 
     function onCrash(e:UncaughtErrorEvent)
     {
-        var name:String = Application.current.window.title;
-        name = name.replace(' ', '-');
+        var name:String = "Another-Rhythm-Game";
 
         var errMsg:String = "";
 
@@ -37,7 +36,6 @@ class FlxCrashHandler extends Sprite
                 default:
 					Sys.println(stackItem);
 			}
-            
 		}
         errMsg += '\nUncaught Error: ${e.error}';
 

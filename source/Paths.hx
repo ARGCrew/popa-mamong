@@ -15,15 +15,15 @@ class Paths
 {
     static var libs:Array<String> = [];
     static var lib:String = 'shared';
-
+/*
     static var images:FileMap = new FileMap();
     static var sounds:FileMap = new FileMap();
-
+*/
     static var sound_extension:String = #if web "mp3" #else "ogg" #end;
 
-    public static function image(key:String):FlxGraphic {
+    public static function image(key:String) {
         var path:String = 'assets/images/$key.png';
-
+/*
         var bitmapData:BitmapData = null;
         var graphic:FlxGraphic = null;
 
@@ -37,11 +37,13 @@ class Paths
         images.set(path, graphic);
 
         return images.get(path);
+*/
+        return path;
     }
 
-    public static function music(key:String):Sound {
+    public static function music(key:String) {
         var path:String = 'assets/music/$key.$sound_extension';
-
+/*
         var sound:Sound = null;
 
         if (sounds.exists(path) && sounds.get(path) != null)
@@ -53,11 +55,13 @@ class Paths
         sounds.set(path, sound);
 
         return sounds.get(path);
+*/
+        return path;
     }
 
-    public static function sound(key:String):Sound {
+    public static function sound(key:String) {
         var path:String = 'assets/sounds/$key.$sound_extension';
-
+/*
         var sound:Sound = null;
 
         if (sounds.exists(path) && sounds.get(path) != null)
@@ -69,6 +73,8 @@ class Paths
         sounds.set(path, sound);
 
         return sounds.get(path);
+*/
+        return path;
     }
 
     public static var font:String = "assets/font/Nord-Star-Deco.ttf";

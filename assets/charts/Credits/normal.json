@@ -1,61 +1,18 @@
 {
-    "bpm": 95,
+    "bpm": 179,
     "speed": 1,
 
     "notes": [
         {
-            "sectionNotes": [],
+            "sectionNotes": [
+                {
+                    "time": 2000,
+                    "id": 0
+                }
+            ],
             "lengthInSteps": 16,
             "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
-        },
-        {
-            "sectionNotes": [],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": true
+            "changeBPM": false
         }
     ]
 }

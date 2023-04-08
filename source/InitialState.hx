@@ -48,9 +48,7 @@ class InitialState extends MusicBeatState {
             video.playVideo(Paths.video('Intro'));
         });
 
-        FlxG.mouse.load(new Bitmap(Paths.image('cursor/normal').bitmap));
-        // FlxG.mouse.useSystemCursor = true;
-
+        FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursor/normal')));
     }
 
     override function update(elapsed:Float)

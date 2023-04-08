@@ -33,7 +33,7 @@ class PlayState extends MusicBeatState {
     public var speedMS:Float = 0;
     var noteTweens:Map<Note, FlxTween> = [];
 
-    public static var songName:String = 'Tribute';
+    public static var songName:String = 'Credits';
     public static var curDifficulty:String = 'normal';
 
     var music:Music = null;
@@ -98,7 +98,7 @@ class PlayState extends MusicBeatState {
         for (i in 0...unspawnNotes.length)  {
             var note = unspawnNotes[i];
 
-            if (note.time <= Conductor.songPosition - speedMS && !note.spawned) {
+            if (Conductor.songPosition >= note.time - speedMS && !note.spawned) {
                 spawnNotes.add(note);
                 unspawnNotes.shift();
                 noteTweens.set(note, FlxTween.tween(note.scale, {x: 1, y: 1}, songSpeed));

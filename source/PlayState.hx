@@ -101,11 +101,15 @@ class PlayState extends MusicBeatState {
             if (Conductor.songPosition >= note.time - speedMS && !note.spawned) {
                 spawnNotes.add(note);
                 unspawnNotes.shift();
-                noteTweens.set(note, FlxTween.tween(note.scale, {x: 1, y: 1}, songSpeed));
+                noteTweens.set(note, FlxTween.tween(note.scale, {x: 0.75, y: 0.75}, songSpeed, {onComplete: function(twn:FlxTween) {
+                    if (note != null && note.alive) {
+                        noteTweens.set(note, FlxTween.tween(note.scale, {x: 1, y: 1}, songSpeed * 0.25));
+                    }
+                }}));
                 note.spawned = true;
                 // TODO: Это надо пофиксить
                 if (note.time < speedMS) {
-                    note.scale.x = speedMS / note.time * 0.6;
+                    note.scale.x = speedMS / note.time;
                     note.scale.y = note.scale.x;
                 }
             }
@@ -163,6 +167,7 @@ class PlayState extends MusicBeatState {
         sound.volume = Settings.getSoundVolume();
         butts.members[note.id].color = Palette.confirmed;
 
+        noteTweens.remove(note);
         note.kill();
         note.destroy();
         remove(note);

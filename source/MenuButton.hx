@@ -11,8 +11,6 @@ class MenuLine extends FlxSprite {
         loadGraphic(Paths.image('menu/jstfknln'));
         scale.set(0.4, 0.4);
         updateHitbox();
-
-        shader = ShadersHandler.buttonShader;
     }
 
     override function update(elapsed:Float) {
@@ -31,8 +29,6 @@ class MenuButton extends FlxSprite {
     public function new(X:Float = 0, Y:Float = 0) {
         super(X, Y);
         offsetX = X;
-
-        shader = ShadersHandler.buttonShader;
     }
 
     override function update(elapsed:Float) {

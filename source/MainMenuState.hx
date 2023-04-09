@@ -1,5 +1,6 @@
 package;
 
+import openfl.filters.GlowFilter;
 import openfl.display.BitmapData;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;

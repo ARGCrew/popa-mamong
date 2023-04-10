@@ -6,6 +6,7 @@ Project Description
 
 ### h4mster
 
+- [ ] Lua  
 - [ ] Main menu  
 - [ ] Song select menu  
 - [ ] Chart editor  
@@ -15,7 +16,9 @@ Project Description
 - [ ] Main menu BG  
 - [ ] Credits menu design  
 - [ ] Song select menu design  
+- [ ] Options menu design  
 
 ### Electro Pea
 
 - [ ] Options menu  
+

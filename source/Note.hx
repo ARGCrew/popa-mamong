@@ -16,6 +16,7 @@ class Note extends FlxSprite {
         this.time = time;
         this.id = id;
 
+        skin = Settings.skin;
         loadGraphic(Paths.image('indicators/${skin.toUpperCase()}'));
         alpha = 0.4;
     }

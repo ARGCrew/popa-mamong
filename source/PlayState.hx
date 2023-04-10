@@ -17,7 +17,6 @@ class PlayState extends MusicBeatState {
 
     // CUSTOM LEVELS
     public static var instance:PlayState;
-    var hscript:HaxeParser = null;
     public var level:String = 'default';
 
     // CHARTS
@@ -33,6 +32,8 @@ class PlayState extends MusicBeatState {
     public var speedMS:Float = 0;
     var noteTweens:Map<Note, FlxTween> = [];
 
+    public static var lua:LuaManage = null;
+
     public static var songName:String = 'Credits';
     public static var curDifficulty:String = 'normal';
 
@@ -46,6 +47,10 @@ class PlayState extends MusicBeatState {
         FlxG.sound.playMusic(Paths.music(songName));
         FlxG.sound.music.volume = Settings.masterVolume;
 
+        if (Paths.exists('assets/levels/$songName.lua')) {
+            lua = new LuaManage('assets/levels/$songName.lua');
+        }
+
         speedMS = songSpeed * 1000;
 
         camGame = new FlxCamera();
@@ -57,6 +62,8 @@ class PlayState extends MusicBeatState {
         Palette.parse('assets/palette.json');
 
         add(new FlxSprite().makeGraphic(FlxG.width, FlxG.height, Palette.bg));
+
+        callLua('onCreate', []);
 
         spawnNotes = new FlxTypedGroup<Note>();
         add(spawnNotes);
@@ -82,9 +89,7 @@ class PlayState extends MusicBeatState {
         super.create();
 
         instance = this;
-        hscript = new HaxeParser(Paths.hscript(level));
-        hscript.addCallback('this', instance);
-        hscript.callFunction('create', []);
+        callLua('onCreatePost', []);
     }
 
     override function update(elapsed) {
@@ -100,7 +105,6 @@ class PlayState extends MusicBeatState {
 
             if (Conductor.songPosition >= note.time - speedMS && !note.spawned) {
                 spawnNotes.add(note);
-                unspawnNotes.shift();
                 noteTweens.set(note, FlxTween.tween(note.scale, {x: 0.75, y: 0.75}, songSpeed, {onComplete: function(twn:FlxTween) {
                     if (note != null && note.alive) {
                         noteTweens.set(note, FlxTween.tween(note.scale, {x: 1, y: 1}, songSpeed * 0.25));
@@ -112,6 +116,7 @@ class PlayState extends MusicBeatState {
                     note.scale.x = speedMS / note.time;
                     note.scale.y = note.scale.x;
                 }
+                unspawnNotes.remove(note);
             }
         }
 
@@ -122,8 +127,6 @@ class PlayState extends MusicBeatState {
         });
 
         super.update(elapsed);
-
-        hscript.callFunction('update', [elapsed]);
     }
 
     function musicManage() {
@@ -189,5 +192,11 @@ class PlayState extends MusicBeatState {
         note.kill();
         note.destroy();
         spawnNotes.remove(note);
+    }
+
+    function callLua(func:String, args:Array<Dynamic>) {
+        if (lua != null) {
+            lua.call(func, args);
+        }
     }
 }

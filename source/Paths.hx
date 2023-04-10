@@ -1,5 +1,6 @@
 package;
 
+import flixel.graphics.frames.FlxAtlasFrames;
 #if sys
 import sys.FileSystem;
 #else
@@ -39,6 +40,13 @@ class Paths
         return images.get(path);
 */
         return path;
+    }
+
+    public static function sparrowAtlas(key:String) {
+        var image:String = 'assets/images/$key.png';
+        var xml:String = 'assets/images/$key.xml';
+
+        return FlxAtlasFrames.fromSparrow(image, xml);
     }
 
     public static function music(key:String) {

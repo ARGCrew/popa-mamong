@@ -23,7 +23,6 @@ class FlxCrashHandler extends Sprite
     function onCrash(e:UncaughtErrorEvent)
     {
         var name:String = "Another-Rhythm-Game";
-
         var errMsg:String = "";
 
         var callStack:Array<StackItem> = CallStack.exceptionStack(true);
@@ -41,5 +40,15 @@ class FlxCrashHandler extends Sprite
 
         Application.current.window.alert(errMsg, 'FlixelCrashHandler/$name');
         Sys.exit(1);
+    }
+
+    public static function alert(message:String, exit:Bool = false) {
+        var name:String = "Another-Rhythm-Game";
+        var errMsg:String = message;
+
+        Application.current.window.alert(errMsg, 'FlixelCrashHandler/$name');
+        if (exit) {
+            Sys.exit(1);
+        }
     }
 }

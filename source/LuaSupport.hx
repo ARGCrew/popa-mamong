@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -75,13 +76,18 @@ class LuaSupport {
             Reflect.setProperty(Type.resolveClass(type), prop, val);
         });
 
-        addCallback("luaSprite", function(X:Float = 0, Y:Float = 0):Int {
-            var id = objects;
+        addCallback("luaSprite", function(X:Float = 0, Y:Float = 0):Dynamic {
             var sprite = new FlxSprite(X, Y);
-            par.objects.set(id, sprite);
+            par.objects.set(objects, sprite);
 
+            var retVal:Dynamic = {
+                id: objects,
+                x: X, y: Y,
+                scrollX: sprite.scrollFactor.x, scrollY: sprite.scrollFactor.y,
+                alpha: sprite.alpha, angle: sprite.angle
+            };
             objects ++;
-            return id;
+            return retVal;
         });
         addCallback("spriteLoadGraphic", function(spr:Int, texture:String) {
             var sprite:FlxSprite = null;
@@ -174,11 +180,17 @@ class LuaSupport {
                 if (sets.onComplete != null) {
                     var complete = sets.onComplete;
                 }
+                /*
                 settings.onComplete = function(twn:FlxTween) {
                     if (sets.onComplete != null) {
                         sets.onComplete();
                     }
-                    call("onTweenCompleted", [id]);
+                }
+                */
+                if (sets.onComplete != null) {
+                    settings.onComplete = function(twn:FlxTween) {
+                        call(sets.onComplete, []);
+                    }
                 }
                 if (sets.ease != null) {
                     var ease = sets.ease;
@@ -240,7 +252,7 @@ class LuaSupport {
                     onComplete();
                 }
                 call("onTimerCompleted", [id]);
-            });
+            }, loops);
             par.timers.set(id, timer);
 
             timers ++;

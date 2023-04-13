@@ -1,5 +1,7 @@
 package;
 
+import flixel.util.FlxColor;
+import flixel.text.FlxText;
 import flixel.system.FlxSound;
 import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
@@ -16,11 +18,12 @@ using StringTools;
 
 class PlayState extends MusicBeatState {
     //BUTTONS
-    public var butts:FlxTypedGroup<FlxSprite>;
+    public var butts:ButtonGrid;
 
     // CUSTOM LEVELS
     public static var instance:PlayState;
     public var level:String = 'default';
+    public static var hscript:HScript = null;
 
     // CHARTS
     /*
@@ -37,9 +40,6 @@ class PlayState extends MusicBeatState {
 
     var events:Array<EventMap> = [];
 
-    public static var lua:LuaManage = null;
-    public static var hscript:HScript = null;
-
     public static var songName:String = 'Credits';
     public static var curDifficulty:String = 'normal';
 
@@ -48,18 +48,19 @@ class PlayState extends MusicBeatState {
     public var camGame:FlxCamera;
     public var camHUD:FlxCamera;
 
+    public var botplay:Bool = false;
+
+    public var combo:Int = 0;
+    var comboTxt:FlxText;
+
+    public static var daPlaying:Bool = false;
+
     override function create() {
         instance = this;
         persistentDraw = persistentUpdate = true;
 
         FlxG.sound.playMusic(Paths.music(songName));
         FlxG.sound.music.volume = Settings.masterVolume;
-
-        if (Paths.exists('assets/levels/$songName.lua')) {
-            lua = new LuaManage('assets/levels/$songName.lua');
-        }
-
-        speedMS = songSpeed * 1000;
 
         camGame = new FlxCamera();
         camHUD = new FlxCamera();
@@ -74,8 +75,6 @@ class PlayState extends MusicBeatState {
 
         add(new FlxSprite().makeGraphic(FlxG.width, FlxG.height, Palette.bg));
 
-        callLua('onCreate', []);
-
         spawnNotes = new FlxTypedGroup<Note>();
         add(spawnNotes);
 
@@ -89,19 +88,25 @@ class PlayState extends MusicBeatState {
             var daEvent = music.events[i];
             events.push(daEvent);
         }
+        
+        songSpeed = music.speed;
+        speedMS = songSpeed * 1000;
 
         new FlxTimer().start(5, function(tmr:FlxTimer) {
             camGame.flash();
         });
         
-        butts = new FlxTypedGroup<FlxSprite>();
+        butts = new ButtonGrid();
         add(butts);
-        for (i in 0...9) butts.add(new Button(i, Settings.skin));
 
+        comboTxt = new FlxText(10, FlxG.height - 50, FlxG.width, "", 32);
+        comboTxt.setFormat(Paths.font, 32, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.TRANSPARENT);
+        comboTxt.cameras = [camHUD];
+        add(comboTxt);
+
+        daPlaying = true;
         super.create();
         overlay.cameras = [camHUD];
-
-        callLua('onCreatePost', []);
 
         if (Paths.exists(Paths.hscript(songName))) {
             hscript = new HScript(Paths.hscript(songName));
@@ -141,43 +146,30 @@ class PlayState extends MusicBeatState {
             }
         }
 
-/*
-        for (i in 0...unspawnNotes.length)  {
-            var note = unspawnNotes[i];
-
-            if (Conductor.songPosition >= note.time - speedMS && !note.spawned) {
-                spawnNotes.add(note);
-                noteTweens.set(note, FlxTween.tween(note.scale, {x: 0.75, y: 0.75}, songSpeed, {onComplete: function(twn:FlxTween) {
-                    if (note != null && note.alive) {
-                        noteTweens.set(note, FlxTween.tween(note.scale, {x: 1, y: 1}, songSpeed * 0.25));
-                    }
-                }}));
-                note.spawned = true;
-
-                // TODO: Это надо пофиксить
-                if (note.time < speedMS) {
-                    note.scale.x = speedMS / note.time;
-                    note.scale.y = note.scale.x;
-                }
-
-                unspawnNotes.remove(note);
-            }
-        }
-*/
-
-        for (i in 0...events.length) {
-            var event = events[i];
+        if (events.length > 0) {
+            var event = events[0];
 
             if (Conductor.songPosition >= event.time - eventInAdvance(event.name)) {
                 triggerEvent(event.name, event.value1, event.value2, event.value3);
             }
+
+            events.shift();
         }
 
         spawnNotes.forEachAlive(function(note:Note) {
+            if (note.scale.x >= 0.75 && botplay) {
+                try {
+                    goodHit(note);
+                } catch(e) {
+                    trace(e);
+                }
+            }
             if (note.scale.x >= 1) {
                 miss(note);
             }
         });
+
+        comboTxt.text = 'Combo: $combo';
 
         super.update(elapsed);
 
@@ -205,14 +197,16 @@ class PlayState extends MusicBeatState {
             });
                 
             if (daNoteList.length > 0) {
-                spawnNotes.forEachAlive(function(note:Note) {
-                    if (note.id == butt.id && note.scale.x > 0.7) {
-                        goodHit(note);
-                    }
-                    else {
-                        missHit(butt);
-                    }
-                });
+                var note = daNoteList[0];
+
+                if (note.id == butt.id && note.scale.x > 0.75) {
+                    goodHit(note);
+                }
+                else {
+                    missHit(butt);
+                }
+
+                daNoteList.shift();
             }
             else {
                 missHit(butt);
@@ -229,6 +223,8 @@ class PlayState extends MusicBeatState {
         var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Pressed')).play();
         sound.volume = Settings.getSoundVolume();
         butts.members[note.id].color = Palette.confirmed;
+
+        combo ++;
 
         noteTweens.remove(note);
         note.kill();
@@ -260,6 +256,8 @@ class PlayState extends MusicBeatState {
     }
 
     public function miss(note:Note) {
+        combo = 0;
+
         noteTweens.remove(note);
         note.kill();
         note.destroy();
@@ -267,12 +265,6 @@ class PlayState extends MusicBeatState {
 
         if (hscript != null && hscript.hasFunction('miss')) {
             hscript.callFunction('miss')(note);
-        }
-    }
-
-    function callLua(func:String, args:Array<Dynamic>) {
-        if (lua != null) {
-            lua.call(func, args);
         }
     }
 
@@ -300,5 +292,10 @@ class PlayState extends MusicBeatState {
         }
 
         return 0;
+    }
+
+    override function destroy() {
+        daPlaying = false;
+        super.destroy();
     }
 }

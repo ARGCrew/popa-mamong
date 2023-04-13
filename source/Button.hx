@@ -50,26 +50,26 @@ class Button extends FlxSprite {
     }
 
     override function update(elapsed:Float) {
-        if (Reflect.getProperty(FlxG.keys.justPressed, binds.get(id))) {
+        if (Reflect.getProperty(FlxG.keys.justPressed, binds.get(id)) && PlayState.daPlaying) {
             PlayState.instance.checkHit(this);
         }
-        if (Reflect.getProperty(FlxG.keys.justReleased, binds.get(id))) {
+        if (Reflect.getProperty(FlxG.keys.justReleased, binds.get(id)) && PlayState.daPlaying) {
             PlayState.instance.release(this);
         }
 
         if (FlxG.mouse.x > x && FlxG.mouse.x < x + width &&
             FlxG.mouse.y > y && FlxG.mouse.y < y + height) {
-            if (FlxG.mouse.justPressed) {
+            if (FlxG.mouse.justPressed && PlayState.daPlaying) {
                 color = Palette.pressed;
                 PlayState.instance.checkHit(this);
             }
-            if (FlxG.mouse.justReleased) {
+            if (FlxG.mouse.justReleased && PlayState.daPlaying) {
                 PlayState.instance.release(this);
             }
             overlap = true;
         }
         else {
-            if (overlap) {
+            if (overlap && PlayState.daPlaying) {
                 PlayState.instance.release(this);
             }
             overlap = false;

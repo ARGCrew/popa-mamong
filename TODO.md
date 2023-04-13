@@ -6,6 +6,7 @@ Project Description
 
 ### h4mster
 
+- [ ] Fix input lags  
 - [ ] Main menu  
 - [ ] Song select menu  
 - [ ] Chart editor  

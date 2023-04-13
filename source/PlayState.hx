@@ -199,7 +199,7 @@ class PlayState extends MusicBeatState {
             if (daNoteList.length > 0) {
                 var note = daNoteList[0];
 
-                if (note.id == butt.id && note.scale.x > 0.75) {
+                if (note.id == butt.id && note.scale.x > 0.675) {
                     goodHit(note);
                 }
                 else {

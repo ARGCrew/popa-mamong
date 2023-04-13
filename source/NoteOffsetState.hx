@@ -1,5 +1,6 @@
 package;
 
+import UIButtons.UIButton;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
@@ -13,6 +14,8 @@ class NoteOffsetState extends MusicBeatState {
     var paused:Bool = true;
     var mult:Int = 1;
 
+    var curID:Int = 0;
+
     public function new(music:String) {
         super();
         FlxG.sound.playMusic(Paths.music(music));
@@ -20,11 +23,17 @@ class NoteOffsetState extends MusicBeatState {
     }
 
     override function create() {
-        butts = new ButtonGrid();
+        butts = new ButtonGrid(-(FlxG.width / 5));
         add(butts);
-        for (i in butts.members) {
-            i.x -= FlxG.width / 5;
+
+        var butt:UIButton = new UIButton((FlxG.width / 6) * 5, FlxG.height / 2, "CUM");
+        butt.onPress = function() {
+            lime.app.Application.current.window.alert("CUM", "CUM");
         }
+        add(butt);
+
+        var line:FlxSprite = new FlxSprite((FlxG.width / 3) * 2, FlxG.height / 3).makeGraphic(Std.int(FlxG.width / 4), 5, FlxColor.WHITE);
+        add(line);
 
         super.create();
     }

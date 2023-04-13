@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
@@ -42,6 +43,12 @@ class LuaSupport {
 		} catch(e:Dynamic) {
 			return;
 		}
+
+        set("screenWidth", FlxG.width);
+        set("screenHeight", FlxG.height);
+        
+        set("camGame", instance().camGame);
+        set("camHUD", instance().camHUD);
 
         addCallback("getObjectProperty", function(obj:Dynamic, prop:String) {
             var object:Dynamic = null;
@@ -130,7 +137,7 @@ class LuaSupport {
                 text.setFormat(Paths.font, Size, FlxColor.fromString(Color), parseAlign(Alignment), parseBorder(BorderStyle), FlxColor.fromString(BorderColor));
             }
         });
-
+        
         addCallback("indexOf", function(obj:Dynamic) {
             var object:Dynamic = null;
             if (par.objects.exists(obj)) {
@@ -189,7 +196,8 @@ class LuaSupport {
                 */
                 if (sets.onComplete != null) {
                     settings.onComplete = function(twn:FlxTween) {
-                        call(sets.onComplete, []);
+                        //call(sets.onComplete, []);
+                        par.call(sets.onComplete, []);
                     }
                 }
                 if (sets.ease != null) {
@@ -316,6 +324,14 @@ class LuaSupport {
 		}
 	}
 
+    public function set(variable:String, data:Dynamic) {
+		if(lua == null) {
+			return;
+		}
+		Convert.toLua(lua, data);
+		Lua.setglobal(lua, variable);
+	}
+
     function parseAlign(align:String) {
         switch(align.toLowerCase()) {
             default: return LEFT;
@@ -375,7 +391,14 @@ class LuaSupport {
             default: return FlxEase.linear;
 		}
     }
-
+/*
+    function parseCamera(camera:String) {
+        switch(camera.toLowerCase()) {
+            default: return instance().camGame;
+            case 'camhud' | 'hud': return instance().camHUD;
+        }
+    }
+*/
     function instance() {
         return PlayState.instance;
     }

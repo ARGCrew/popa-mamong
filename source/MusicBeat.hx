@@ -1,6 +1,6 @@
 package;
 
-import ChartFragment.ChartFrag;
+import Note;
 import haxe.Json;
 import haxe.format.JsonParser;
 
@@ -13,7 +13,8 @@ import lime.utils.Assets;
 using StringTools;
 
 typedef Music = {
-	var notes:Array<ChartFrag>;
+	var notes:Array<NoteMap>;
+	var events:Array<EventMap>;
 	var bpm:Int;
 	var speed:Float;
 
@@ -21,7 +22,7 @@ typedef Music = {
 }
 
 class MusicBeat {
-	public var notes:Array<ChartFrag>;
+	public var notes:Array<NoteMap>;
 	public var bpm:Int;
 	public var speed:Float = 1;
 

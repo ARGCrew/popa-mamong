@@ -16,8 +16,6 @@ import flixel.graphics.FlxGraphic;
 import vlc.MP4Handler;
 
 class InitialState extends MusicBeatState {
-    var introSound:FlxSound;
-    var intro:FlxSprite;
     var video:MP4Handler;
 
     override function create() {

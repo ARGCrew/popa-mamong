@@ -12,16 +12,12 @@ class SoundOverlay extends FlxSpriteGroup {
     public static var handle:FlxSprite;
     public static var hitbox:FlxSprite;
 
-    public static var instance:SoundOverlay;
-
     var value:Float = Settings.masterVolume;
     static var dragging:Bool = false;
     var valueLine:Float = 0;
     
     public function new() {
         super();
-
-        instance = this;
 
         line = new FlxSprite().makeGraphic(5, Std.int(FlxG.height / 3));
         add(line);

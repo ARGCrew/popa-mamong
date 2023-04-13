@@ -5,11 +5,14 @@ import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
 import flixel.FlxG;
 import flixel.FlxCamera;
-import MusicBeat.Music;
+import Note;
+import MusicBeat;
 import flixel.tweens.FlxTween;
-import haxeparser.HaxeParser;
+import haxeparser.HaxeParser as HScript;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+
+using StringTools;
 
 class PlayState extends MusicBeatState {
     //BUTTONS
@@ -32,16 +35,21 @@ class PlayState extends MusicBeatState {
     public var speedMS:Float = 0;
     var noteTweens:Map<Note, FlxTween> = [];
 
+    var events:Array<EventMap> = [];
+
     public static var lua:LuaManage = null;
+    public static var hscript:HScript = null;
 
     public static var songName:String = 'Credits';
     public static var curDifficulty:String = 'normal';
 
     var music:Music = null;
 
-    var camGame:FlxCamera;
+    public var camGame:FlxCamera;
+    public var camHUD:FlxCamera;
 
     override function create() {
+        instance = this;
         persistentDraw = persistentUpdate = true;
 
         FlxG.sound.playMusic(Paths.music(songName));
@@ -54,7 +62,10 @@ class PlayState extends MusicBeatState {
         speedMS = songSpeed * 1000;
 
         camGame = new FlxCamera();
+        camHUD = new FlxCamera();
+        camHUD.bgColor.alpha = 0;
         FlxG.cameras.reset(camGame);
+        FlxG.cameras.add(camHUD, false);
         FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
         music = MusicBeat.loadFromJson(curDifficulty, songName);
@@ -69,13 +80,14 @@ class PlayState extends MusicBeatState {
         add(spawnNotes);
 
         for (i in 0...music.notes.length) {
-            var section = music.notes[i];
-            for (b in 0...section.sectionNotes.length) {
-                var daNote = section.sectionNotes[b];
-                var note:Note = new Note(daNote.time, daNote.id);
-                note.scale.set(0.01, 0.01);
-                unspawnNotes.push(note);
-            }
+            var daNote = music.notes[i];
+            var note:Note = new Note(daNote.time, daNote.id);
+            note.scale.set(0.01, 0.01);
+            unspawnNotes.push(note);
+        }
+        for (i in 0...music.events.length) {
+            var daEvent = music.events[i];
+            events.push(daEvent);
         }
 
         new FlxTimer().start(5, function(tmr:FlxTimer) {
@@ -87,9 +99,16 @@ class PlayState extends MusicBeatState {
         for (i in 0...9) butts.add(new Button(i, Settings.skin));
 
         super.create();
+        overlay.cameras = [camHUD];
 
-        instance = this;
         callLua('onCreatePost', []);
+
+        if (Paths.exists(Paths.hscript(songName))) {
+            hscript = new HScript(Paths.hscript(songName));
+            if (hscript.hasFunction('create')) {
+                hscript.callFunction('create')();
+            }
+        }
     }
 
     override function update(elapsed) {
@@ -100,6 +119,29 @@ class PlayState extends MusicBeatState {
 
         if (Settings.camBeat) FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, 0.95);
 
+        if (unspawnNotes.length > 0) {
+            var note = unspawnNotes[0];
+
+            if (Conductor.songPosition >= note.time - speedMS && !note.spawned) {
+                spawnNotes.add(note);
+                noteTweens.set(note, FlxTween.tween(note.scale, {x: 0.75, y: 0.75}, songSpeed, {onComplete: function(twn:FlxTween) {
+                    if (note != null && note.alive) {
+                        noteTweens.set(note, FlxTween.tween(note.scale, {x: 1, y: 1}, songSpeed * 0.25));
+                    }
+                }}));
+                note.spawned = true;
+
+                // TODO: Это надо пофиксить
+                if (note.time < speedMS) {
+                    note.scale.x = speedMS / note.time;
+                    note.scale.y = note.scale.x;
+                }
+
+                unspawnNotes.shift();
+            }
+        }
+
+/*
         for (i in 0...unspawnNotes.length)  {
             var note = unspawnNotes[i];
 
@@ -111,12 +153,23 @@ class PlayState extends MusicBeatState {
                     }
                 }}));
                 note.spawned = true;
+
                 // TODO: Это надо пофиксить
                 if (note.time < speedMS) {
                     note.scale.x = speedMS / note.time;
                     note.scale.y = note.scale.x;
                 }
+
                 unspawnNotes.remove(note);
+            }
+        }
+*/
+
+        for (i in 0...events.length) {
+            var event = events[i];
+
+            if (Conductor.songPosition >= event.time - eventInAdvance(event.name)) {
+                triggerEvent(event.name, event.value1, event.value2, event.value3);
             }
         }
 
@@ -127,11 +180,10 @@ class PlayState extends MusicBeatState {
         });
 
         super.update(elapsed);
-    }
 
-    function musicManage() {
-        Conductor.songPosition = FlxG.sound.music.time;
-        FlxG.sound.music.volume = Settings.getMusicVolume();
+        if (hscript != null && hscript.hasFunction('update')) {
+            hscript.callFunction('update')(elapsed);
+        }
     }
 
     override function beatHit() {
@@ -139,6 +191,10 @@ class PlayState extends MusicBeatState {
             FlxG.camera.zoom += 0.015;
         }
         super.beatHit();
+
+        if (hscript != null && hscript.hasFunction('beatHit')) {
+            hscript.callFunction('beatHit')();
+        }
     }
 
     public function checkHit(butt:Button) {
@@ -162,6 +218,10 @@ class PlayState extends MusicBeatState {
                 missHit(butt);
             }
         }
+        
+        if (hscript != null && hscript.hasFunction('checkHit')) {
+            hscript.callFunction('checkHit')(butt);
+        }
     }
 
     public function goodHit(note:Note) {
@@ -174,10 +234,18 @@ class PlayState extends MusicBeatState {
         note.kill();
         note.destroy();
         remove(note);
+
+        if (hscript != null && hscript.hasFunction('goodHit')) {
+            hscript.callFunction('goodHit')(note);
+        }
     }
 
     public function release(butt:Button) {
         butt.color = Palette.released;
+
+        if (hscript != null && hscript.hasFunction('release')) {
+            hscript.callFunction('release')(butt);
+        }
     }
 
     public function missHit(butt:Button) {
@@ -185,6 +253,10 @@ class PlayState extends MusicBeatState {
         // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
         var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
         sound.volume = Settings.getSoundVolume();
+
+        if (hscript != null && hscript.hasFunction('missHit')) {
+            hscript.callFunction('missHit')(butt);
+        }
     }
 
     public function miss(note:Note) {
@@ -192,11 +264,41 @@ class PlayState extends MusicBeatState {
         note.kill();
         note.destroy();
         spawnNotes.remove(note);
+
+        if (hscript != null && hscript.hasFunction('miss')) {
+            hscript.callFunction('miss')(note);
+        }
     }
 
     function callLua(func:String, args:Array<Dynamic>) {
         if (lua != null) {
             lua.call(func, args);
         }
+    }
+
+    public function triggerEvent(name:String, value1:String, value2:String, value3:String) {
+        switch(name) {
+            case 'Change BPM':
+                Conductor.changeBPM(Std.parseFloat(value1));
+            case 'Camera Flash':
+                var camera:FlxCamera = null;
+                switch(value1.toLowerCase()) {
+                    default: camera = camGame;
+                    case 'hud' | 'camhud': camera = camHUD;
+                }
+                camera.flash(Std.parseInt(value2), Std.parseFloat(value3));
+        }
+
+        if (hscript != null && hscript.hasFunction('triggerEvent')) {
+            hscript.callFunction('triggerEvent')(name, value1, value2, value3);
+        }
+    }
+
+    public function eventInAdvance(name:String):Float {
+        if (hscript != null && hscript.hasFunction('eventInAdvance')) {
+            return hscript.callFunction('eventInAdvance')(name);
+        }
+
+        return 0;
     }
 }

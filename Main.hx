@@ -20,6 +20,7 @@ class Main {
 		FlxG.sound.muteKeys = [];
 		FlxG.sound.volumeDownKeys = [];
 		FlxG.sound.volumeUpKeys = [];
+
 		FlxSprite.defaultAntialiasing = true;
 		native.WinAPI.setDarkMode(true);
 	}

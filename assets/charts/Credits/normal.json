@@ -4,15 +4,17 @@
 
     "notes": [
         {
-            "sectionNotes": [
-                {
-                    "time": 5000,
-                    "id": 3
-                }
-            ],
-            "lengthInSteps": 16,
-            "bpm": 95,
-            "changeBPM": false
+            "time": 5000,
+            "id": 3
+        }
+    ],
+    "events": [
+        {
+            "time": 5000,
+            "name": "Change BPM",
+            "value1": "179",
+            "value2": "",
+            "value3" : ""
         }
     ]
 }

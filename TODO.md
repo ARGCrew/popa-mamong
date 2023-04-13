@@ -6,7 +6,6 @@ Project Description
 
 ### h4mster
 
-- [ ] Lua  
 - [ ] Main menu  
 - [ ] Song select menu  
 - [ ] Chart editor  
@@ -21,4 +20,5 @@ Project Description
 ### Electro Pea
 
 - [ ] Options menu  
+- [ ] Lua (low priority)  
 

@@ -16,8 +16,6 @@ import flixel.graphics.FlxGraphic;
 import vlc.MP4Handler;
 
 class InitialState extends MusicBeatState {
-    var introSound:FlxSound;
-    var intro:FlxSprite;
     var video:MP4Handler;
 
     override function create() {
@@ -48,9 +46,7 @@ class InitialState extends MusicBeatState {
             video.playVideo(Paths.video('Intro'));
         });
 
-        FlxG.mouse.load(new Bitmap(Paths.image('cursor/normal').bitmap));
-        // FlxG.mouse.useSystemCursor = true;
-
+        FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursor/normal')));
     }
 
     override function update(elapsed:Float)

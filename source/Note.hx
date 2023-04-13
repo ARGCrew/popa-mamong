@@ -2,6 +2,20 @@ package;
 
 import flixel.FlxSprite;
 
+typedef EventMap = {
+    var time:Float;
+
+    var name:String;
+    var value1:String;
+    var value2:String;
+    var value3:String;
+}
+
+typedef NoteMap = {
+    var time:Float;
+    var id:Int;
+}
+
 class Note extends FlxSprite {
     public var time:Float;
     public var id:Int;
@@ -16,6 +30,7 @@ class Note extends FlxSprite {
         this.time = time;
         this.id = id;
 
+        skin = Settings.skin;
         loadGraphic(Paths.image('indicators/${skin.toUpperCase()}'));
         alpha = 0.4;
     }

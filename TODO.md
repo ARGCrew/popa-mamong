@@ -1,24 +1,25 @@
-# Project
+# Another Rhythm Game
 
 Project Description
 
 <em>[TODO.md spec & Kanban Board](https://bit.ly/3fCwKfM)</em>
 
-### Todo
+### h4mster
 
-- [ ] Fix main menu bug  
-- [ ] Chart editor  
-- [ ] Song Select menu  
-
-### In Progress
-
+- [ ] Fix input lags  
 - [ ] Main menu  
+- [ ] Song select menu  
+- [ ] Chart editor  
+
+### Funduk
+
+- [ ] Main menu BG  
+- [ ] Credits menu design  
+- [ ] Song select menu design  
+- [ ] Options menu design  
+
+### Electro Pea
+
 - [ ] Options menu  
-
-### Done ✓
-
-- [x] Notes  
-- [x] Notes position  
-- [x] Fix note bug  
-- [x] Fix sound overlay bug  
+- [ ] Lua (low priority)  
 

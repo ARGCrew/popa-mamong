@@ -1,5 +1,6 @@
 package;
 
+import controls.PlayerSettings;
 import openfl.display.Bitmap;
 import flixel.system.FlxSound;
 import flixel.FlxSprite;
@@ -19,10 +20,8 @@ class InitialState extends MusicBeatState {
     var video:MP4Handler;
 
     override function create() {
-        var menus:Array<Class<MusicBeatState>> = [
-            CreditsState
-        ];
         Settings.load();
+        PlayerSettings.init();
 
         var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 		diamond.persist = true;
@@ -32,11 +31,12 @@ class InitialState extends MusicBeatState {
         
         transIn = FlxTransitionableState.defaultTransIn;
 
+        FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursor/normal')));
+
         var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE);
         add(bg);
 
         Paths.video('Intro');
-
         new FlxTimer().start(0.01, function(tmr:FlxTimer) {
             video = new MP4Handler();
             video.volume = Settings.masterVolume;
@@ -45,12 +45,9 @@ class InitialState extends MusicBeatState {
             }
             video.playVideo(Paths.video('Intro'));
         });
-
-        FlxG.mouse.load(BitmapData.fromFile(Paths.image('cursor/normal')));
     }
 
-    override function update(elapsed:Float)
-    {
+    override function update(elapsed:Float) {
         /*
         if (intro.animation.curAnim.finished) FlxG.switchState(new MainMenuState());
         introSound.volume = Settings.masterVolume;

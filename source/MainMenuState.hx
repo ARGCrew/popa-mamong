@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxTimer;
 import openfl.filters.GlowFilter;
 import openfl.display.BitmapData;
 import flixel.tweens.FlxEase;
@@ -30,6 +31,8 @@ class MainMenuState extends MusicBeatState {
 
     static var curSelected:Int = 0;
     var daChoiced:Bool = false;
+
+    var funnyNumpad:Bool = true;
 
     function onMouseDown(object:FlxObject) {
         select();
@@ -76,6 +79,12 @@ class MainMenuState extends MusicBeatState {
             line.targetSprite = button;
         }
 
+        persistentDraw = persistentUpdate = true;
+
+        new FlxTimer().start(0.3, function(tmr:FlxTimer) {
+            openSubState(new NumpadCheckSubState());
+        });
+
         super.create();
     }
 
@@ -92,13 +101,13 @@ class MainMenuState extends MusicBeatState {
     }
 
     override function update(elapsed:Float) {
-        if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.UP) {
+        if (controls.UP_P) {
             changeSelection(-1);
         }
-        if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.DOWN) {
+        if (controls.DOWN_P) {
             changeSelection(1);
         }
-        if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER) {
+        if (controls.ACCEPT) {
             select();
         }
 

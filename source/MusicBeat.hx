@@ -17,6 +17,7 @@ typedef Music = {
 	var events:Array<EventMap>;
 	var bpm:Int;
 	var speed:Float;
+	var song:String;
 
 	var validScore:Bool;
 }

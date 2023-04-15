@@ -2,9 +2,11 @@ package;
 
 import flixel.graphics.frames.FlxAtlasFrames;
 #if sys
+import sys.io.File;
 import sys.FileSystem;
 #else
 import lime.utils.Assets;
+import openfl.Assets as OpenFlAssets;
 #end
 
 import flash.media.Sound;
@@ -101,6 +103,10 @@ class Paths
 
     public static function exists(key:String) {
         return (#if sys FileSystem #else Assets #end .exists(key));
+    }
+
+    public static function getText(key:String) {
+        return #if sys File.getContent #else Assets.getText #end (key);
     }
 }
 

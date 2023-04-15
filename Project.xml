@@ -24,14 +24,17 @@
 	<haxelib name="faxe" if='switch'/>
 
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
+	<haxedef name="webgl" />
+	<haxelib name="flixel" />
+	<haxelib name="systools" />
+	
+	<haxelib name="linc_luajit" />
+
 	<haxedef name="HXC_DEBUG_TRACE" if="debug" />
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 	<haxelib name="hxcpp-debug-server" if="debug"/>
-	<haxedef name="webgl" />
-	<haxelib name="flixel" />
-	
-	<haxelib name="linc_luajit" />
+
 	<haxedef name="HXCPP_STACK_LINE" if="desktop" />
 
 	<icon path="ico/logo16.png" size='16'/>

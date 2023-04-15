@@ -1,5 +1,8 @@
 package;
 
+import controls.Controls.KeyboardScheme;
+import controls.PlayerSettings;
+
 import flixel.util.FlxSave;
 import lime.graphics.RenderContextType;
 import lime.app.Application;
@@ -8,6 +11,18 @@ import lime.ui.Window;
 class Settings {
     public static var skin:String = 'square';
     public static var camBeat:Bool = true;
+
+    @:isVar public static var scheme(get, set):String = null;
+
+    public static function set_scheme(value:String):String {
+        scheme = value;
+        PlayerSettings.current.setKeyboardScheme(value == "Numpad" ? Numpad : NoNumpad);
+        return scheme;
+    }
+
+    public static function get_scheme() {
+        return scheme;
+    }
 
     public static var masterVolume:Float = 1;
     public static var musicVolume:Float = 1;

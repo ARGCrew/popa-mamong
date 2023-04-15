@@ -54,6 +54,8 @@ class UIDropDown extends FlxSpriteGroup {
     var background:FlxSprite;
     var text:FlxText;
 
+    public var onChange:(value:Dynamic)->Void = null;
+
     public function new(x:Float = 0, y:Float = 0, title:String, values:Array<Dynamic>, defaultValue:Dynamic) {
         super(x, y);
         this.values = values;
@@ -62,12 +64,12 @@ class UIDropDown extends FlxSpriteGroup {
         curValue = values.indexOf(defaultValue);
         value = values[curValue];
 
-        background = new FlxSprite().makeGraphic(200, 50, FlxColor.WHITE);
+        background = new FlxSprite().makeGraphic(200, 30, FlxColor.WHITE);
         background.alpha = 0.4;
         add(background);
 
         text = new FlxText(0, 0, background.width, '$title: $value', 8);
-        text.setFormat(Paths.font, 32, FlxColor.BLACK, CENTER, OUTLINE, FlxColor.TRANSPARENT);
+        text.setFormat(Paths.font, 16, FlxColor.BLACK, CENTER, OUTLINE, FlxColor.TRANSPARENT);
         add(text);
     }
 
@@ -83,6 +85,10 @@ class UIDropDown extends FlxSpriteGroup {
         value = values[curValue];
 
         text.text = '$title: $value';
+
+        if (onChange != null) {
+            onChange(value);
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 package;
 
+import UIButtons;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUICheckBox;
 
@@ -29,6 +30,12 @@ class SettingsState extends MusicBeatState {
             Settings.camBeat = beatCheckBox.checked;
 		}
         add(beatCheckBox);
+
+        var numpadDropDown:UIDropDown = new UIDropDown(10, 70, "Scheme", ["Numpad", "No Numpad"], Settings.scheme);
+        numpadDropDown.onChange = function(value:Dynamic) {
+            Settings.scheme = value;
+        }
+        add(numpadDropDown);
 
         super.create();
     }

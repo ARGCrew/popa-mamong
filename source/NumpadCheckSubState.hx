@@ -37,7 +37,7 @@ class NumpadCheckSubState extends MusicBeatSubState {
 
         boobs = new NumpadButton(100, FlxG.height / 6);
         boobs.onPress = function() {
-            PlayerSettings.current.setKeyboardScheme(Numpad);
+            Settings.scheme = "Numpad";
             out();
             MainMenuState.funnyNumpad = false;
         }
@@ -46,7 +46,7 @@ class NumpadCheckSubState extends MusicBeatSubState {
 
         noBoobs = new NumpadButton(FlxG.width - (FlxG.width / 4) - 100, FlxG.height / 6);
         noBoobs.onPress = function() {
-            PlayerSettings.current.setKeyboardScheme(NoNumpad);
+            Settings.scheme = "No Numpad";
             out();
             MainMenuState.funnyNumpad = false;
         }

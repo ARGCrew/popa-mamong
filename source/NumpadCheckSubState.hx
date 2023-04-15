@@ -19,6 +19,9 @@ class NumpadCheckSubState extends MusicBeatSubState {
     var boobs:NumpadButton;
     var noBoobs:NumpadButton;
 
+    var boobsSprite:FlxSprite;
+    var noBoobsSprite:FlxSprite;
+
     var bgTween:FlxTween;
 
     var curSelected:Int = 0;
@@ -28,12 +31,14 @@ class NumpadCheckSubState extends MusicBeatSubState {
         bg.alpha = 0;
         add(bg);
 
-        bgTween = FlxTween.tween(bg, {alpha: 0.6}, 0.2, {ease: FlxEase.sineInOut});
+        bgTween = FlxTween.tween(bg, {alpha: 0.6}, 0.2, {ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween) {
+            bgTween = null;
+        }});
 
         boobs = new NumpadButton(100, FlxG.height / 6);
         boobs.onPress = function() {
             PlayerSettings.current.setKeyboardScheme(Numpad);
-            close();
+            out();
             MainMenuState.funnyNumpad = false;
         }
         centerOnBound(boobs, -1);
@@ -42,11 +47,20 @@ class NumpadCheckSubState extends MusicBeatSubState {
         noBoobs = new NumpadButton(FlxG.width - (FlxG.width / 4) - 100, FlxG.height / 6);
         noBoobs.onPress = function() {
             PlayerSettings.current.setKeyboardScheme(NoNumpad);
-            close();
+            out();
             MainMenuState.funnyNumpad = false;
         }
         centerOnBound(noBoobs, 1);
         add(noBoobs);
+
+        boobsSprite = new FlxSprite(boobs.x, boobs.y).loadGraphic(Paths.image('boobs'));
+        boobsSprite.setGraphicSize(Std.int(boobs.bg.width));
+        boobsSprite.updateHitbox();
+        add(boobsSprite);
+        noBoobsSprite = new FlxSprite(noBoobs.x, noBoobs.y).loadGraphic(Paths.image('noboobs'));
+        noBoobsSprite.setGraphicSize(Std.int(boobs.bg.width));
+        noBoobsSprite.updateHitbox();
+        add(noBoobsSprite);
 
         changeSelection();
 
@@ -88,6 +102,19 @@ class NumpadCheckSubState extends MusicBeatSubState {
     function centerOnBound(obj:FlxSprite, bound:Int = 0) {
         obj.screenCenter();
         obj.x += bound * (FlxG.width / 4);
+    }
+    
+    function out() {
+        remove(boobs);
+        remove(noBoobs);
+
+        remove(boobsSprite);
+        remove(noBoobsSprite);
+
+        bgTween = FlxTween.tween(bg, {alpha: 0}, 0.2, {ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween) {
+            bgTween = null;
+            close();
+        }});
     }
 }
 

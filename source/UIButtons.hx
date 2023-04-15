@@ -15,14 +15,14 @@ class UIButton extends FlxSpriteGroup {
 
     public var onPress:()->Void = null;
 
-    public function new(x:Float = 0, y:Float = 0, string:String) {
+    public function new(x:Float = 0, y:Float = 0, title:String) {
         super(x, y);
 
         background = new FlxSprite().makeGraphic(100, 45, FlxColor.WHITE);
         background.alpha = 0.1;
         add(background);
 
-        text = new FlxText(0, 0, background.width, string, 8);
+        text = new FlxText(0, 0, background.width, title, 8);
         text.setFormat(Paths.font, 32, FlxColor.BLACK, CENTER, OUTLINE, FlxColor.TRANSPARENT);
         add(text);
     }
@@ -41,6 +41,48 @@ class UIButton extends FlxSpriteGroup {
             }});
         }
         super.update(elapsed);
+    }
+}
+
+class UIDropDown extends FlxSpriteGroup {
+    public var value:Dynamic = null;
+    var curValue:Int = 0;
+
+    public var values:Array<Dynamic> = [];
+    public var title:String = "";
+
+    var background:FlxSprite;
+    var text:FlxText;
+
+    public function new(x:Float = 0, y:Float = 0, title:String, values:Array<Dynamic>, defaultValue:Dynamic) {
+        super(x, y);
+        this.values = values;
+        this.title = title;
+
+        curValue = values.indexOf(defaultValue);
+        value = values[curValue];
+
+        background = new FlxSprite().makeGraphic(200, 50, FlxColor.WHITE);
+        background.alpha = 0.4;
+        add(background);
+
+        text = new FlxText(0, 0, background.width, '$title: $value', 8);
+        text.setFormat(Paths.font, 32, FlxColor.BLACK, CENTER, OUTLINE, FlxColor.TRANSPARENT);
+        add(text);
+    }
+
+    override function update(elapsed:Float) {
+        if (FlxG.mouse.overlaps(background) && FlxG.mouse.justPressed) {
+            forward();
+        }
+    }
+
+    public function forward() {
+        curValue ++;
+        curValue = Utils.boundTo(curValue, 0, values.length - 1);
+        value = values[curValue];
+
+        text.text = '$title: $value';
     }
 }
 

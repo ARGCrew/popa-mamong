@@ -2,9 +2,11 @@ package;
 
 import flixel.graphics.frames.FlxAtlasFrames;
 #if sys
+import sys.io.File;
 import sys.FileSystem;
 #else
 import lime.utils.Assets;
+import openfl.Assets as OpenFlAssets;
 #end
 
 import flash.media.Sound;
@@ -20,10 +22,20 @@ class Paths
     static var images:FileMap = new FileMap();
     static var sounds:FileMap = new FileMap();
 */
-    static var sound_extension:String = #if web "mp3" #else "ogg" #end;
+    static var image_extensions:Array<String> = ["png", "jpg", "jpeg"];
+    static var sound_extensions:Array<String> = ["ogg", "mp3"];
+    static var video_extensions:Array<String> = ["mp4", "webm"]; 
 
     public static function image(key:String) {
-        var path:String = 'assets/images/$key.png';
+        var path:String = 'assets/images/$key';
+
+        for (extension in image_extensions) {
+            if (!exists(path)) {
+                if (exists('$path.$extension')) {
+                    path = '$path.$extension';
+                }
+            }
+        }
 /*
         var bitmapData:BitmapData = null;
         var graphic:FlxGraphic = null;
@@ -43,14 +55,22 @@ class Paths
     }
 
     public static function sparrowAtlas(key:String) {
-        var image:String = 'assets/images/$key.png';
+        var image = Paths.image(key);
         var xml:String = 'assets/images/$key.xml';
 
         return FlxAtlasFrames.fromSparrow(image, xml);
     }
 
     public static function music(key:String) {
-        var path:String = 'assets/music/$key.$sound_extension';
+        var path:String = 'assets/music/$key';
+
+        for (extension in sound_extensions) {
+            if (!exists(path)) {
+                if (exists('$path.$extension')) {
+                    path = '$path.$extension';
+                }
+            }
+        }
 /*
         var sound:Sound = null;
 
@@ -68,7 +88,15 @@ class Paths
     }
 
     public static function sound(key:String) {
-        var path:String = 'assets/sounds/$key.$sound_extension';
+        var path:String = 'assets/sounds/$key';
+
+        for (extension in sound_extensions) {
+            if (!exists(path)) {
+                if (exists('$path.$extension')) {
+                    path = '$path.$extension';
+                }
+            }
+        }
 /*
         var sound:Sound = null;
 
@@ -89,6 +117,15 @@ class Paths
 
     public static function video(key:String) {
         return 'assets/videos/$key.mp4';
+        var path:String = 'assets/videos/$key';
+
+        for (extension in video_extensions) {
+            if (!exists(path)) {
+                if (exists('$path.$extension')) {
+                    path = '$path.$extension';
+                }
+            }
+        }
     }
 
     public static function hscript(key:String) {
@@ -101,6 +138,10 @@ class Paths
 
     public static function exists(key:String) {
         return (#if sys FileSystem #else Assets #end .exists(key));
+    }
+
+    public static function getText(key:String) {
+        return #if sys File.getContent #else Assets.getText #end (key);
     }
 }
 

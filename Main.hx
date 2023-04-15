@@ -3,7 +3,9 @@ package;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import openfl.display.Memory;
+#if desktop
 import flixel.custom.system.FlxCrashHandler;
+#end
 import flixel.FlxGame;
 import openfl.Lib;
 

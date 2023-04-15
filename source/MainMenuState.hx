@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxTimer;
 import openfl.filters.GlowFilter;
 import openfl.display.BitmapData;
 import flixel.tweens.FlxEase;
@@ -30,6 +31,8 @@ class MainMenuState extends MusicBeatState {
 
     static var curSelected:Int = 0;
     var daChoiced:Bool = false;
+
+    public static var funnyNumpad:Bool = true;
 
     function onMouseDown(object:FlxObject) {
         select();
@@ -76,6 +79,14 @@ class MainMenuState extends MusicBeatState {
             line.targetSprite = button;
         }
 
+        persistentDraw = persistentUpdate = true;
+
+        new FlxTimer().start(0.3, function(tmr:FlxTimer) {
+            if (funnyNumpad) {
+                openSubState(new NumpadCheckSubState());
+            }
+        });
+
         super.create();
     }
 
@@ -92,13 +103,13 @@ class MainMenuState extends MusicBeatState {
     }
 
     override function update(elapsed:Float) {
-        if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.UP) {
+        if (controls.UP_P) {
             changeSelection(-1);
         }
-        if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.DOWN) {
+        if (controls.DOWN_P) {
             changeSelection(1);
         }
-        if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER) {
+        if (controls.ACCEPT) {
             select();
         }
 
@@ -116,7 +127,7 @@ class MainMenuState extends MusicBeatState {
     }
 
     function select() {
-        if (!daChoiced) {
+        if (!daChoiced && !funnyNumpad) {
             daChoiced = true;
             switch(optionShit[curSelected]) {
                 case 'play': FlxG.switchState(new PlayState());
@@ -128,31 +139,33 @@ class MainMenuState extends MusicBeatState {
     }
 
     function changeSelection(step:Int = 0, force:Bool = false) {
-        force ? {
-            curSelected = step;
-        } : {
-            curSelected != -100 ? {
-                curSelected += step;
-                if (curSelected > optionShit.length - 1) {
+        if (!funnyNumpad) {
+            force ? {
+                curSelected = step;
+            } : {
+                curSelected != -100 ? {
+                    curSelected += step;
+                    if (curSelected > optionShit.length - 1) {
+                        curSelected = 0;
+                    }
+                    if (curSelected < 0) {
+                        curSelected = optionShit.length - 1;
+                    }
+                } : {
                     curSelected = 0;
                 }
-                if (curSelected < 0) {
-                    curSelected = optionShit.length - 1;
-                }
-            } : {
-                curSelected = 0;
             }
-        }
-
-        for (i in 0...grpOptions.members.length) {
-            var spr = grpOptions.members[i];
-        
-            curSelected == i ? {
-                spr.alpha = 1;
-                spr.moveTween = FlxTween.tween(spr, {x: spr.offsetX + 10}, 0.2, {ease: FlxEase.sineOut});
-            } : {
-                spr.alpha = 0.4;
-                spr.moveTween = FlxTween.tween(spr, {x: spr.offsetX}, 0.2, {ease: FlxEase.sineOut});
+    
+            for (i in 0...grpOptions.members.length) {
+                var spr = grpOptions.members[i];
+            
+                curSelected == i ? {
+                    spr.alpha = 1;
+                    spr.moveTween = FlxTween.tween(spr, {x: spr.offsetX + 10}, 0.2, {ease: FlxEase.sineOut});
+                } : {
+                    spr.alpha = 0.4;
+                    spr.moveTween = FlxTween.tween(spr, {x: spr.offsetX}, 0.2, {ease: FlxEase.sineOut});
+                }
             }
         }
     }

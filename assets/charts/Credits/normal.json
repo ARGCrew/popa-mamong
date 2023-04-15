@@ -1,6 +1,7 @@
 {
     "bpm": 179,
-    "speed": 1,
+    "speed": 2,
+    "song": "Credits",
 
     "notes": [
         {
@@ -37,13 +38,6 @@
         }
     ],
     "events": [
-        {
-            "time": 5000,
-            "name": "Camera Flash",
-            "value1": "game",
-            "value2": "0xffFFFFFF",
-            "value3" : "0"
-        },
         {
             "time": 5000,
             "name": "Camera Flash",

@@ -1,5 +1,6 @@
 package;
 
+import controls.PlayerSettings;
 import flixel.FlxG;
 import flixel.FlxSprite;
 
@@ -10,15 +11,15 @@ class Button extends FlxSprite {
     private var overlap:Bool = false;
 
     private var binds:Map<Int, String> = [
-        0 => 'NUMPADSEVEN',
-        1 => 'NUMPADEIGHT',
-        2 => 'NUMPADNINE',
-        3 => 'NUMPADFOUR',
-        4 => 'NUMPADFIVE',
-        5 => 'NUMPADSIX',
-        6 => 'NUMPADONE',
-        7 => 'NUMPADTWO',
-        8 => 'NUMPADTHREE'
+        0 => 'SEVEN',
+        1 => 'EIGHT',
+        2 => 'NINE',
+        3 => 'FOUR',
+        4 => 'FIVE',
+        5 => 'SIX',
+        6 => 'ONE',
+        7 => 'TWO',
+        8 => 'THREE'
     ];
 
     public function new(id:Int, skin:String) {
@@ -50,10 +51,10 @@ class Button extends FlxSprite {
     }
 
     override function update(elapsed:Float) {
-        if (Reflect.getProperty(FlxG.keys.justPressed, binds.get(id)) && PlayState.daPlaying) {
+        if (Reflect.getProperty(PlayerSettings.current.controls, '${binds.get(id)}_P') && PlayState.daPlaying) {
             PlayState.instance.checkHit(this);
         }
-        if (Reflect.getProperty(FlxG.keys.justReleased, binds.get(id)) && PlayState.daPlaying) {
+        if (Reflect.getProperty(PlayerSettings.current.controls, '${binds.get(id)}_R') && PlayState.daPlaying) {
             PlayState.instance.release(this);
         }
 

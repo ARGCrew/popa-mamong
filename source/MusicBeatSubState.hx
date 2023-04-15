@@ -6,9 +6,9 @@ import controls.Controls;
 import openfl.filters.BitmapFilter;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
-import flixel.addons.ui.FlxUIState;
+import flixel.FlxSubState;
 
-class MusicBeatState extends FlxUIState {
+class MusicBeatSubState extends FlxSubState {
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
 
@@ -38,9 +38,9 @@ class MusicBeatState extends FlxUIState {
 
 		if (oldStep != curStep && curStep > 0) {
 			stepHit();
-		}
+        }
 
-		if (FlxG.keys.justPressed.F11) {
+        if (FlxG.keys.justPressed.F11) {
 			FlxG.fullscreen = !FlxG.fullscreen;
 		}
 
@@ -69,9 +69,8 @@ class MusicBeatState extends FlxUIState {
 	}
 
 	public function stepHit() {
-		if (curStep % 4 == 0) {
+		if (curStep % 4 == 0)
 			beatHit();
-		}
 	}
 
 	public function beatHit() {}

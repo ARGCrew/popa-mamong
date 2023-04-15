@@ -36,7 +36,7 @@ class PlayState extends MusicBeatState {
     public var spawnNotes:FlxTypedGroup<Note>;
     public var songSpeed:Float = 2;
     public var speedMS:Float = 0;
-    var noteTweens:Map<Note, FlxTween> = [];
+    var noteTweens:Map<Note, NoteTween> = [];
 
     var events:Array<EventMap> = [];
 
@@ -46,7 +46,7 @@ class PlayState extends MusicBeatState {
     var music:Music = null;
 
     public var camGame:FlxCamera;
-    public var camHUD:FlxCamera;
+    private var camHUD:FlxCamera;
 
     public var botplay:Bool = false;
 
@@ -129,18 +129,20 @@ class PlayState extends MusicBeatState {
 
             if (Conductor.songPosition >= note.time - speedMS && !note.spawned) {
                 spawnNotes.add(note);
-                noteTweens.set(note, FlxTween.tween(note.scale, {x: 0.75, y: 0.75}, songSpeed, {onComplete: function(twn:FlxTween) {
-                    if (note != null && note.alive) {
-                        noteTweens.set(note, FlxTween.tween(note.scale, {x: 1, y: 1}, songSpeed * 0.25));
-                    }
-                }}));
-                note.spawned = true;
-
+/*
                 // TODO: Это надо пофиксить
                 if (note.time < speedMS) {
                     note.scale.x = speedMS / note.time;
                     note.scale.y = note.scale.x;
                 }
+*/
+                noteTweens.set(note, new NoteTween(note, 0.75, songSpeed, function() {
+                    if (note != null && note.alive) {
+                        noteTweens.set(note, new NoteTween(note, 1, songSpeed * 0.25));
+                    }
+                }));
+
+                note.spawned = true;
 
                 unspawnNotes.shift();
             }
@@ -157,6 +159,14 @@ class PlayState extends MusicBeatState {
         }
 
         spawnNotes.forEachAlive(function(note:Note) {
+            if (noteTweens.exists(note)) {
+                noteTweens[note].update(elapsed);
+            }
+
+            //note.scale.x = note.scale.y = (Conductor.songPosition / note.time * 0.75) * songSpeed;
+
+            //note.scale.x = note.scale.y = ((Conductor.songPosition / stuff) * 0.01) * songSpeed;
+
             if (note.scale.x >= 0.75 && botplay) {
                 try {
                     goodHit(note);
@@ -175,6 +185,12 @@ class PlayState extends MusicBeatState {
 
         if (hscript != null && hscript.hasFunction('update')) {
             hscript.callFunction('update')(elapsed);
+        }
+
+        if (FlxG.keys.justPressed.T) {
+            trace('Note Time: ${spawnNotes.members[0].time}');
+            trace('Song Position: ${Conductor.songPosition}');
+            trace('Note Scale: ${spawnNotes.members[0].scale.x}');
         }
     }
 
@@ -199,7 +215,7 @@ class PlayState extends MusicBeatState {
             if (daNoteList.length > 0) {
                 var note = daNoteList[0];
 
-                if (note.id == butt.id && note.scale.x > 0.75) {
+                if (note.id == butt.id && note.scale.x > 0.675) {
                     goodHit(note);
                 }
                 else {
@@ -273,12 +289,9 @@ class PlayState extends MusicBeatState {
             case 'Change BPM':
                 Conductor.changeBPM(Std.parseFloat(value1));
             case 'Camera Flash':
-                var camera:FlxCamera = null;
-                switch(value1.toLowerCase()) {
-                    default: camera = camGame;
-                    case 'hud' | 'camhud': camera = camHUD;
-                }
-                camera.flash(Std.parseInt(value2), Std.parseFloat(value3));
+                FlxG.camera.flash(Std.parseInt(value1), Std.parseFloat(value2));
+            case 'Camera Beat':
+                FlxG.camera.zoom += Std.parseFloat(value1);
         }
 
         if (hscript != null && hscript.hasFunction('triggerEvent')) {

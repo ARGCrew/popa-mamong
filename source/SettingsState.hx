@@ -29,6 +29,8 @@ class SettingsState extends MusicBeatState {
             Settings.camBeat = beatCheckBox.checked;
 		}
         add(beatCheckBox);
+
+        super.create();
     }
 
     override function update(elapsed:Float) {

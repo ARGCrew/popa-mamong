@@ -1,13 +1,14 @@
 package;
 
 import haxe.Json;
+
 #if sys
 import sys.FileSystem;
 import sys.io.File;
-#else
+#end
 import openfl.utils.Assets as OpenFlAssets;
 import lime.utils.Assets as LimeAssets;
-#end
+
 import flixel.util.FlxColor;
 
 using StringTools;
@@ -20,7 +21,7 @@ typedef PaletteFile =  {
 }
 
 class Palette {
-    public static var bg:FlxColor = 0xff000000;
+    public static var bg:FlxColor = 0xff1A1A1A;
     public static var released:FlxColor = 0xffFFFFFF;
     public static var pressed:FlxColor = 0xffD64933;
     public static var confirmed:FlxColor = 0x00CC99;

@@ -2,9 +2,6 @@ package;
 
 import flixel.group.FlxSpriteGroup;
 
-import controls.Controls.KeyboardScheme;
-import controls.PlayerSettings;
-
 import flixel.tweens.FlxEase;
 import flixel.util.FlxColor;
 import flixel.FlxG;

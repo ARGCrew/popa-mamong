@@ -73,7 +73,7 @@ class Settings {
                 depth: true,
                 hardware: false,
                 stencil: false,
-                type: RenderContextType.CANVAS,
+                type: RenderContextType.OPENGL,
                 version: "Settings",
                 vsync: true
             },

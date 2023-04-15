@@ -54,6 +54,9 @@ class UIDropDown extends FlxSpriteGroup {
     var background:FlxSprite;
     var text:FlxText;
 
+    var lineTrue:FlxSprite;
+    var lineFalse:FlxSprite;
+
     public var onChange:(value:Dynamic)->Void = null;
 
     public function new(x:Float = 0, y:Float = 0, title:String, values:Array<Dynamic>, defaultValue:Dynamic) {
@@ -69,8 +72,22 @@ class UIDropDown extends FlxSpriteGroup {
         add(background);
 
         text = new FlxText(0, 0, background.width, '$title: $value', 8);
-        text.setFormat(Paths.font, 16, FlxColor.BLACK, CENTER, OUTLINE, FlxColor.TRANSPARENT);
+        text.setFormat(Paths.font, 14, FlxColor.BLACK, CENTER, OUTLINE, FlxColor.TRANSPARENT);
         add(text);
+
+        lineTrue = new FlxSprite(3, background.height - 8).makeGraphic(Std.int(background.width / 2 - 6), 5, FlxColor.WHITE);
+        add(lineTrue);
+
+        lineFalse = new FlxSprite(background.width / 2 + 3, background.height - 8).makeGraphic(Std.int(background.width / 2 - 6), 5, FlxColor.WHITE);
+        add(lineFalse);
+
+        if (curValue == 0) {
+            lineTrue.makeGraphic(Std.int(background.width / 2 - 6), 5, FlxColor.WHITE);
+            lineFalse.makeGraphic(Std.int(background.width / 2 - 6), 5, FlxColor.BLACK);
+        } else {
+            lineTrue.makeGraphic(Std.int(background.width / 2 - 6), 5, FlxColor.BLACK);
+            lineFalse.makeGraphic(Std.int(background.width / 2 - 6), 5, FlxColor.WHITE);
+        }
     }
 
     override function update(elapsed:Float) {
@@ -85,6 +102,14 @@ class UIDropDown extends FlxSpriteGroup {
         value = values[curValue];
 
         text.text = '$title: $value';
+
+        if (curValue == 0) {
+            lineTrue.makeGraphic(Std.int(background.width / 2 - 6), 5, FlxColor.WHITE);
+            lineFalse.makeGraphic(Std.int(background.width / 2 - 6), 5, FlxColor.BLACK);
+        } else {
+            lineTrue.makeGraphic(Std.int(background.width / 2 - 6), 5, FlxColor.BLACK);
+            lineFalse.makeGraphic(Std.int(background.width / 2 - 6), 5, FlxColor.WHITE);
+        }
 
         if (onChange != null) {
             onChange(value);

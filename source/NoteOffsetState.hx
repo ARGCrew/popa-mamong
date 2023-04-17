@@ -144,10 +144,12 @@ class NoteOffsetState extends MusicBeatState {
 			extensions: ["*.json"]
 		};
 		var result:String = Dialogs.saveFile("Save chart", "", Sys.getCwd(), filters);
-        if (!result.endsWith('.json')) {
+        if (result != null && !result.endsWith('.json')) {
             result = '$result.json';
         }
-        onSaveComplete(result);
+        if (result != null) {
+            onSaveComplete(result);
+        }
         #end
     }
 

@@ -34,6 +34,8 @@ class MainMenuState extends MusicBeatState {
 
     public static var funnyNumpad:Bool = true;
 
+    var logo:FlxSprite;
+
     function onMouseDown(object:FlxObject) {
         select();
     }
@@ -82,6 +84,13 @@ class MainMenuState extends MusicBeatState {
 
             line.targetSprite = button;
         }
+
+        logo = new FlxSprite().loadGraphic(Paths.image('rhythmLogo'));
+        logo.scale.set(0.7, 0.7);
+        logo.updateHitbox();
+        logo.screenCenter();
+        logo.x += FlxG.width / 4;
+        add(logo);
 
         persistentDraw = persistentUpdate = true;
 

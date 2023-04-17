@@ -16,10 +16,8 @@ Project Description
 - [ ] Main menu BG  
 - [ ] Credits menu design  
 - [ ] Song select menu design  
-- [ ] Options menu design  
+- [ ] Options menu BG  
 
 ### Electro Pea
 
-- [ ] Options menu  
-- [ ] Lua (low priority)  
 

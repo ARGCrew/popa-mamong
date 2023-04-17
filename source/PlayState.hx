@@ -113,8 +113,8 @@ class PlayState extends MusicBeatState {
         super.create();
         overlay.cameras = [camHUD];
 
-        if (Paths.exists(Paths.hscript(songName))) {
-            hscript = new HScript(Paths.hscript(songName));
+        if (Paths.exists(Paths.hscript(songName, "levels"))) {
+            hscript = new HScript(Paths.hscript(songName, "levels"));
             if (hscript.hasFunction('create')) {
                 hscript.callFunction('create')();
             }
@@ -141,9 +141,9 @@ class PlayState extends MusicBeatState {
                     note.scale.y = note.scale.x;
                 }
 */
-                noteTweens.set(note, new NoteTween(note, 1.125, songSpeed, function() {
+                noteTweens.set(note, new NoteTween(note, 0.75, songSpeed, function() {
                     if (note != null && note.alive) {
-                        noteTweens.set(note, new NoteTween(note, 1.5, songSpeed * 0.25));
+                        noteTweens.set(note, new NoteTween(note, 1, songSpeed * 0.25));
                     }
                 }));
 
@@ -172,14 +172,14 @@ class PlayState extends MusicBeatState {
 
             //note.scale.x = note.scale.y = ((Conductor.songPosition / stuff) * 0.01) * songSpeed;
 
-            if (note.scale.x >= 1.125 && botplay) {
+            if (note.scale.x >= 0.75 && botplay) {
                 try {
                     goodHit(note);
                 } catch(e) {
                     trace(e);
                 }
             }
-            if (note.scale.x >= 1.5) {
+            if (note.scale.x >= 1) {
                 miss(note);
             }
         });
@@ -220,7 +220,7 @@ class PlayState extends MusicBeatState {
             if (daNoteList.length > 0) {
                 var note = daNoteList[0];
 
-                if (note.id == butt.id && note.scale.x > 1.0125) {
+                if (note.id == butt.id && note.scale.x > 0.7) {
                     goodHit(note);
                 }
                 else {
@@ -250,7 +250,6 @@ class PlayState extends MusicBeatState {
         noteTweens.remove(note);
         note.kill();
         note.destroy();
-        remove(note);
 
         if (hscript != null && hscript.hasFunction('goodHit')) {
             hscript.callFunction('goodHit')(note);
@@ -287,7 +286,6 @@ class PlayState extends MusicBeatState {
         noteTweens.remove(note);
         note.kill();
         note.destroy();
-        spawnNotes.remove(note);
 
         if (hscript != null && hscript.hasFunction('miss')) {
             hscript.callFunction('miss')(note);

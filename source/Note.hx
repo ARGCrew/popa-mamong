@@ -19,6 +19,16 @@ typedef NoteMap = {
     var id:Int;
 }
 
+typedef MechanicMap = {
+    var time:Float;
+    var id:Int;
+
+    var name:String;
+    var value1:String;
+    var value2:String;
+    var value3:String;
+}
+
 class Note extends FlxSprite {
     public var time:Float;
     public var id:Int;

@@ -34,7 +34,6 @@ class Button extends FlxSprite {
         var spaceY:Float = 30;
 
         loadGraphic(Paths.image('buttons/${skin.toUpperCase()}'));
-        scale.set(1.5, 1.5);
         updateHitbox();
         color = Palette.released;
 

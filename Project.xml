@@ -15,6 +15,7 @@
 
 	<classpath name="source" />
 	<assets path="assets" />
+	<assets path="example_mods" rename="mods" />
 
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />

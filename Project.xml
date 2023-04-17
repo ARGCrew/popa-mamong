@@ -26,7 +26,9 @@
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
 	<haxedef name="webgl" />
 	<haxelib name="flixel" />
-	<haxelib name="systools" />
+
+	<haxelib name="systools" if="desktop" />
+	<haxelib name="discord_rpc" if="desktop" />
 	
 	<haxelib name="linc_luajit" />
 

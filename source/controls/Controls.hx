@@ -77,10 +77,31 @@ enum Control {
     BACK;
 }
 
-enum KeyboardScheme {
+enum Scheme {
     None;
     Numpad;
     NoNumpad;
+    Custom;
+}
+
+abstract KeyboardScheme(Scheme) from Scheme to Scheme {
+    public static function fromString(x:String):Scheme {
+        return switch(x.toLowerCase()) {
+            case 'nonumpad' | 'nonum' | 'no numpad' | 'no num': NoNumpad;
+            case 'numpad' | 'num': Numpad;
+            case 'custom': Custom;
+            default: None;
+        }
+    }
+
+    public function toString():String {
+        return switch(this) {
+            case Numpad: "Numpad";
+            case NoNumpad: "No Numpad";
+            case Custom: "Custom";
+            case None: "None";
+        }
+    }
 }
 
 class Controls extends FlxActionSet {
@@ -133,7 +154,7 @@ class Controls extends FlxActionSet {
     var _back = new FlxActionDigital(Action.BACK);
 
     var byName:Map<String, FlxActionDigital> = [];
-    public var keyboardScheme = KeyboardScheme.None;
+    public var keyboardScheme:KeyboardScheme = None;
 
     public var SEVEN(get, never):Bool;
 
@@ -620,6 +641,7 @@ class Controls extends FlxActionSet {
         keyboardScheme = scheme;
 
         switch(scheme) {
+            case None: // ура ура давай ура
             case Numpad:
                 inline bindKeys(Control.SEVEN, [NUMPADSEVEN]);
                 inline bindKeys(Control.EIGHT, [NUMPADEIGHT]);
@@ -640,7 +662,7 @@ class Controls extends FlxActionSet {
                 inline bindKeys(Control.ONE, [COMMA]);
                 inline bindKeys(Control.TWO, [PERIOD]);
                 inline bindKeys(Control.THREE, [SLASH]);
-            case None: // ура ура давай ура
+            case Custom: // TODO: Сделать в будущем
         }
 
         inline bindKeys(Control.UP, [FlxKey.W, FlxKey.UP]);

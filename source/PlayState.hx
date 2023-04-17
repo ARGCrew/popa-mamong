@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxSubState;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;
 import flixel.system.FlxSound;
@@ -41,7 +42,7 @@ class PlayState extends MusicBeatState {
     var events:Array<EventMap> = [];
 
     public static var songName:String = 'Credits';
-    public static var curDifficulty:String = 'normal';
+    public static var curDifficulty:String = 'Normal';
 
     var music:Music = null;
 
@@ -61,6 +62,10 @@ class PlayState extends MusicBeatState {
 
         FlxG.sound.playMusic(Paths.music(songName));
         FlxG.sound.music.volume = Settings.masterVolume;
+
+        #if desktop
+        changePresence("Playing", '$songName ($curDifficulty)', true, FlxG.sound.music.length);
+        #end
 
         camGame = new FlxCamera();
         camHUD = new FlxCamera();
@@ -99,8 +104,8 @@ class PlayState extends MusicBeatState {
         butts = new ButtonGrid();
         add(butts);
 
-        comboTxt = new FlxText(10, FlxG.height - 50, FlxG.width, "", 32);
-        comboTxt.setFormat(Paths.font, 32, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.TRANSPARENT);
+        comboTxt = new FlxText(10, FlxG.height - 75, FlxG.width, "");
+        comboTxt.setFormat(Paths.font, 48, FlxColor.WHITE, LEFT, NONE);
         comboTxt.cameras = [camHUD];
         add(comboTxt);
 
@@ -136,9 +141,9 @@ class PlayState extends MusicBeatState {
                     note.scale.y = note.scale.x;
                 }
 */
-                noteTweens.set(note, new NoteTween(note, 0.75, songSpeed, function() {
+                noteTweens.set(note, new NoteTween(note, 1.125, songSpeed, function() {
                     if (note != null && note.alive) {
-                        noteTweens.set(note, new NoteTween(note, 1, songSpeed * 0.25));
+                        noteTweens.set(note, new NoteTween(note, 1.5, songSpeed * 0.25));
                     }
                 }));
 
@@ -167,14 +172,14 @@ class PlayState extends MusicBeatState {
 
             //note.scale.x = note.scale.y = ((Conductor.songPosition / stuff) * 0.01) * songSpeed;
 
-            if (note.scale.x >= 0.75 && botplay) {
+            if (note.scale.x >= 1.125 && botplay) {
                 try {
                     goodHit(note);
                 } catch(e) {
                     trace(e);
                 }
             }
-            if (note.scale.x >= 1) {
+            if (note.scale.x >= 1.5) {
                 miss(note);
             }
         });
@@ -215,7 +220,7 @@ class PlayState extends MusicBeatState {
             if (daNoteList.length > 0) {
                 var note = daNoteList[0];
 
-                if (note.id == butt.id && note.scale.x > 0.675) {
+                if (note.id == butt.id && note.scale.x > 1.0125) {
                     goodHit(note);
                 }
                 else {
@@ -262,9 +267,14 @@ class PlayState extends MusicBeatState {
 
     public function missHit(butt:Button) {
         butt.color = Palette.pressed;
-        // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
-        var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
-        sound.volume = Settings.getSoundVolume();
+        
+        if (!Settings.ghostTapping) {
+            // * [DEPRECATED] Sound.fromFile('assets/sounds/Miss.ogg').play();
+            var sound:FlxSound = new FlxSound().loadEmbedded(Paths.sound('Miss')).play();
+            sound.volume = Settings.getSoundVolume();
+
+            combo = 0;
+        }
 
         if (hscript != null && hscript.hasFunction('missHit')) {
             hscript.callFunction('missHit')(butt);
@@ -310,5 +320,37 @@ class PlayState extends MusicBeatState {
     override function destroy() {
         daPlaying = false;
         super.destroy();
+    }
+
+    override function openSubState(SubState:FlxSubState) {
+        for (twn in noteTweens.keys()) {
+            noteTweens[twn].pause();
+        }
+        FlxG.sound.music.pause();
+        persistentUpdate = false;
+
+        super.openSubState(SubState);
+    }
+
+    override function closeSubState() {
+        for (twn in noteTweens.keys()) {
+            noteTweens[twn].resume();
+        }
+        FlxG.sound.music.resume();
+        persistentUpdate = true;
+
+        super.closeSubState();
+    }
+
+    override function onFocus() {
+        #if desktop
+        changePresence("Playing", '$songName ($curDifficulty)', true, FlxG.sound.music.length - Conductor.songPosition);
+        #end
+    }
+
+    override function onFocusLost() {
+        #if desktop
+        changePresence("Paused", '${PlayState.songName} (${PlayState.curDifficulty})');
+        #end
     }
 }

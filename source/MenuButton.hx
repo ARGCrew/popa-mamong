@@ -9,7 +9,7 @@ class MenuLine extends FlxSprite {
     public function new(X:Float = 0, Y:Float = 0) {
         super(X, Y);
         loadGraphic(Paths.image('menu/jstfknln'));
-        scale.set(0.4, 0.4);
+        scale.set(0.6, 0.6);
         updateHitbox();
     }
 

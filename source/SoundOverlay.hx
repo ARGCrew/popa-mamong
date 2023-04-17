@@ -46,32 +46,39 @@ class SoundOverlay extends FlxSpriteGroup {
         FlxG.mouse.x >= FlxG.width - 100 ? {
             FlxTween.tween(line, {x: FlxG.width - 50}, 0.1, {ease: FlxEase.sineOut});
         } : {
-            if (!dragging)
-                {
-                    FlxTween.tween(line, {x: FlxG.width + 50}, 0.1, {ease: FlxEase.sineIn});
-                    Settings.save();
-                }
+            if (!dragging) {
+                FlxTween.tween(line, {x: FlxG.width + 50}, 0.1, {ease: FlxEase.sineIn});
+                Settings.save();
+            }
         }
 
         handle.x = line.x - 10;
 
         hitbox.x = handle.x;
 
-        if (FlxG.mouse.x > hitbox.x && FlxG.mouse.x < hitbox.x + hitbox.width
-        && FlxG.mouse.y > hitbox.y && FlxG.mouse.y < hitbox.y + hitbox.height
-        && FlxG.mouse.pressed) dragging = true;
-        if (FlxG.mouse.justReleased) dragging = false;
+        if (FlxG.mouse.overlaps(hitbox) && FlxG.mouse.pressed) {
+            dragging = true;
+        }
+        if (FlxG.mouse.justReleased) {
+            dragging = false;
+        }
 
-        if (dragging) handle.y = FlxG.mouse.y;
+        if (dragging) {
+            handle.y = FlxG.mouse.y;
+        }
 
-        if (handle.y < line.y) handle.y = line.y;
-        if (handle.y > line.y + line.height) handle.y = line.y + line.height - handle.height;
+        if (handle.y < line.y) {
+            handle.y = line.y;
+        }
+        if (handle.y > line.y + line.height - handle.height) {
+            handle.y = line.y + line.height - handle.height;
+        }
 
         value = ((line.y + valueLine) - handle.y) / valueLine;
-
-        if (value < 0) value = 0;
-        if (value > 1) value = 1;
+        value = Utils.float.boundTo(value, 0, 1, false);
 
         Settings.masterVolume = value;
+
+        super.update(elapsed);
     }
 }

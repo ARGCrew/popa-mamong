@@ -21,7 +21,7 @@ class Memory extends openfl.text.TextField {
 			
 		#if openfl
 		memoryMegas = Math.abs(flixel.math.FlxMath.roundDecimal(openfl.system.System.totalMemory / 1000000, 1));
-		text = 'Memory: $memoryMegas MB';
+		text = visible ? 'Memory: $memoryMegas MB' : "";
 		#end
 
 		textColor = 0xFFFFFFFF;

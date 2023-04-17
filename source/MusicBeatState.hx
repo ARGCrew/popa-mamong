@@ -23,11 +23,13 @@ class MusicBeatState extends FlxUIState {
 	inline function get_controls():Controls
 		return PlayerSettings.current.controls;
 
-	override function create() {
-		overlay = new SoundOverlay();
-		insert(9999, overlay);
+	public function new(hasOverlay:Bool = true) {
+		super();
 
-		super.create();
+		overlay = new SoundOverlay();
+		if (hasOverlay) {
+			insert(9999, overlay);
+		}
 	}
 
 	override function update(elapsed:Float) {

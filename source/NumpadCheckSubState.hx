@@ -1,5 +1,7 @@
 package;
 
+import controls.PlayerSettings;
+
 import flixel.group.FlxSpriteGroup;
 
 import flixel.tweens.FlxEase;
@@ -21,7 +23,7 @@ class NumpadCheckSubState extends MusicBeatSubState {
 
     var bgTween:FlxTween;
 
-    var curSelected:Int = 0;
+    public static var curSelected:Int = 0;
 
     override function create() {
         bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -34,20 +36,18 @@ class NumpadCheckSubState extends MusicBeatSubState {
 
         boobs = new NumpadButton(100, FlxG.height / 6);
         boobs.onPress = function() {
-            Settings.scheme = "Numpad";
+            Utils.keys.setScheme(Numpad);
             out();
-            MainMenuState.funnyNumpad = false;
         }
-        centerOnBound(boobs, -1);
+        toCenter(boobs, -1);
         add(boobs);
 
         noBoobs = new NumpadButton(FlxG.width - (FlxG.width / 4) - 100, FlxG.height / 6);
         noBoobs.onPress = function() {
-            Settings.scheme = "No Numpad";
+            Utils.keys.setScheme(NoNumpad);
             out();
-            MainMenuState.funnyNumpad = false;
         }
-        centerOnBound(noBoobs, 1);
+        toCenter(noBoobs, 1);
         add(noBoobs);
 
         boobsSprite = new FlxSprite(boobs.x, boobs.y).loadGraphic(Paths.image('boobs'));
@@ -84,19 +84,13 @@ class NumpadCheckSubState extends MusicBeatSubState {
 
     function changeSelection(daStep:Int = 0, force:Bool = false) {
         curSelected += daStep;
-
-        if (curSelected > 1) {
-            curSelected = 0;
-        }
-        if (curSelected < 0) {
-            curSelected = 1;
-        }
+        curSelected = Utils.int.boundTo(curSelected, 0, 1, true);
 
         (curSelected == 0 ? boobs : noBoobs).select();
         (curSelected == 1 ? boobs : noBoobs).unselect();
     }
 
-    function centerOnBound(obj:FlxSprite, bound:Int = 0) {
+    function toCenter(obj:FlxSprite, bound:Int = 0) {
         obj.screenCenter();
         obj.x += bound * (FlxG.width / 4);
     }
@@ -109,8 +103,8 @@ class NumpadCheckSubState extends MusicBeatSubState {
         remove(noBoobsSprite);
 
         bgTween = FlxTween.tween(bg, {alpha: 0}, 0.2, {ease: FlxEase.sineInOut, onComplete: function(twn:FlxTween) {
-            bgTween = null;
-            close();
+            //close();
+            MainMenuState.funnyNumpad = false;
         }});
     }
 }

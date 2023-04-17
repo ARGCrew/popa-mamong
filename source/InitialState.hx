@@ -19,9 +19,16 @@ import vlc.MP4Handler;
 class InitialState extends MusicBeatState {
     var video:MP4Handler;
 
+    public function new() {
+        super(false);
+    }
+
     override function create() {
         Settings.load();
         PlayerSettings.init();
+        #if desktop
+        Discord.Client.initialize();
+        #end
 
         var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 		diamond.persist = true;

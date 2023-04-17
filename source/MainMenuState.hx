@@ -29,7 +29,7 @@ class MainMenuState extends MusicBeatState {
     ];
     var grpOptions:FlxTypedGroup<MenuButton>;
 
-    static var curSelected:Int = 0;
+    public static var curSelected:Int = 0;
     var daChoiced:Bool = false;
 
     public static var funnyNumpad:Bool = true;
@@ -55,6 +55,10 @@ class MainMenuState extends MusicBeatState {
     }
 
     override public function create() {
+        #if desktop
+        changePresence("Main Menu", null);
+        #end
+        
         mouseEvent = new FlxMouseEventManager();
         add(mouseEvent);
 
@@ -62,15 +66,15 @@ class MainMenuState extends MusicBeatState {
         add(grpOptions);
 
         for (i in 0...optionShit.length) {
-            var itemOffsetX = 15 + (80 * i);
-            var itemOffsetY = FlxG.height / 3 + (BitmapData.fromFile(Paths.image('menu/Buttonb')).height * 0.75) * i;
+            var itemOffsetX = (15 + (80 * i)) * 1.5;
+            var itemOffsetY = FlxG.height / 3 + (BitmapData.fromFile(Paths.image('menu/Buttonb')).height * 1.125) * i;
 
             var line:MenuLine = new MenuLine(itemOffsetX, itemOffsetY);
             add(line);
 
             var button:MenuButton = new MenuButton(itemOffsetX, itemOffsetY);
             button.loadGraphic(Paths.image('menu/${optionShit[i].toUpperCase()}'));
-            button.scale.set(0.4, 0.4);
+            button.scale.set(0.6, 0.6);
             button.updateHitbox();
             button.alpha = 0.4;
             grpOptions.add(button);
@@ -83,6 +87,7 @@ class MainMenuState extends MusicBeatState {
 
         new FlxTimer().start(0.3, function(tmr:FlxTimer) {
             if (funnyNumpad) {
+                //funnyNumpad = false;
                 openSubState(new NumpadCheckSubState());
             }
         });
@@ -116,16 +121,6 @@ class MainMenuState extends MusicBeatState {
         super.update(elapsed);
     }
 
-    function mouseOverlaps(obj:FlxSprite) {
-        var mos = FlxG.mouse;
-
-        if (mos.x > obj.x && mos.x < obj.x + obj.width
-            && mos.y > obj.y && mos.y < obj.y + obj.height)
-            return true;
-        
-        return false;
-    }
-
     function select() {
         if (!daChoiced && !funnyNumpad) {
             daChoiced = true;
@@ -143,17 +138,8 @@ class MainMenuState extends MusicBeatState {
             force ? {
                 curSelected = step;
             } : {
-                curSelected != -100 ? {
-                    curSelected += step;
-                    if (curSelected > optionShit.length - 1) {
-                        curSelected = 0;
-                    }
-                    if (curSelected < 0) {
-                        curSelected = optionShit.length - 1;
-                    }
-                } : {
-                    curSelected = 0;
-                }
+                curSelected += step;
+                curSelected = Utils.int.boundTo(curSelected, 0, optionShit.length - 1, true);
             }
     
             for (i in 0...grpOptions.members.length) {

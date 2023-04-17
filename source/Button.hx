@@ -27,13 +27,14 @@ class Button extends FlxSprite {
         this.id = id;
         this.skin = skin;
 
-        var offsetX:Float = 400;
-        var offsetY:Float = 125;
+        var offsetX:Float = 600;
+        var offsetY:Float = 187.5;
 
-        var spaceX:Float = 20;
-        var spaceY:Float = 20;
+        var spaceX:Float = 30;
+        var spaceY:Float = 30;
 
         loadGraphic(Paths.image('buttons/${skin.toUpperCase()}'));
+        scale.set(1.5, 1.5);
         updateHitbox();
         color = Palette.released;
 

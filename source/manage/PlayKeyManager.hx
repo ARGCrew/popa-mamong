@@ -11,9 +11,6 @@ class PlayKeyManager {
             FlxG.switchState(new MainMenuState());
             FlxG.sound.music.stop();
         }
-        if (justPressed.W) {
-            Settings.openWindow();
-        }
         if (justPressed.S) {
             FlxG.switchState(new SettingsState(true));
             FlxG.sound.music.stop();

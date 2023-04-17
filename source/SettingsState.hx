@@ -1,58 +1,133 @@
 package;
 
+import flixel.tweens.FlxTween;
+import controls.Controls.Control;
+import controls.Controls.KeyboardScheme;
 import UIButtons;
 import flixel.FlxG;
-import flixel.addons.ui.FlxUICheckBox;
 
 class SettingsState extends MusicBeatState {
     var daPlaying:Bool;
 
+    public static var instance:SettingsState;
+
+    public static var curCata:Int = 0;
+    public static var catas:Array<SettingsCata> = [];
+
+    public var cataButtons:Array<UIButton> = [];
+
     public function new(game:Bool) {
-        super();
+        super(false);
         daPlaying = game;
+
+        instance = this;
+        persistentDraw = persistentUpdate = true;
     }
 
     override function create() {
-        var circleCheckBox:FlxUICheckBox = new FlxUICheckBox(10, 10, null, null, "Circle Buttons", 100);
-        circleCheckBox.checked = (Settings.skin == 'circle');
-        circleCheckBox.callback = function() {
-            circleCheckBox.checked ? {
-                Settings.skin = 'circle';
-            } : {
-                Settings.skin = 'square';
-            }
-		}
-        add(circleCheckBox);
+        #if desktop
+        changePresence("Settings Menu", null);
+        #end
 
-        var beatCheckBox:FlxUICheckBox = new FlxUICheckBox(10, 40, null, null, "Camera Beat", 100);
-        beatCheckBox.checked = Settings.camBeat;
-        beatCheckBox.callback = function() {
-            Settings.camBeat = beatCheckBox.checked;
-		}
-        add(beatCheckBox);
-
-        var numpadDropDown:UIDropDown = new UIDropDown(10, 70, "Scheme", ["Numpad", "No Numpad"], Settings.scheme);
-        numpadDropDown.onChange = function(value:Dynamic) {
-            Settings.scheme = value;
-        }
-        add(numpadDropDown);
+        catas = [
+            new SettingsCata(210, 10, "Appearance", [
+                new UIDropDown("Buttons Skin", ["Square", "Circle"], Settings.skin, function(value:String) {
+                    Settings.skin = value;
+                }),
+                new UICheckBox("Camera Beat", Settings.camBeat, function(value:Bool) {
+                    Settings.camBeat = value;
+                })
+            ]),
+            new SettingsCata(415, 10, "Gameplay", [
+                new UICheckBox("Ghost Tapping", Settings.ghostTapping, function(value:Bool) {
+                    Settings.ghostTapping = value;
+                }),
+                new UIDropDown("Keyboard Scheme", ["Numpad", "No Numpad"], Settings.scheme, function(value:String) {
+                    Utils.keys.setScheme(KeyboardScheme.fromString(value));
+                })
+            ]),
+            new SettingsCata(620, 10, "Audio", [
+                new UISlider("Master Volume", Settings.masterVolume, function(value:Float) {
+                    Settings.masterVolume = value;
+                }),
+                new UISlider("Sound Volume", Settings.soundVolume, function(value:Float) {
+                    Settings.soundVolume = value;
+                }),
+                new UISlider("Music Volume", Settings.musicVolume, function(value:Float) {
+                    Settings.musicVolume = value;
+                })
+            ]),
+            new SettingsCata(825, 10, "Misc", []),
+            /*
+            new SettingsCata(FlxG.width, 10, "Controls", [
+                new UIBind(Control.toString(SEVEN), "NUMPADSEVEN")
+            ])
+            */
+        ];
+        add(catas[curCata]);
 
         super.create();
     }
 
+    public function addCata(cat:UIButton) {
+        cataButtons.push(cat);
+        add(cat);
+    }
+
     override function update(elapsed:Float) {
-        if (FlxG.keys.justPressed.ESCAPE) {
+        if (controls.BACK) {
             daPlaying ? {
                 FlxG.switchState(new PlayState());
             } : {
                 FlxG.switchState(new MainMenuState());
             }
         }
+
+        for (cat in cataButtons) {
+            if (curCata == cataButtons.indexOf(cat)) {
+                FlxTween.tween(cat.background, {alpha: 0.2}, 0.05);
+            } else if (FlxG.mouse.overlaps(cat.background)) {
+                FlxTween.tween(cat.background, {alpha: 0.6}, 0.05);
+            } else {
+                FlxTween.tween(cat.background, {alpha: 0.4}, 0.05);
+            }
+        }
+
         super.update(elapsed);
     }
 
     override function destroy() {
         Settings.save();
         super.destroy();
+    }
+}
+
+class SettingsCata extends UIMenu {
+    var titleObject:UIButton;
+
+    public function new(x:Float = 0, y:Float = 0, title:String, settings:Array<UIInteractive>) {
+        titleObject = new UIButton(x, y, 200, 45, title);
+        titleObject.onChange = function() {
+            SettingsState.instance.remove(SettingsState.catas[SettingsState.curCata]);
+            SettingsState.curCata = SettingsState.catas.indexOf(this);
+            
+            SettingsState.instance.add(this);
+        }
+        SettingsState.instance.addCata(titleObject);
+
+        for (i in 0...settings.length) {
+            var setting = settings[i];
+            var offset:Float = 20 + 50 * i;
+
+            setting.x = 20;
+            setting.y = offset;
+
+            settings[i] = setting;
+        }
+
+        super(210, 90, settings);
+
+        background.setGraphicSize(Std.int((200 * SettingsState.catas.length) + (5 * SettingsState.catas.length)), Std.int(FlxG.height - FlxG.height / 4));
+        background.updateHitbox();
     }
 }

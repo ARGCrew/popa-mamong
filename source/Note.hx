@@ -57,6 +57,8 @@ class NoteTween {
 
     var spawnOffset:Float = 0;
 
+    var tween:FlxTween;
+
     public function new(note:Note, value:Float, speed:Float, onComplete:()->Void = null) {
         this.note = note;
         this.value = value;
@@ -65,7 +67,7 @@ class NoteTween {
 
         spawnOffset = FlxG.sound.music.time;
 
-        FlxTween.tween(note.scale, {x: value, y: value}, speed, {onComplete: function(twn:FlxTween) {
+        tween = FlxTween.tween(note.scale, {x: value, y: value}, speed, {onComplete: function(twn:FlxTween) {
             if (onComplete != null) {
                 onComplete();
             }
@@ -78,6 +80,13 @@ class NoteTween {
         var notePos:Float = note.time - spawnOffset;
         note.scale.x = note.scale.y = ((songPos / notePos) * 0.75) / speed;
         */
+    }
+
+    public function pause() {
+        tween.active = false;
+    }
+    public function resume() {
+        tween.active = true;
     }
 }
 

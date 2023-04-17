@@ -32,23 +32,24 @@ class NoteOffsetState extends MusicBeatState {
 
     public function new(music:String) {
         super();
+        this.music = music;
+
         FlxG.sound.playMusic(Paths.music(music));
         FlxG.sound.music.pause();
-        trace(music);
     }
 
     override function create() {
         butts = new ButtonGrid(-(FlxG.width / 5));
         add(butts);
 
-        var openButt:UIButton = new UIButton((FlxG.width / 6) * 5, FlxG.height / 2, "LOAD");
-        openButt.onPress = function() {
+        var openButt:UIButton = new UIButton((FlxG.width / 6) * 5, FlxG.height / 2, 100, 45, "LOAD");
+        openButt.onChange = function() {
             openFile();
         }
         add(openButt);
 
-        var saveButt:UIButton = new UIButton(openButt.x - 110, openButt.y, "SAVE");
-        saveButt.onPress = function() {
+        var saveButt:UIButton = new UIButton(openButt.x - 110, openButt.y, 100, 45, "SAVE");
+        saveButt.onChange = function() {
             saveFile();
         }
         add(saveButt);
@@ -104,6 +105,11 @@ class NoteOffsetState extends MusicBeatState {
             }
 
             FlxG.sound.music.time += 100 * mult;
+        }
+
+        if (FlxG.keys.justPressed.ENTER) {
+            PlayState.songName = music;
+            FlxG.switchState(new PlayState());
         }
 
         super.update(elapsed);

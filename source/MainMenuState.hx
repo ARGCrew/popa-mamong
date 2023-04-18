@@ -1,7 +1,10 @@
 package;
 
+#if devBuild
+import haxeparser.HaxeParser;
+#end
+
 import flixel.util.FlxTimer;
-import openfl.filters.GlowFilter;
 import openfl.display.BitmapData;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -35,6 +38,10 @@ class MainMenuState extends MusicBeatState {
     public static var funnyNumpad:Bool = true;
 
     var logo:FlxSprite;
+
+    #if devBuild
+    var hscript:HaxeParser;
+    #end
 
     function onMouseDown(object:FlxObject) {
         select();
@@ -102,6 +109,19 @@ class MainMenuState extends MusicBeatState {
         });
 
         super.create();
+
+        #if devBuild
+        hscript = new HaxeParser(Paths.hscript("MainMenuState", "debug"));
+
+        hscript.addCallback('this', this);
+        hscript.addCallback('add', add);
+        hscript.addCallback('insert', insert);
+        hscript.addCallback('remove', remove);
+
+        if (hscript.hasFunction('create')) {
+            hscript.callFunction('create')();
+        }
+        #end
     }
 
     public function new() {
@@ -128,6 +148,12 @@ class MainMenuState extends MusicBeatState {
         }
 
         super.update(elapsed);
+
+        #if devBuild
+        if (hscript.hasFunction('update')) {
+            hscript.callFunction('update')(elapsed);
+        }
+        #end
     }
 
     function select() {
@@ -140,6 +166,12 @@ class MainMenuState extends MusicBeatState {
                 default: daChoiced = false;
             }
         }
+
+        #if devBuild
+        if (hscript.hasFunction('select')) {
+            hscript.callFunction('select')();
+        }
+        #end
     }
 
     function changeSelection(step:Int = 0, force:Bool = false) {
@@ -163,5 +195,11 @@ class MainMenuState extends MusicBeatState {
                 }
             }
         }
+
+        #if devBuild
+        if (hscript.hasFunction('changeSelection')) {
+            hscript.callFunction('changeSelection')(step, force);
+        }
+        #end
     }
 }

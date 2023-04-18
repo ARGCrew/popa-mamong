@@ -264,8 +264,6 @@ class Paths
     }
 
     public static function hscript(key:String, folder:String) {
-        return 'assets/levels/$key.hx';
-
         var path:String = 'assets/$folder/$key.hx';
 
         if (!exists(path)) {
@@ -275,6 +273,8 @@ class Paths
         if (!exists(path)) {
             path = 'mods/$currentMod/$folder/$key.hx';
         }
+
+        return path;
     }
 
     public static function chart(name:String, diff:String) {

@@ -1,5 +1,8 @@
 package flixel.custom.system;
 
+import openfl.display.BitmapData;
+import openfl.display.Bitmap;
+import lime.ui.Window;
 import openfl.events.UncaughtErrorEvent;
 import haxe.CallStack;
 import haxe.io.Path;
@@ -12,6 +15,33 @@ import openfl.display.Sprite;
 
 using StringTools;
 
+#if windows
+@:buildXml('
+<target id="haxe">
+    <lib name="dwmapi.lib" if="windows" />
+    <lib name="shell32.lib" if="windows" />
+    <lib name="gdi32.lib" if="windows" />
+    <lib name="ole32.lib" if="windows" />
+    <lib name="uxtheme.lib" if="windows" />
+</target>
+')
+
+@:cppFileCode('
+#include "mmdeviceapi.h"
+#include "combaseapi.h"
+#include <iostream>
+#include <Windows.h>
+#include <cstdio>
+#include <tchar.h>
+#include <dwmapi.h>
+#include <winuser.h>
+#include <Shlobj.h>
+#include <wingdi.h>
+#include <shellapi.h>
+#include <uxtheme.h>
+')
+#end
+
 class FlxCrashHandler extends Sprite
 {
     public function new()
@@ -23,30 +53,18 @@ class FlxCrashHandler extends Sprite
     function onCrash(e:UncaughtErrorEvent)
     {
         var name:String = "Another-Rhythm-Game";
-        var errMsg:String = "";
-
-        var callStack:Array<StackItem> = CallStack.exceptionStack(true);
-        for (stackItem in callStack)
-		{
-			switch (stackItem)
-			{
-				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
-                default:
-					Sys.println(stackItem);
-			}
-		}
-        errMsg += '\nUncaught Error: ${e.error}';
+        var errMsg:String = '\nUncaught Error: ${e.error}';
 
         Application.current.window.alert(errMsg, 'FlixelCrashHandler/$name');
+
         Sys.exit(1);
     }
 
-    public static function alert(message:String, exit:Bool = false) {
+    public static function alert(win:String, message:String, exit:Bool = false) {
         var name:String = "Another-Rhythm-Game";
         var errMsg:String = message;
 
-        Application.current.window.alert(errMsg, 'FlixelCrashHandler/$name');
+        Application.current.window.alert(errMsg, win);
         if (exit) {
             Sys.exit(1);
         }

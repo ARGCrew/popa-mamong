@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	
-	<app title="Another Rhythm Game" file="ARG" packageName="com.h4mster.arg" package="com.h4mster.arg" main="Main" version="0.2.8" company="ARG" />
+	<app title="Another Rhythm Game" file="ARG" packageName="com.h4mster.arg" package="com.h4mster.arg" main="Main" version="0.2.8" company="ARGTeam" />
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
 
 	<app preloader="flixel.system.FlxPreloader" />
@@ -46,5 +46,19 @@
 	<icon path="ico/logo128.png" size='128'/>
 	<icon path="ico/logo256.png" size='256'/>
 	<icon path="ico/logo256.png" />
+
+	<!-- BUILD TARGET ("devBuild", "demoBuild", "releaseBuild")-->
+	<define name="devBuild" />
+
+	<!-- BUILD SPECIFICATIONS -->
+	<set name="BUILD_DIR" value="export/devBuild" if="devBuild" />
+	<assets path="debug" rename="assets/debug" if="devBuild" />
+	<assets path="debug" embed="true" unless="devBuild" />
+
+	<set name="BUILD_DIR" value="export/demoBuild" if="demoBuild" />
+	<define name="CHANGELOG" if="demoBuild" />
+
+	<set name="BUILD_DIR" value="export/releaseBuild" if="releaseBuild" />
+	<!-- просто релиз :P -->
 
 </project>

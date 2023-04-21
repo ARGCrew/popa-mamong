@@ -1,22 +1,13 @@
 package;
 
+import haxe.io.Bytes;
+import lime.ui.FileDialog;
 import haxe.Json;
 import UIButtons;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
 import flixel.FlxG;
-
-#if (flash || html5)
-import openfl.display.Loader;
-import openfl.display.LoaderInfo;
-import openfl.net.FileReference;
-import openfl.net.FileFilter;
-#elseif (sys && !hl)
-import sys.io.File;
-import sys.FileSystem;
-import systools.Dialogs;
-#end
 
 using StringTools;
 
@@ -166,71 +157,36 @@ class NoteOffsetState extends MusicBeatState {
     }
 
     function openFile() {
-		#if (sys && !hl)
-		var filters:FILEFILTERS = {
-			count: 1,
-			descriptions: ["JSON Files"],
-			extensions: ["*.json"]
-		};
-		var result:Array<String> = Dialogs.openFile("Select chart", "", filters);
-
-		onOpenComplete(result);
-		#end
+        var dialog = new FileDialog();
+        dialog.onSelect.add(onOpenComplete);
+        dialog.browse(OPEN, "json");
 	}
 
-	#if (sys && !hl)
-	function onOpenComplete(arr:Array<String>) {
+	function onOpenComplete(file:String) {
+        FlxG.switchState(new NoteOffsetState(cast Json.parse(Paths.getText(file)).song));
+        /*
 		if (arr != null && arr.length > 0) {
 			FlxG.switchState(new NoteOffsetState(cast Json.parse(Paths.getText(arr[0])).song));
 		}
+        */
 	}
-	#end
 
     function saveFile() {
-        #if (sys && !hl)
-        var filters:FILEFILTERS = {
-			count: 1,
-			descriptions: ["JSON Files (*.json)"],
-			extensions: ["*.json"]
-		};
-		var result:String = Dialogs.saveFile("Save chart", "", Sys.getCwd(), filters);
-        if (result != null && !result.endsWith('.json')) {
-            result = '$result.json';
-        }
-        if (result != null) {
-            onSaveComplete(result);
-        }
-        #end
-    }
-
-    function onSaveComplete(file:String) {
-        #if (sys && !hl)
-        var path:Array<String> = file.split('\\');
-        var file:String = path[path.length - 1];
-        var folder:String = '';
-        for (i in 0...path.length) {
-            if (path[i] != file) {
-                folder += '${path[i]}/';
-            }
-        }
-        
-        if (!FileSystem.exists(folder)) {
-            FileSystem.createDirectory(folder);
-        }
-
         for (i in 0...notes.length) {
             var note = notes[i];
             var daNote:String = '{\n"time": ${note.time},\n"id": ${note.id}\n}';
             noteStrings.push(daNote);
         }
 
-        File.saveContent('$folder/$file', '{
-    "bpm": ${bpmInputText.inputText}, 
-    "speed": ${speedInputText.inputText}, 
-    "song": "${songInputText.inputText}", 
-    "notes": $noteStrings, 
-    "events": []
-}');
-        #end
+        var dialog = new FileDialog();
+        dialog.save(Bytes.ofString(
+            '{
+                "bpm": ${bpmInputText.inputText}, 
+                "speed": ${speedInputText.inputText}, 
+                "song": "${songInputText.inputText}", 
+                "notes": $noteStrings, 
+                "events": []
+            }'
+        ), "json", Sys.getCwd());
     }
 }

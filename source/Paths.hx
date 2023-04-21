@@ -121,7 +121,7 @@ class Paths
         return FlxAtlasFrames.fromSparrow(image, xml);
     }
 
-    public static function music(key:String) {
+    public static function musicPath(key:String) {
         var path:String = 'assets/music/$key';
 
         for (extension in sound_extensions) {
@@ -131,6 +131,47 @@ class Paths
                 }
             }
         }
+
+        if (!exists(path)) {
+            path = 'mods/music/$key';
+
+            for (extension in sound_extensions) {
+                if (!exists(path)) {
+                    if (exists('$path.$extension')) {
+                        path = '$path.$extension';
+                    }
+                }
+            }
+        }
+
+        if (!exists(path)) {
+            path = 'mods/$currentMod/music/$key';
+
+            for (extension in sound_extensions) {
+                if (!exists(path)) {
+                    if (exists('$path.$extension')) {
+                        path = '$path.$extension';
+                    }
+                }
+            }
+        }
+
+        return path;
+    }
+
+    public static function music(key:String) {
+        var path:String = 'assets/music/$key';
+/*
+        for (extension in sound_extensions) {
+            if (!exists(path)) {
+                if (exists('$path.$extension')) {
+                    path = '$path.$extension';
+                }
+            }
+        }
+
+        return path;
+*/
 /*
         var sound:Sound = null;
 
@@ -144,7 +185,43 @@ class Paths
 
         return sounds.get(path);
 */
-        return path;
+
+        for (extension in sound_extensions) {
+            if (!exists(path)) {
+                if (exists('$path.$extension')) {
+                    path = '$path.$extension';
+                    return Sound.fromFile(path);
+                }
+            }
+        }
+
+        if (!exists(path)) {
+            path = 'mods/music/$key';
+
+            for (extension in sound_extensions) {
+                if (!exists(path)) {
+                    if (exists('$path.$extension')) {
+                        path = '$path.$extension';
+                        return Sound.fromFile(path);
+                    }
+                }
+            }
+        }
+
+        if (!exists(path)) {
+            path = 'mods/$currentMod/music/$key';
+
+            for (extension in sound_extensions) {
+                if (!exists(path)) {
+                    if (exists('$path.$extension')) {
+                        path = '$path.$extension';
+                        return Sound.fromFile(path);
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     public static function sound(key:String) {
@@ -174,11 +251,11 @@ class Paths
         return sounds.get(path);
 */
 
-        for (extension in image_extensions) {
+        for (extension in sound_extensions) {
             if (!exists(path)) {
                 if (exists('$path.$extension')) {
                     path = '$path.$extension';
-                    return path;
+                    return Sound.fromFile(path);
                 }
             }
         }
@@ -186,24 +263,24 @@ class Paths
         if (!exists(path)) {
             path = 'mods/sounds/$key';
 
-            for (extension in image_extensions) {
+            for (extension in sound_extensions) {
                 if (!exists(path)) {
                     if (exists('$path.$extension')) {
                         path = '$path.$extension';
-                        return path;
+                        return Sound.fromFile(path);
                     }
                 }
             }
         }
 
         if (!exists(path)) {
-            path = 'mods/$currentMod/$key';
+            path = 'mods/$currentMod/sounds/$key';
 
-            for (extension in image_extensions) {
+            for (extension in sound_extensions) {
                 if (!exists(path)) {
                     if (exists('$path.$extension')) {
                         path = '$path.$extension';
-                        return path;
+                        return Sound.fromFile(path);
                     }
                 }
             }
@@ -278,8 +355,6 @@ class Paths
     }
 
     public static function chart(name:String, diff:String) {
-        return 'assets/charts/$name/$diff.json';
-
         var path:String = 'assets/charts/$name/$diff.json';
 
         if (!exists(path)) {
@@ -287,8 +362,10 @@ class Paths
         }
 
         if (!exists(path)) {
-            path = 'mods/$currentMod/harts/$name/$diff.json';
+            path = 'mods/$currentMod/charts/$name/$diff.json';
         }
+
+        return path;
     }
 
     public static function exists(key:String) {

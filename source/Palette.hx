@@ -18,22 +18,25 @@ typedef PaletteFile =  {
     var releaseColor:String;
     var pressColor:String;
     var confirmColor:String;
+    var indicatorsColor:String;
 }
 
 class Palette {
-    public static var bg:FlxColor = 0xff1A1A1A;
-    public static var released:FlxColor = 0xffFFFFFF;
-    public static var pressed:FlxColor = 0xffD64933;
+    public static var bg:FlxColor = 0x1A1A1A;
+    public static var released:FlxColor = 0xFFFFFF;
+    public static var pressed:FlxColor = 0xD64933;
     public static var confirmed:FlxColor = 0x00CC99;
+    public static var indicators:FlxColor = 0xC7FFFFFF;
 
     public static function parse(file:String) {
-        if (#if sys FileSystem #else OpenFlAssets #end .exists(file)) {
-            var rawJson:String = #if sys File.getContent #else LimeAssets.getText #end (file);
+        if (Paths.exists(file)) {
+            var rawJson:String = Paths.getText(file);
             var json:PaletteFile = cast Json.parse(rawJson);
-            bg = Std.parseInt('0xff' + json.bgColor);
-            released = Std.parseInt('0xff' + json.releaseColor);
-            pressed = Std.parseInt('0xff' + json.pressColor);
-            confirmed = Std.parseInt('0xff' + json.confirmColor);
+            bg = Std.parseInt(json.bgColor);
+            released = Std.parseInt(json.releaseColor);
+            pressed = Std.parseInt(json.pressColor);
+            confirmed = Std.parseInt(json.confirmColor);
+            indicators = Std.parseInt(json.indicatorsColor);
         }
     }
 }

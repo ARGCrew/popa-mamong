@@ -55,6 +55,8 @@ enum abstract Action(String) to String from String {
 
     var ACCEPT = "accept";
     var BACK = "back";
+
+    var DEBUG_1 = "debug1";
 }
 
 enum Control {
@@ -75,6 +77,8 @@ enum Control {
 
     ACCEPT;
     BACK;
+
+    DEBUG_1;
 }
 
 enum Scheme {
@@ -152,6 +156,8 @@ class Controls extends FlxActionSet {
 
     var _accept = new FlxActionDigital(Action.ACCEPT);
     var _back = new FlxActionDigital(Action.BACK);
+
+    var _debug_1 = new FlxActionDigital(Action.DEBUG_1);
 
     var byName:Map<String, FlxActionDigital> = [];
     public var keyboardScheme:KeyboardScheme = None;
@@ -402,6 +408,12 @@ class Controls extends FlxActionSet {
         return _back.check();
     }
 
+    public var DEBUG_1(get, never):Bool;
+
+    inline function get_DEBUG_1() {
+        return _debug_1.check();
+    }
+
     public function new(name:Dynamic, scheme:KeyboardScheme) {
         super(Std.string(name));
         
@@ -453,6 +465,8 @@ class Controls extends FlxActionSet {
         add(_accept);
         add(_back);
 
+        add(_debug_1);
+
         for (action in digitalActions) {
             byName[action.name] = action;
         }
@@ -492,6 +506,8 @@ class Controls extends FlxActionSet {
 
             case ACCEPT: _accept;
             case BACK: _back;
+
+            case DEBUG_1: _debug_1;
         }
     }
 
@@ -560,6 +576,9 @@ class Controls extends FlxActionSet {
                 func(_accept, JUST_PRESSED);
             case BACK:
                 func(_back, JUST_PRESSED);
+
+            case DEBUG_1:
+                func(_debug_1, JUST_PRESSED);
         }
     }
 
@@ -672,6 +691,8 @@ class Controls extends FlxActionSet {
 
         inline bindKeys(Control.ACCEPT, [SPACE, ENTER]);
         inline bindKeys(Control.BACK, [ESCAPE, BACKSPACE]);
+
+        inline bindKeys(Control.DEBUG_1, [FlxKey.SEVEN]);
     }
 
     function removeKeyboard() {

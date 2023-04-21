@@ -103,10 +103,10 @@ class SettingsState extends MusicBeatState {
 }
 
 class SettingsCata extends UIMenu {
-    var titleObject:UIButton;
+    var titleObject:SettingsButton;
 
     public function new(x:Float = 0, y:Float = 0, title:String, settings:Array<UIInteractive>) {
-        titleObject = new UIButton(x, y, 200, 45, title);
+        titleObject = new SettingsButton(x, y, 200, 45, title);
         titleObject.onChange = function() {
             SettingsState.instance.remove(SettingsState.catas[SettingsState.curCata]);
             SettingsState.curCata = SettingsState.catas.indexOf(this);
@@ -129,5 +129,17 @@ class SettingsCata extends UIMenu {
 
         background.setGraphicSize(Std.int((200 * SettingsState.catas.length) + (5 * SettingsState.catas.length)), Std.int(FlxG.height - FlxG.height / 4));
         background.updateHitbox();
+    }
+}
+
+class SettingsButton extends UIButton {
+    public function new(x:Float = 0, y:Float = 0, width:Float, height:Float, title:String, onChange:Dynamic = null) {
+        super(x, y, width, height, title, onChange);
+    }
+
+    override function update(elapsed:Float) {
+        if (FlxG.mouse.overlaps(background) && FlxG.mouse.justPressed && onChange != null) {
+            onChange();
+        }
     }
 }

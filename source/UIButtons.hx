@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.ui.FlxInputText;
 import flixel.util.FlxTimer;
 import flixel.util.FlxAxes;
 import flixel.system.FlxSound;
@@ -40,6 +41,15 @@ class UIInteractive extends FlxSpriteGroup {
         }
 
         super.update(elapsed);
+    }
+
+    function setOnCenter(object:FlxSprite, axes:FlxAxes = XY) {
+        if (axes == X || axes == XY) {
+            object.x = background.width / 2 - object.width / 2;
+        }
+        if (axes == Y || axes == XY) {
+            object.y = background.height / 2 - object.height / 2;
+        }
     }
 }
 
@@ -162,15 +172,6 @@ class UISlider extends UIInteractive {
 
         super.update(elapsed);
     }
-
-    function setOnCenter(object:FlxSprite, axes:FlxAxes = XY) {
-        if (axes == X || axes == XY) {
-            object.x = background.width / 2 - object.width / 2;
-        }
-        if (axes == Y || axes == XY) {
-            object.y = background.height / 2 - object.height / 2;
-        }
-    }
 }
 
 class UIButton extends UIInteractive {
@@ -185,6 +186,8 @@ class UIButton extends UIInteractive {
         if (FlxG.mouse.overlaps(background) && FlxG.mouse.justPressed && onChange != null) {
             onChange();
         }
+        
+        super.update(elapsed);
     }
 }
 /*
@@ -284,5 +287,32 @@ class UIBind extends UIInteractive {
                 onChange(FlxG.keys.getIsDown()[0].ID.toString());
             }
         }
+    }
+}
+
+class UIInputText extends UIInteractive {
+    var input:FlxInputText;
+
+    public var inputText:String;
+    public var hasFocus:Bool;
+
+    public function new(x:Float = 0, y:Float = 0, width:Int, height:Int, onChange:Dynamic = null) {
+        super(x, y, "", onChange);
+        background.setGraphicSize(width, height);
+        background.updateHitbox();
+
+        input = new FlxInputText(0, 0, Std.int(background.width - 20), "", 26);
+        input.setFormat(Paths.font, 26, FlxColor.BLACK, LEFT, NONE);
+        setOnCenter(input);
+        add(input);
+    }
+
+    override function update(elapsed:Float) {
+        if (inputText != input.text && onChange != null) {
+            onChange(input.text);
+        }
+        inputText = input.text;
+        hasFocus = input.hasFocus;
+        super.update(elapsed);
     }
 }

@@ -24,7 +24,7 @@ class PlayState extends MusicBeatState {
     // CUSTOM LEVELS
     public static var instance:PlayState;
     public var level:String = 'default';
-    public static var hscript:HScript = null;
+    var hscript:HScript = null;
 
     // CHARTS
     /*
@@ -47,11 +47,11 @@ class PlayState extends MusicBeatState {
     var music:Music = null;
 
     public var camGame:FlxCamera;
-    private var camHUD:FlxCamera;
+    public var camHUD:FlxCamera;
 
     public var botplay:Bool = false;
 
-    public var combo:Int = 0;
+    var combo:Int = 0;
     var comboTxt:FlxText;
 
     public static var daPlaying:Bool = false;
@@ -76,7 +76,7 @@ class PlayState extends MusicBeatState {
 
         music = MusicBeat.loadFromJson(curDifficulty, songName);
         Conductor.changeBPM(95);
-        Palette.parse('assets/palette.json');
+        Palette.parse('assets/palette.jsonc');
 
         add(new FlxSprite().makeGraphic(FlxG.width, FlxG.height, Palette.bg));
 
@@ -115,6 +115,16 @@ class PlayState extends MusicBeatState {
 
         if (Paths.exists(Paths.hscript(songName, "levels"))) {
             hscript = new HScript(Paths.hscript(songName, "levels"));
+
+            hscript.addCallback("add", add);
+            hscript.addCallback("insert", insert);
+            hscript.addCallback("remove", remove);
+            hscript.addCallback("members", members);
+            hscript.addCallback("cameraFilters", cameraFilters);
+
+            hscript.addCallback("butts", butts);
+            hscript.addCallback("triggerEvent", triggerEvent);
+
             if (hscript.hasFunction('create')) {
                 hscript.callFunction('create')();
             }
@@ -124,6 +134,7 @@ class PlayState extends MusicBeatState {
     override function update(elapsed) {
         Conductor.songPosition = FlxG.sound.music.time;
         FlxG.sound.music.volume = Settings.getMusicVolume();
+        speedMS = songSpeed * 1000;
         
         manage.PlayKeyManager.manage();
 
@@ -141,7 +152,7 @@ class PlayState extends MusicBeatState {
                     note.scale.y = note.scale.x;
                 }
 */
-                noteTweens.set(note, new NoteTween(note, 0.75, songSpeed, function() {
+                noteTweens.set(note, new NoteTween(note, 0.75, songSpeed * 0.75, function() {
                     if (note != null && note.alive) {
                         noteTweens.set(note, new NoteTween(note, 1, songSpeed * 0.25));
                     }
@@ -189,6 +200,13 @@ class PlayState extends MusicBeatState {
         super.update(elapsed);
 
         if (hscript != null && hscript.hasFunction('update')) {
+
+            hscript.addCallback("lastBeat", lastBeat);
+            hscript.addCallback("lastStep", lastStep);
+            hscript.addCallback("curStep", curStep);
+            hscript.addCallback("curBeat", curBeat);
+            hscript.addCallback("cameraFilters", cameraFilters);
+
             hscript.callFunction('update')(elapsed);
         }
 
@@ -300,6 +318,7 @@ class PlayState extends MusicBeatState {
                 FlxG.camera.flash(Std.parseInt(value1), Std.parseFloat(value2));
             case 'Camera Beat':
                 FlxG.camera.zoom += Std.parseFloat(value1);
+            case '':
         }
 
         if (hscript != null && hscript.hasFunction('triggerEvent')) {

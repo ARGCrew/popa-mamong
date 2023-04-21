@@ -60,7 +60,7 @@ class FlxCrashHandler extends Sprite
         Sys.exit(1);
     }
 
-    public static function alert(win:String, message:String, exit:Bool = false) {
+    public static function alert(win:String, message:Dynamic, exit:Bool = false) {
         var name:String = "Another-Rhythm-Game";
         var errMsg:String = message;
 

@@ -52,8 +52,7 @@
 
 	<!-- BUILD SPECIFICATIONS -->
 	<set name="BUILD_DIR" value="export/devBuild" if="devBuild" />
-	<assets path="debug" rename="assets/debug" if="devBuild" />
-	<assets path="debug" embed="true" unless="devBuild" />
+	<assets path="assets/debug" embed="true" unless="devBuild" />
 
 	<set name="BUILD_DIR" value="export/demoBuild" if="demoBuild" />
 	<define name="CHANGELOG" if="demoBuild" />

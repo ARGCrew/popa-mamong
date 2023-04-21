@@ -1,7 +1,7 @@
 package;
 
 import haxe.Json;
-import UIButtons.UIButton;
+import UIButtons;
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
@@ -28,7 +28,12 @@ class NoteOffsetState extends MusicBeatState {
     var paused:Bool = true;
     var mult:Int = 1;
 
-    var curID:Int = 0;
+    var notes:Array<Note> = [];
+    var noteStrings:Array<String> = [];
+
+    var bpmInputText:UIInputText;
+    var speedInputText:UIInputText;
+    var songInputText:UIInputText;
 
     public function new(music:String) {
         super();
@@ -39,6 +44,8 @@ class NoteOffsetState extends MusicBeatState {
     }
 
     override function create() {
+        changePresence("Chart Editor", null);
+
         butts = new ButtonGrid(-(FlxG.width / 5));
         add(butts);
 
@@ -54,6 +61,15 @@ class NoteOffsetState extends MusicBeatState {
         }
         add(saveButt);
 
+        bpmInputText = new UIInputText(saveButt.x, saveButt.y + 55, 100, 45);
+        add(bpmInputText);
+
+        speedInputText = new UIInputText(bpmInputText.x + 110, bpmInputText.y, 100, 55);
+        add(speedInputText);
+
+        songInputText = new UIInputText(bpmInputText.x, speedInputText.y + 110, 210, 55);
+        add(songInputText);
+
         var line:FlxSprite = new FlxSprite((FlxG.width / 3) * 2, FlxG.height / 3).makeGraphic(Std.int(FlxG.width / 4), 5, FlxColor.WHITE);
         add(line);
 
@@ -64,6 +80,8 @@ class NoteOffsetState extends MusicBeatState {
     }
 
     override function update(elapsed:Float) {
+        Conductor.songPosition = FlxG.sound.music.time;
+
         if (FlxG.keys.pressed.SHIFT) {
             mult = 10;
         } else {
@@ -112,7 +130,39 @@ class NoteOffsetState extends MusicBeatState {
             FlxG.switchState(new PlayState());
         }
 
+        if (controls.SEVEN_P) {
+            addNote(0);
+        }
+        if (controls.EIGHT_P) {
+            addNote(1);
+        }
+        if (controls.NINE_P) {
+            addNote(2);
+        }
+        if (controls.FOUR_P) {
+            addNote(3);
+        }
+        if (controls.FIVE_P) {
+            addNote(4);
+        }
+        if (controls.SIX_P) {
+            addNote(5);
+        }
+        if (controls.ONE_P) {
+            addNote(6);
+        }
+        if (controls.TWO_P) {
+            addNote(7);
+        }
+        if (controls.THREE_P) {
+            addNote(8);
+        }
+
         super.update(elapsed);
+    }
+
+    function addNote(id:Int) {
+        notes.push(new Note(Conductor.songPosition, id));
     }
 
     function openFile() {
@@ -167,7 +217,20 @@ class NoteOffsetState extends MusicBeatState {
         if (!FileSystem.exists(folder)) {
             FileSystem.createDirectory(folder);
         }
-        File.saveContent('$folder/$file', "");
+
+        for (i in 0...notes.length) {
+            var note = notes[i];
+            var daNote:String = '{\n"time": ${note.time},\n"id": ${note.id}\n}';
+            noteStrings.push(daNote);
+        }
+
+        File.saveContent('$folder/$file', '{
+    "bpm": ${bpmInputText.inputText}, 
+    "speed": ${speedInputText.inputText}, 
+    "song": "${songInputText.inputText}", 
+    "notes": $noteStrings, 
+    "events": []
+}');
         #end
     }
 }

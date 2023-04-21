@@ -49,10 +49,10 @@ class HaxeParser
             rawHx.shift();
         }
 */
-        var parseHx:String = fullHx.replace("\n", "");
-        var rawHx:Array<String> = parseHx.split(";");
+        var rawHx:Array<String> = fullHx.split(";");
+
         for (line in rawHx) {
-            if (line.replace("\n", "").startsWith("import")) {
+            if (line.replace("\n", "").contains("import ")) {
                 fullHx = fullHx.replace('$line;', "");
                 var toImport:String = line.replace("import", "").replace(" ", "").replace(";", "");
 
@@ -72,16 +72,16 @@ class HaxeParser
         @:privateAccess
 		parser.line = 1;
 		parser.allowTypes = true;
-        /*try*/ {
+        try {
             #if sys
             interp.execute(parser.parseString(fullHx));
             #else
             interp.execute(parser.parseString(fullHx));
             #end
         }
-        /*catch(e) {
+        catch(e) {
             FlxCrashHandler.alert("Error on HScript!", e);
-        }*/
+        }
 
         callFunction = interp.variables.get;
         addCallback = interp.variables.set;

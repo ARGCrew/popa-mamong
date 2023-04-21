@@ -1,5 +1,6 @@
 package manage;
 
+import controls.PlayerSettings;
 import flixel.FlxG;
 
 class PlayKeyManager {
@@ -18,7 +19,7 @@ class PlayKeyManager {
         if (justPressed.B) {
             PlayState.instance.botplay = !PlayState.instance.botplay;
         }
-        if (justPressed.C) {
+        if (PlayerSettings.current.controls.DEBUG_1) {
             FlxG.switchState(new NoteOffsetState(PlayState.songName));
         }
     }

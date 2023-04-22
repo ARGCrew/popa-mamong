@@ -318,6 +318,8 @@ class PlayState extends MusicBeatState {
                 FlxG.camera.flash(Std.parseInt(value1), Std.parseFloat(value2));
             case 'Camera Beat':
                 FlxG.camera.zoom += Std.parseFloat(value1);
+            case 'Mosaic Effect':
+
             case '':
         }
 

@@ -1,7 +1,7 @@
 {
     "bgColor": "0xffef476f",
-    "releaseColor": "0xffffd166",
-    "pressColor": "0xfff78c6b",
-    "confirmColor": "0xff83d483",
-    "indicatorsColor": "0xC7FFFFFF"
+    "releaseColor": "0xff118ab2",
+    "pressColor": "0xff06d6a0",
+    "confirmColor": "0xffffd166",
+    "indicatorsColor": "0xff073b4c"
 }

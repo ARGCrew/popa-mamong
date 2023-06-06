@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="Another Rhythm Game" package="com.h4mster.darhythmgame" version="1.0.0" company="ARG Team" />
+	<app main="Main" path="export" file="ARGame" />
+
+	<window width="1280" height="720" vsync="true" />
+
+	<icon path="embed/images/icon/16.png" size="16" />
+	<icon path="embed/images/icon/32.png" size="32" />
+	<icon path="embed/images/icon/64.png" size="64" />
+	<icon path="embed/images/icon/128.png" size="128" />
+	<icon path="embed/images/icon/256.png" size="256" />
+	<icon path="embed/images/icon/256.png" />
+	
+	<source path="source" />
+	
+	<haxelib name="lime" />
+	<haxelib name="openfl" />
+	<haxelib name="flixel" />
+	<haxelib name="flixel-addons" />
+	<haxelib name="flixel-ui" />
+	<section unless="web" />
+		<haxelib name="hxCodec" />
+		<haxelib name="discord_rpc" />
+	<section/>
+
+	<define name="MODS" unless="web" />
+	<define name="HSCRIPT" unless="web" />
+	<define name="CRASH_HANDLER" is="desktop" unless="web" />
+	
+	<assets path="assets" />
+	<assets path="embed" embed="true" />
+	<assets path="mods" />
+
+	<define name="TESTING" />
+	<define name="RELEASED" unless="TESTING" />
+	
+</project>

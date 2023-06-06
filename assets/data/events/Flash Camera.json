@@ -1,0 +1,13 @@
+{
+    "description": "",
+    "value1": {
+        "type": "dropdown",
+        "exclusions": ["BG", "GAME", "HUD"]
+    },
+    "value2": {
+        "type": "color"
+    },
+    "value3": {
+        "type": "float"
+    }
+}

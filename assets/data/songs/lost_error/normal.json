@@ -1,0 +1,56 @@
+{
+    "bpm": 179,
+    "speed": 2,
+    "song": "lost_error",
+
+    "notes": [
+        {
+            "notes": [
+                {
+                    "time": 5000,
+                    "data": 0,
+                    "type": ""
+                },
+                {
+                    "time": 5500,
+                    "data": 1,
+                    "type": ""
+                },
+                {
+                    "time": 6000,
+                    "data": 2,
+                    "type": ""
+                },
+                {
+                    "time": 6500,
+                    "data": 3,
+                    "type": ""
+                },
+                {
+                    "time": 7000,
+                    "data": 4,
+                    "type": ""
+                },
+                {
+                    "time": 7500,
+                    "data": 5,
+                    "type": ""
+                },
+                {
+                    "time": 8000,
+                    "data": 6,
+                    "type": ""
+                },
+                {
+                    "time": 8500,
+                    "data": 7,
+                    "type": ""
+                }
+            ],
+            "beats": 16,
+            "bpm": 179,
+            "changeBPM": false
+        }
+    ],
+    "events": []
+}

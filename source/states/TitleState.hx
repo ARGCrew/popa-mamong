@@ -13,8 +13,6 @@ class TitleState extends DaState {
     override function create() {
         super.create();
 
-        ModSystem.searchMods();
-
         logo = new FlxSprite(Paths.image("rhythmLogo"));
         logo.screenCenter();
         add(logo);

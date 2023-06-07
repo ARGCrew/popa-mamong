@@ -2,7 +2,6 @@ package states;
 
 import flixel.FlxG;
 import flixel.text.FlxText;
-import flixel.FlxSprite;
 import flixel.math.FlxRect;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
@@ -10,6 +9,8 @@ import flixel.addons.transition.TransitionData;
 import flixel.addons.transition.FlxTransitionableState;
 import openfl.utils.Assets;
 import flixel.graphics.FlxGraphic;
+import system.assets.ModSystem;
+import flixel.FlxSprite;
 import system.controls.PlayerSettings;
 
 class InitialState extends DaState {
@@ -18,8 +19,7 @@ class InitialState extends DaState {
         PlayerSettings.init(Numpad);
         FlxSprite.defaultAntialiasing = Preference.visuals.antialiasing;
 
-        ModSystem.searchMods();
-        for (mod in ModPaths.)
+        ModSystem.loadMods();
 
         var diamond:FlxGraphic = FlxGraphic.fromBitmapData(Assets.getBitmapData("embed/images/transition-diamond.png"));
 		diamond.persist = true;

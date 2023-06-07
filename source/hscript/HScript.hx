@@ -29,7 +29,29 @@ class HScript {
         if (Paths.exists(script))
             interp.execute(parser.parseString(Paths.text(script)));
 
-        set("createRuntimeSprite")
+        /*set("require", function(lib:String, as:String = null) {
+            var libArray:Array<String> = lib.split(".");
+            var libPackage:String = "";
+            while (libArray.length > 1) {
+                libPackage += libArray[0] + (libArray.length > 2 ? "." : "");
+                libArray.shift();
+            }
+            var libName:String = (as != null) ? as : libArray[0];
+
+            set(libName, Type.resolveClass('$libPackage.$libName'));
+        });*/
+
+        set("screenWidth", FlxG.width);
+        set("screenHeight", FlxG.height);
+        set("Paths", Paths);
+
+        set("RuntimeSprite", RuntimeSprite);
+        set("RuntimeText", RuntimeText);
+        set("RuntimeTween", FlxTween);
+        set("RuntimeTimer", FlxTimer);
+
+        set("PlayState", PlayState);
+        set("game", PlayState.instance);
         #end
     }
 

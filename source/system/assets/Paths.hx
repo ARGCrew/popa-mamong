@@ -1,29 +1,60 @@
 package system.assets;
 
 #if MODS
-import system.assets.ModSystem.ModMetaData;
 import sys.io.File;
 import sys.FileSystem;
+import system.assets.ModSystem.ModMetaData;
 #end
 import openfl.media.Sound;
 import openfl.display.BitmapData;
 import openfl.utils.Assets;
 
 class Paths {
-    inline static var soundExt:String = #if web "mp3" #else "ogg" #end;
+    static var loadedImages:Map<String, BitmapData> = [];
+    static var loadedMusic:Map<String, Sound> = [];
+    static var loadedSounds:Map<String, Sound> = [];
+    static var loadedSongs:Map<String, Sound> = [];
+
+    inline public static var soundExt:String = #if web "mp3" #else "ogg" #end;
+
+    public static function clearMemory() {
+        for (key in loadedImages.keys())
+            loadedImages[key].disposeImage();
+
+        for (key in loadedMusic.keys())
+            loadedMusic[key].close();
+
+        for (key in loadedSounds.keys())
+            loadedSounds[key].close();
+
+        for (key in loadedSongs.keys())
+            loadedSongs[key].close();
+
+        Assets.cache.clear();
+        loadedImages = [];
+        loadedSounds = loadedSongs = [];
+    }
 
     public static function image(key:String, embed:Bool = false) {
-        var image = embed ? Assets.getBitmapData('embed/images/$key.png') : #if MODS ModPaths.image('images/$key.png') #else null #end;
-        if (image == null && !embed) image = AssetPaths.image('images/$key.png');
+        var image:BitmapData = null;
+        if (!loadedImages.exists(key)) {
+            image = embed ? Assets.getBitmapData('embed/images/$key.png') : #if MODS ModPaths.image('images/$key.png') #else null #end;
+            if (image == null && !embed) image = AssetPaths.image('images/$key.png');
 
-        return image;
+            loadedImages.set(key, image);
+        }
+        return loadedImages[key];
     }
 
     public static function sound(key:String, embed:Bool = false) {
-        var sound = embed ? AssetPaths.sound('embed/sounds/$key.$soundExt') : #if MODS ModPaths.sound('sounds/$key.$soundExt') #else null #end;
-        if (sound == null && !embed) sound = AssetPaths.sound('sounds/$key.$soundExt');
+        var sound:Sound = null;
+        if (!loadedSounds.exists(key)) {
+            sound = embed ? AssetPaths.sound('embed/sounds/$key.$soundExt') : #if MODS ModPaths.sound('sounds/$key.$soundExt') #else null #end;
+            if (sound == null && !embed) sound = AssetPaths.sound('sounds/$key.$soundExt');
 
-        return sound;
+            loadedSounds.set(key, sound);
+        }
+        return loadedSounds[key];
     }
 
     public static function text(key:String, embed:Bool = false) {
@@ -34,10 +65,14 @@ class Paths {
     }
 
     public static function song(key:String) {
-        var song = #if MODS ModPaths.sound('songs/$key/$soundExt') #else null #end;
-        if (song == null) song = AssetPaths.sound('songs/$key.$soundExt');
+        var song:Sound = null;
+        if (!loadedSongs.exists(key)) {
+            song = #if MODS ModPaths.sound('songs/$key/$soundExt') #else null #end;
+            if (song == null) song = AssetPaths.sound('songs/$key.$soundExt');
 
-        return song;
+            loadedSongs.set(key, song);
+        }
+        return loadedSongs[key];
     }
 
     public static function video(key:String) {
@@ -48,17 +83,24 @@ class Paths {
     }
 
     public static function fragShader(key:String) {
-        var fragShader = #if MODS ModPaths.text('shaders/$key.frag') #else null #end;
-        if (fragShader == null) fragShader = AssetPaths.text('shaders.$key.frag');
-
+        var fragShader = text('shaders/$key.frag');
         return fragShader;
     }
 
     public static function vertShader(key:String) {
-        var vertShader = #if MODS ModPaths.text('shaders/$key.vert') #else null #end;
-        if (vertShader == null) vertShader = AssetPaths.text('shaders.$key.vert');
-
+        var vertShader = text('shaders/$key.vert');
         return vertShader;
+    }
+
+    public static function music(key:String, embed:Bool = false) {
+        var sound:Sound = null;
+        if (!loadedSounds.exists(key)) {
+            sound = embed ? AssetPaths.sound('embed/music/$key.$soundExt') : #if MODS ModPaths.sound('music/$key.$soundExt') #else null #end;
+            if (sound == null && !embed) sound = AssetPaths.sound('music/$key.$soundExt');
+
+            loadedSounds.set(key, sound);
+        }
+        return loadedSounds[key];
     }
 
     public static function exists(key:String) {

@@ -12,6 +12,7 @@ class Preference {
 private class Visuals {
     public var antialiasing:Bool = true;
     public var colorBlind:ColorBlind = new ColorBlind();
+    public var effects:Bool = false;
 
     public function new() {}
 }

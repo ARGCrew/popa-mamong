@@ -18,6 +18,9 @@ class InitialState extends DaState {
         PlayerSettings.init(Numpad);
         FlxSprite.defaultAntialiasing = Preference.visuals.antialiasing;
 
+        ModSystem.searchMods();
+        for (mod in ModPaths.)
+
         var diamond:FlxGraphic = FlxGraphic.fromBitmapData(Assets.getBitmapData("embed/images/transition-diamond.png"));
 		diamond.persist = true;
 		diamond.destroyOnNoUse = false;

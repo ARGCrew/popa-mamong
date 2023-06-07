@@ -27,7 +27,8 @@
 
 	<define name="MODS" unless="web" />
 	<define name="HSCRIPT" unless="web" />
-	<define name="CRASH_HANDLER" is="desktop" unless="web" />
+	<define name="CRASH_HANDLER" if="desktop" />
+	<define name="SHADERS" if="desktop" />
 	
 	<assets path="assets" />
 	<assets path="embed" embed="true" />

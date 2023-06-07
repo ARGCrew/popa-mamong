@@ -1,5 +1,8 @@
 package states;
 
+#if SHADERS
+import flixel.addons.display.FlxRuntimeShader;
+#end
 import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.util.FlxTimer;
@@ -168,6 +171,21 @@ class PlayState extends DaState {
 
         hscript.call("update", [elapsed]);
     }
+
+    #if SHADERS
+    public var runtimeShaders:Map<String, FlxRuntimeShader> = [];
+    public function createRuntimeShader(path:String) {
+        if (!Preference.visuals.effects) return new FlxRuntimeShader();
+
+        var fragCode:String = Paths.fragShader(path);
+        var vertCode:String = Paths.vertShader(path);
+        
+        if (fragCode == null) fragCode = "";
+        if (vertCode == null) vertCode = "";
+
+        return new FlxRuntimeShader(fragCode, vertCode);
+    }
+    #end
 
     public function triggerEventNote(event:EventNoteData) {
         var type:String = event.type;

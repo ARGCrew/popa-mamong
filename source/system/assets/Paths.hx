@@ -13,10 +13,10 @@ class Paths {
     inline static var soundExt:String = #if web "mp3" #else "ogg" #end;
 
     public static function image(key:String, embed:Bool = false) {
-        var bitmapData = embed ? Assets.getBitmapData('embed/images/$key.png') : #if MODS ModPaths.image('images/$key.png') #else null #end;
-        if (bitmapData == null && !embed) bitmapData = AssetPaths.image('images/$key.png');
+        var image = embed ? Assets.getBitmapData('embed/images/$key.png') : #if MODS ModPaths.image('images/$key.png') #else null #end;
+        if (image == null && !embed) image = AssetPaths.image('images/$key.png');
 
-        return bitmapData;
+        return image;
     }
 
     public static function sound(key:String, embed:Bool = false) {
@@ -47,26 +47,61 @@ class Paths {
         return video;
     }
 
+    public static function fragShader(key:String) {
+        var fragShader = #if MODS ModPaths.text('shaders/$key.frag') #else null #end;
+        if (fragShader == null) fragShader = AssetPaths.text('shaders.$key.frag');
+
+        return fragShader;
+    }
+
+    public static function vertShader(key:String) {
+        var vertShader = #if MODS ModPaths.text('shaders/$key.vert') #else null #end;
+        if (vertShader == null) vertShader = AssetPaths.text('shaders.$key.vert');
+
+        return vertShader;
+    }
+
     public static function exists(key:String) {
         return AssetPaths.exists(key) #if MODS || ModPaths.exists(key) #end;
     }
 }
 
 class AssetPaths {
-    public static function image(key:String)
-        return Assets.getBitmapData('assets/$key');
+    public static function image(key:String) {
+        return {
+            if (exists(key))
+                Assets.getBitmapData('assets/$key');
+            else null;
+        }
+    }
 
-    public static function sound(key:String)
-        return Assets.getSound('assets/$key');
+    public static function sound(key:String) {
+        return {
+            if (exists(key))
+                Assets.getSound('assets/$key');
+            else null;
+        }
+    }
 
-    public static function text(key:String)
-        return Assets.getText('assets/$key');
+    public static function text(key:String) {
+        return {
+            if (exists(key))
+                Assets.getText('assets/$key');
+            else null;
+        }
+    }
 
-    public static function file(key:String)
-        return Assets.getPath('assets/$key');
+    public static function file(key:String) {
+        return {
+            if (exists(key))
+                Assets.getPath('assets/$key');
+            else null;
+        }
+    }
 
-    public static function exists(key:String)
+    public static function exists(key:String) {
         return Assets.exists('assets/$key');
+    }
 }
 
 #if MODS

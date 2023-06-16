@@ -1,10 +1,12 @@
 package states;
 
+import states.substates.OutdatedSubState;
+import lime.app.Application;
+import utils.WebAPI;
 import system.song.Song;
+import system.assets.Paths;
 import flixel.math.FlxMath;
 import flixel.FlxG;
-import system.assets.ModSystem;
-
 import flixel.FlxSprite;
 
 class TitleState extends DaState {
@@ -13,7 +15,16 @@ class TitleState extends DaState {
     override function create() {
         super.create();
 
-        logo = new FlxSprite(Paths.image("rhythmLogo"));
+        #if !TESTING
+        WebAPI.request("https://raw.githubusercontent.com/h4master/another-rhythm-game/main/gitVersion.txt", {onData: function(data:String) {
+            if (Application.current.meta["version"] != data)
+                openSubState(new OutdatedSubState());
+        }});
+        #end
+
+        openSubState(new OutdatedSubState());
+
+        logo = new FlxSprite(Paths.image("titleLogo", true));
         logo.screenCenter();
         add(logo);
     }

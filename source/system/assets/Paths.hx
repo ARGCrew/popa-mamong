@@ -10,97 +10,89 @@ import openfl.display.BitmapData;
 import openfl.utils.Assets;
 
 class Paths {
-    static var loadedImages:Map<String, BitmapData> = [];
-    static var loadedMusic:Map<String, Sound> = [];
-    static var loadedSounds:Map<String, Sound> = [];
-    static var loadedSongs:Map<String, Sound> = [];
-
     inline public static var soundExt:String = #if web "mp3" #else "ogg" #end;
 
-    public static function clearMemory() {
-        for (key in loadedImages.keys())
-            loadedImages[key].disposeImage();
-
-        for (key in loadedMusic.keys())
-            loadedMusic[key].close();
-
-        for (key in loadedSounds.keys())
-            loadedSounds[key].close();
-
-        for (key in loadedSongs.keys())
-            loadedSongs[key].close();
-
-        Assets.cache.clear();
-        loadedImages = [];
-        loadedSounds = loadedSongs = [];
-    }
-
-    public static function image(key:String, embed:Bool = false) {
-        var image:BitmapData = null;
-        if (!loadedImages.exists(key)) {
+    public static function image(key:String, ignoreMods:Bool = false, embed:Bool = false) {
+        var image:BitmapData;
+        if (ignoreMods)
+            image = embed ? Assets.getBitmapData('embed/images/$key.png') : AssetPaths.image('images/$key.png');
+        else {
             image = embed ? Assets.getBitmapData('embed/images/$key.png') : #if MODS ModPaths.image('images/$key.png') #else null #end;
             if (image == null && !embed) image = AssetPaths.image('images/$key.png');
-
-            loadedImages.set(key, image);
         }
-        return loadedImages[key];
+        return image;
     }
 
-    public static function sound(key:String, embed:Bool = false) {
-        var sound:Sound = null;
-        if (!loadedSounds.exists(key)) {
-            sound = embed ? AssetPaths.sound('embed/sounds/$key.$soundExt') : #if MODS ModPaths.sound('sounds/$key.$soundExt') #else null #end;
+    public static function sound(key:String, ignoreMods:Bool = false, embed:Bool = false) {
+        var sound:Sound;
+        if (ignoreMods)
+            sound = embed ? Assets.getSound('embed/sounds/$key.$soundExt') : AssetPaths.sound('sounds/$key.$soundExt');
+        else {
+            sound = embed ? Assets.getSound('embed/sounds/$key.$soundExt') : #if MODS ModPaths.sound('sounds/$key.$soundExt') #else null #end;
             if (sound == null && !embed) sound = AssetPaths.sound('sounds/$key.$soundExt');
-
-            loadedSounds.set(key, sound);
         }
-        return loadedSounds[key];
+        return sound;
     }
 
-    public static function text(key:String, embed:Bool = false) {
-        var text = embed ? AssetPaths.text('embed/$key') : #if MODS ModPaths.text(key) #else null #end;
-        if (text == null && !embed) text = AssetPaths.text(key);
-
+    public static function text(key:String, ignoreMods:Bool = false, embed:Bool = false) {
+        var text:String;
+        if (ignoreMods)
+            text = embed ? Assets.getText('embed/$key') : AssetPaths.text(key);
+        else {
+            text = embed ? Assets.getText('embed/$key') : #if MODS ModPaths.text(key) #else null #end;
+            if (text == null && !embed) text = AssetPaths.text(key);
+        }
         return text;
     }
 
     public static function song(key:String) {
-        var song:Sound = null;
-        if (!loadedSongs.exists(key)) {
-            song = #if MODS ModPaths.sound('songs/$key/$soundExt') #else null #end;
-            if (song == null) song = AssetPaths.sound('songs/$key.$soundExt');
+        var song:Sound = #if MODS ModPaths.sound('songs/$key/$soundExt') #else null #end;
+        if (song == null) song = AssetPaths.sound('songs/$key.$soundExt');
 
-            loadedSongs.set(key, song);
-        }
-        return loadedSongs[key];
+        return song;
     }
 
-    public static function video(key:String) {
-        var video = #if MODS ModPaths.file('videos/$key.mp4') #else null #end;
-        if (video == null) video = AssetPaths.file('videos/$key.mp4');
-
+    public static function video(key:String, ignoreMods:Bool = false) {
+        var video:String;
+        if (ignoreMods)
+            video = AssetPaths.file('videos/$key.mp4');
+        else {
+            video = #if MODS ModPaths.file('videos/$key.mp4') #else null #end;
+            if (video == null) video = AssetPaths.file('videos/$key.mp4');
+        }
         return video;
     }
 
-    public static function fragShader(key:String) {
-        var fragShader = text('shaders/$key.frag');
+    public static function fragShader(key:String, ignoreMods:Bool = false, embed:Bool = false) {
+        var fragShader:String = text('shaders/$key.frag', ignoreMods, embed);
         return fragShader;
     }
 
-    public static function vertShader(key:String) {
-        var vertShader = text('shaders/$key.vert');
+    public static function vertShader(key:String, ignoreMods:Bool = false, embed:Bool = false) {
+        var vertShader = text('shaders/$key.vert', ignoreMods, embed);
         return vertShader;
     }
 
-    public static function music(key:String, embed:Bool = false) {
-        var sound:Sound = null;
-        if (!loadedSounds.exists(key)) {
-            sound = embed ? AssetPaths.sound('embed/music/$key.$soundExt') : #if MODS ModPaths.sound('music/$key.$soundExt') #else null #end;
-            if (sound == null && !embed) sound = AssetPaths.sound('music/$key.$soundExt');
-
-            loadedSounds.set(key, sound);
+    public static function music(key:String, ignoreMods:Bool = false, embed:Bool = false) {
+        var music:Sound;
+        if (ignoreMods)
+            music = embed ? Assets.getSound('embed/music/$key.$soundExt') : AssetPaths.sound('music/$key.$soundExt');
+        else {
+            music = embed ? Assets.getSound('embed/music/$key.$soundExt') : #if MODS ModPaths.sound('music/$key.$soundExt') #else null #end;
+            if (music == null && !embed) music = AssetPaths.sound('music/$key.$soundExt');
         }
-        return loadedSounds[key];
+        return music;
+    }
+
+    public static function font(key:String, ignoreMods:Bool = false, embed:Bool = false) {
+        var font:String;
+        if (ignoreMods)
+            font = embed ? Assets.getPath('embed/fonts/$key') : AssetPaths.file('fonts/$key');
+        else {
+            font = embed ? Assets.getPath('embed/fonts/$key') : #if MODS ModPaths.file('fonts/$key') #else null #end;
+            if (font == null && !embed) font = AssetPaths.file('fonts/$key');
+        }
+        return font;
     }
 
     public static function exists(key:String) {

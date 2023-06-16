@@ -1,6 +1,8 @@
 package system;
 
 import flixel.FlxG;
+import native.DiscordClient;
+import lime.app.Application;
 import openfl.events.UncaughtErrorEvent;
 
 using StringTools;
@@ -27,7 +29,7 @@ class CrashHandler {
         errMsg += "\n\n" + e.error;
         #end
 
-        lime.app.Application.current.window.alert(errMsg, "HaxeFlixel/AnotherRhythmGame");
+        Application.current.window.alert(errMsg, "HaxeFlixel/AnotherRhythmGame");
 
         DiscordClient.closeSession();
         #if RELEASED

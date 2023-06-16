@@ -1,5 +1,8 @@
 package states;
 
+import utils.GitHub;
+import utils.Preference;
+import native.DiscordClient;
 import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.math.FlxRect;
@@ -17,9 +20,12 @@ class InitialState extends DaState {
     override function create() {
         DiscordClient.startSession();
         PlayerSettings.init(Numpad);
+        Preference.visuals.colorBlind.load();
         FlxSprite.defaultAntialiasing = Preference.visuals.antialiasing;
 
         ModSystem.loadMods();
+        
+        GitHub.connect("another-rhythm-game", "h4master");
 
         var diamond:FlxGraphic = FlxGraphic.fromBitmapData(Assets.getBitmapData("embed/images/transition-diamond.png"));
 		diamond.persist = true;

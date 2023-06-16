@@ -1,5 +1,6 @@
 package utils;
 
+import h4m.windows.WinAPI;
 import flixel.FlxG;
 
 class Preference {
@@ -24,6 +25,14 @@ private class Gameplay {
 private class Misc {
     public var safeFrames:Int = 10;
     public var noteOffset:Float = 0;
+    
+    public var vsync(default, set):Bool = false;
+    public function set_vsync(value:Bool) {
+        #if windows
+        WinAPI.GetActiveWindow().vsync = value;
+        #end
+        return value;
+    }
 
     public function new() {}
 }

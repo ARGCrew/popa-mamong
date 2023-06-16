@@ -1,5 +1,7 @@
 package sprites;
 
+import utils.Conductor;
+import system.assets.Paths;
 import states.PlayState;
 import flixel.FlxSprite;
 

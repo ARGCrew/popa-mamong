@@ -1,5 +1,6 @@
 package system.video;
 
+import utils.Preference;
 import openfl.events.Event;
 #if !hxCodec
 import openfl.Lib;

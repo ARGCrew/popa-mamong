@@ -9,4 +9,7 @@ class Utils {
         flxSound.volume = Preference.volume.sound;
         return flxSound;
     }
+
+    public static function boundTo(value:Float, min:Float, max:Float)
+        return Math.max(min, Math.min(max, value));
 }

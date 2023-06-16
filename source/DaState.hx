@@ -1,3 +1,4 @@
+import utils.Preference;
 import flixel.FlxG;
 import states.PlayState;
 import utils.Conductor;
@@ -31,6 +32,9 @@ class DaState extends FlxTransitionableState {
 		if (FlxG.sound.music != null && FlxG.sound.music.playing)
 			Conductor.songPosition = FlxG.sound.music.time;
 
+		if (FlxG.keys.justPressed.F)
+            FlxG.fullscreen = !FlxG.fullscreen;
+
         var oldStep:Int = curStep;
         updateCurStep();
 		updateBeat();
@@ -41,9 +45,6 @@ class DaState extends FlxTransitionableState {
                 (oldStep < curStep) ? updateSection() : rollbackSection();
 			}
 		}
-
-        if (FlxG.keys.justPressed.F)
-            FlxG.fullscreen = !FlxG.fullscreen;
     }
 
     private function updateSection() {

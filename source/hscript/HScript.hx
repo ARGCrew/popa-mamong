@@ -1,5 +1,6 @@
 package hscript;
 
+import system.assets.Paths;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxTween;
 import flixel.FlxG;

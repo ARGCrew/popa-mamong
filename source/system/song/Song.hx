@@ -1,5 +1,6 @@
 package system.song;
 
+import system.assets.Paths;
 import haxe.Json;
 
 typedef SongData = {

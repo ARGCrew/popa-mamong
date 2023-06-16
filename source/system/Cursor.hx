@@ -1,5 +1,6 @@
 package system;
 
+import system.assets.Paths;
 import flixel.FlxG;
 import openfl.utils.Assets;
 import openfl.display.Bitmap;
@@ -22,10 +23,12 @@ class Cursor extends Bitmap {
     public function new() {
         super();
         type = NORMAL;
+
+        //FlxG.mouse.load(Paths.image("cursor-invisible", true, true));
     }
 
     public function set_type(value:CursorType) {
-        bitmapData = Paths.image("cursor/" + Std.string(value).toLowerCase(), true);
+        bitmapData = Paths.image("cursor/" + Std.string(value).toLowerCase(), true, true);
 
         switch(value) {
             case NORMAL:
@@ -34,6 +37,7 @@ class Cursor extends Bitmap {
                 offset.x = width / 2;
                 offset.y = height / 4;
         }
+        smoothing = true;
         return value;
     }
 

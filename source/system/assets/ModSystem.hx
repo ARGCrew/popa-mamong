@@ -3,6 +3,7 @@ package system.assets;
 import flixel.FlxState;
 import flixel.FlxG;
 #if MODS
+import system.assets.Paths.ModPaths;
 import sys.io.File;
 import haxe.Json;
 import haxe.io.Path;
@@ -71,35 +72,13 @@ class ModSystem extends DaState {
 
     public static function searchMods(?onComplete:(mods:Map<String, ModMetaData>)->Void) {
         #if MODS
-        if (FileSystem.exists("mods/modList.json")) {
-            if (File.getContent("mods/modList.json") != "{\n}")
-                modList = Json.parse(File.getContent("mods/modList.json"));
-            for (field in Reflect.fields(modList)) {
-                if (Reflect.getProperty(modList, field))
-                    addMod(field);
-            }
-        }
-        
         for (mod in FileSystem.readDirectory(modFolder)) {
-            if (FileSystem.isDirectory(modFolder) && !ModPaths.mods.exists(mod) && (mod != "readme.txt") && (mod != "modList.json")) {
-                Reflect.setProperty(modList, mod, true);
+            if (FileSystem.isDirectory(modFolder) && !ModPaths.mods.exists(mod) && (mod != "readme.txt"))
                 addMod(mod);
-            }
         }
-
-        var modListTxt:String = "{";
-        var allMods:Array<String> = Reflect.fields(modList);
-        for (i in 0...allMods.length) {
-            modListTxt += {
-                if (i == 0) '\n\t"${allMods[i]}": ${Reflect.getProperty(modList, allMods[i])}';
-                else ',\n\t"${allMods[i]}": ${Reflect.getProperty(modList, allMods[i])}';
-            }
-        }
-        modListTxt += "\n}";
-        File.saveContent("mods/modList.json", modListTxt);
-        #end
 
         if (onComplete != null) onComplete(ModPaths.mods);
+        #end
     }
 
     public static function addMod(folder:String) {

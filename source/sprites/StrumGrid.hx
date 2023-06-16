@@ -1,5 +1,6 @@
 package sprites;
 
+import system.assets.Paths;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 

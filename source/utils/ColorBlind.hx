@@ -58,6 +58,7 @@ class ColorBlind {
                 if (filter != null) FlxG.game.setFilters([filter]);
             }
         }
+		FlxG.save.data.colorBlindMode = value;
 
         return value;
     }

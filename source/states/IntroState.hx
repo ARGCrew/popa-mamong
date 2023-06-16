@@ -1,5 +1,6 @@
 package states;
 
+import system.assets.Paths;
 import flixel.addons.transition.FlxTransitionableState;
 import system.video.VideoHandler;
 import flixel.util.FlxColor;
@@ -14,6 +15,6 @@ class IntroState extends DaState {
             FlxG.switchState(new TitleState());
         }
         player.canSkip = false;
-        player.playVideo("assets/videos/Intro.mp4");
+        player.playVideo(Paths.video("Intro", true));
     }
 }

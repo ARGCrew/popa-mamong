@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\source"
+    "\\source",
+    "\\source\\sprites",
+    "\\source\\utils"
   ],
-  "SelectedNode": "\\source\\DaState.hx",
+  "SelectedNode": "\\source\\utils\\Utils.hx",
   "PreviewInSolutionExplorer": false
 }

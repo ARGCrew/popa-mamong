@@ -1,40 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	
-	<meta title="Another Rhythm Game" package="com.h4mster.darhythmgame" version="0.2.4" company="ARG Team" />
-	<app main="Main" path="export" file="ARGame" />
-
-	<window width="1280" height="720" />
-
-	<icon path="embed/images/icon/16.png" size="16" />
-	<icon path="embed/images/icon/32.png" size="32" />
-	<icon path="embed/images/icon/64.png" size="64" />
-	<icon path="embed/images/icon/128.png" size="128" />
-	<icon path="embed/images/icon/256.png" size="256" />
-	<icon path="embed/images/icon/256.png" />
+	<meta title="Another Rhythm Game" package="com.ARGTeam.arg" version="0.1-dev" company="ARG Team"/>
+	<app main="Main" path="export" file="ARGame"/>
+	<window width="1280" height="720"/>
 	
-	<source path="source" />
+	<source path="source"/>
 	
-	<haxelib name="lime" />
-	<haxelib name="openfl" />
-	<haxelib name="flixel" />
-	<haxelib name="flixel-addons" />
-	<haxelib name="flixel-ui" />
-	<haxelib name="hxCodec" unless="web" />
-	<haxelib name="discord_rpc" unless="web" />
-
-	<define name="MODS" unless="web" />
-	<define name="HSCRIPT" unless="web" />
-	<define name="CRASH_HANDLER" if="desktop" />
-	<define name="SHADERS" if="desktop" />
-	<define name="UPDATE" if="desktop" />
+	<haxelib name="flixel"/>
+	<haxelib name="flixel-addons"/>
 	
-	<assets path="assets" />
-	<assets path="embed" embed="true" />
-	<assets path="mods" />
-
-	<define name="TESTING" />
-	<define name="DEMO" unless="TESTING" />
-	<define name="RELEASED" unless="DEMO" />
+	<assets path="assets"/>
 	
 </project>

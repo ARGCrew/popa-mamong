@@ -6,6 +6,7 @@
 #include <hxcpp.h>
 #endif
 
+HX_DECLARE_CLASS0(Fmod)
 HX_DECLARE_CLASS1(flixel,FlxBasic)
 HX_DECLARE_CLASS3(flixel,input,mouse,FlxMouseEventManager)
 HX_DECLARE_CLASS3(flixel,_hx_system,frontEnds,PluginFrontEnd)
@@ -49,6 +50,9 @@ class HXCPP_CLASS_ATTRIBUTES PluginFrontEnd_obj : public ::hx::Object
 		void __Visit(HX_VISIT_PARAMS);
 		bool _hx_isInstanceOf(int inClassId);
 		::String __ToString() const { return HX_("PluginFrontEnd",a5,f8,8b,d8); }
+
+		 ::Fmod add_Fmod( ::Fmod Plugin);
+		::Dynamic add_Fmod_dyn();
 
 		 ::flixel::input::mouse::FlxMouseEventManager add_flixel_input_mouse_FlxMouseEventManager( ::flixel::input::mouse::FlxMouseEventManager Plugin);
 		::Dynamic add_flixel_input_mouse_FlxMouseEventManager_dyn();

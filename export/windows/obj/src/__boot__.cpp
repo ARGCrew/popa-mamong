@@ -100,12 +100,6 @@
 #ifndef INCLUDED_haxe_StackItem
 #include <haxe/StackItem.h>
 #endif
-#ifndef INCLUDED_format_svg_DisplayElement
-#include <format/svg/DisplayElement.h>
-#endif
-#ifndef INCLUDED_format_svg_FillType
-#include <format/svg/FillType.h>
-#endif
 #ifndef INCLUDED_flixel_util_FlxVerticalAlign
 #include <flixel/util/FlxVerticalAlign.h>
 #endif
@@ -898,21 +892,6 @@
 #ifndef INCLUDED_gameplay_PlayState
 #include <gameplay/PlayState.h>
 #endif
-#ifndef INCLUDED_format_svg_SVGRenderer
-#include <format/svg/SVGRenderer.h>
-#endif
-#ifndef INCLUDED_format_svg_SVGData
-#include <format/svg/SVGData.h>
-#endif
-#ifndef INCLUDED_format_svg_PathSegment
-#include <format/svg/PathSegment.h>
-#endif
-#ifndef INCLUDED_format_svg_PathParser
-#include <format/svg/PathParser.h>
-#endif
-#ifndef INCLUDED_format_gfx_GfxBytes
-#include <format/gfx/GfxBytes.h>
-#endif
 #ifndef INCLUDED_flixel_util_LabelValuePair
 #include <flixel/util/LabelValuePair.h>
 #endif
@@ -1459,11 +1438,11 @@
 #ifndef INCLUDED_flixel_addons_transition_FlxTransitionableState
 #include <flixel/addons/transition/FlxTransitionableState.h>
 #endif
-#ifndef INCLUDED_flixel_FlxBasic
-#include <flixel/FlxBasic.h>
-#endif
 #ifndef INCLUDED_FmodSFX
 #include <FmodSFX.h>
+#endif
+#ifndef INCLUDED_flixel_FlxBasic
+#include <flixel/FlxBasic.h>
 #endif
 #ifndef INCLUDED_Constants
 #include <Constants.h>
@@ -1842,6 +1821,9 @@
 #endif
 #ifndef INCLUDED_native_Windows
 #include <native/Windows.h>
+#endif
+#ifndef INCLUDED_menus_MainMenuState
+#include <menus/MainMenuState.h>
 #endif
 #ifndef INCLUDED_lime_utils__Resource_Resource_Impl_
 #include <lime/utils/_Resource/Resource_Impl_.h>
@@ -2842,60 +2824,6 @@
 #ifndef INCLUDED_gameplay_Note
 #include <gameplay/Note.h>
 #endif
-#ifndef INCLUDED_format_svg_Text
-#include <format/svg/Text.h>
-#endif
-#ifndef INCLUDED_format_svg_RenderContext
-#include <format/svg/RenderContext.h>
-#endif
-#ifndef INCLUDED_format_svg_ArcSegment
-#include <format/svg/ArcSegment.h>
-#endif
-#ifndef INCLUDED_format_svg_CubicSegment
-#include <format/svg/CubicSegment.h>
-#endif
-#ifndef INCLUDED_format_svg_QuadraticSegment
-#include <format/svg/QuadraticSegment.h>
-#endif
-#ifndef INCLUDED_format_svg_DrawSegment
-#include <format/svg/DrawSegment.h>
-#endif
-#ifndef INCLUDED_format_svg_MoveSegment
-#include <format/svg/MoveSegment.h>
-#endif
-#ifndef INCLUDED_format_svg_Path
-#include <format/svg/Path.h>
-#endif
-#ifndef INCLUDED_format_svg_Group
-#include <format/svg/Group.h>
-#endif
-#ifndef INCLUDED_format_svg_Grad
-#include <format/svg/Grad.h>
-#endif
-#ifndef INCLUDED_format_gfx_LineStyle
-#include <format/gfx/LineStyle.h>
-#endif
-#ifndef INCLUDED_format_gfx_Gradient
-#include <format/gfx/Gradient.h>
-#endif
-#ifndef INCLUDED_format_gfx_GfxTextFinder
-#include <format/gfx/GfxTextFinder.h>
-#endif
-#ifndef INCLUDED_format_gfx_GfxGraphics
-#include <format/gfx/GfxGraphics.h>
-#endif
-#ifndef INCLUDED_format_gfx_GfxExtent
-#include <format/gfx/GfxExtent.h>
-#endif
-#ifndef INCLUDED_format_gfx_Gfx2Haxe
-#include <format/gfx/Gfx2Haxe.h>
-#endif
-#ifndef INCLUDED_format_gfx_Gfx
-#include <format/gfx/Gfx.h>
-#endif
-#ifndef INCLUDED_format_SVG
-#include <format/SVG.h>
-#endif
 #ifndef INCLUDED_flixel_util_helpers_FlxRangeBounds
 #include <flixel/util/helpers/FlxRangeBounds.h>
 #endif
@@ -3466,9 +3394,6 @@
 #ifndef INCLUDED_flixel_group_FlxTypedGroup
 #include <flixel/group/FlxTypedGroup.h>
 #endif
-#ifndef INCLUDED_flixel_util_IFlxDestroyable
-#include <flixel/util/IFlxDestroyable.h>
-#endif
 #ifndef INCLUDED_IntIterator
 #include <IntIterator.h>
 #endif
@@ -3477,6 +3402,9 @@
 #endif
 #ifndef INCLUDED_Fmod
 #include <Fmod.h>
+#endif
+#ifndef INCLUDED_flixel_util_IFlxDestroyable
+#include <flixel/util/IFlxDestroyable.h>
 #endif
 #ifndef INCLUDED_EReg
 #include <EReg.h>
@@ -3578,8 +3506,6 @@ __files__boot();
 ::haxe::io::Error_obj::__register();
 ::haxe::io::Encoding_obj::__register();
 ::haxe::StackItem_obj::__register();
-::format::svg::DisplayElement_obj::__register();
-::format::svg::FillType_obj::__register();
 ::flixel::util::FlxVerticalAlign_obj::__register();
 ::flixel::util::FlxSaveStatus_obj::__register();
 ::flixel::util::FlxHorizontalAlign_obj::__register();
@@ -3844,11 +3770,6 @@ __files__boot();
 ::haxe::Serializer_obj::__register();
 ::sys::thread::_Thread::HaxeThread_obj::__register();
 ::gameplay::PlayState_obj::__register();
-::format::svg::SVGRenderer_obj::__register();
-::format::svg::SVGData_obj::__register();
-::format::svg::PathSegment_obj::__register();
-::format::svg::PathParser_obj::__register();
-::format::gfx::GfxBytes_obj::__register();
 ::flixel::util::LabelValuePair_obj::__register();
 ::flixel::util::FlxSpriteUtil_obj::__register();
 ::flixel::util::FlxSort_obj::__register();
@@ -4031,8 +3952,8 @@ __files__boot();
 ::__ASSET__flixel_sounds_flixel_ogg_obj::__register();
 ::__ASSET__flixel_sounds_beep_ogg_obj::__register();
 ::flixel::addons::transition::FlxTransitionableState_obj::__register();
-::flixel::FlxBasic_obj::__register();
 ::FmodSFX_obj::__register();
+::flixel::FlxBasic_obj::__register();
 ::Constants_obj::__register();
 ::ClientPrefs_obj::__register();
 ::openfl::display::DisplayObject_obj::__register();
@@ -4159,6 +4080,7 @@ __files__boot();
 ::openfl::desktop::InteractiveIcon_obj::__register();
 ::openfl::desktop::Icon_obj::__register();
 ::native::Windows_obj::__register();
+::menus::MainMenuState_obj::__register();
 ::lime::utils::_Resource::Resource_Impl__obj::__register();
 ::lime::utils::Preloader_obj::__register();
 ::lime::utils::_DataPointer::DataPointer_Impl__obj::__register();
@@ -4492,24 +4414,6 @@ __files__boot();
 ::haxe::_CallStack::CallStack_Impl__obj::__register();
 ::gameplay::Strum_obj::__register();
 ::gameplay::Note_obj::__register();
-::format::svg::Text_obj::__register();
-::format::svg::RenderContext_obj::__register();
-::format::svg::ArcSegment_obj::__register();
-::format::svg::CubicSegment_obj::__register();
-::format::svg::QuadraticSegment_obj::__register();
-::format::svg::DrawSegment_obj::__register();
-::format::svg::MoveSegment_obj::__register();
-::format::svg::Path_obj::__register();
-::format::svg::Group_obj::__register();
-::format::svg::Grad_obj::__register();
-::format::gfx::LineStyle_obj::__register();
-::format::gfx::Gradient_obj::__register();
-::format::gfx::GfxTextFinder_obj::__register();
-::format::gfx::GfxGraphics_obj::__register();
-::format::gfx::GfxExtent_obj::__register();
-::format::gfx::Gfx2Haxe_obj::__register();
-::format::gfx::Gfx_obj::__register();
-::format::SVG_obj::__register();
 ::flixel::util::helpers::FlxRangeBounds_obj::__register();
 ::flixel::util::helpers::FlxRange_obj::__register();
 ::flixel::util::helpers::FlxPointRangeBounds_obj::__register();
@@ -4700,10 +4604,10 @@ __files__boot();
 ::IntroState_obj::__register();
 ::flixel::FlxState_obj::__register();
 ::flixel::group::FlxTypedGroup_obj::__register();
-::flixel::util::IFlxDestroyable_obj::__register();
 ::IntIterator_obj::__register();
 ::FmodSongs_obj::__register();
 ::Fmod_obj::__register();
+::flixel::util::IFlxDestroyable_obj::__register();
 ::EReg_obj::__register();
 ::Date_obj::__register();
 ::ClientSave_obj::__register();
@@ -4757,8 +4661,6 @@ __files__boot();
 ::haxe::io::Error_obj::__boot();
 ::haxe::io::Encoding_obj::__boot();
 ::haxe::StackItem_obj::__boot();
-::format::svg::DisplayElement_obj::__boot();
-::format::svg::FillType_obj::__boot();
 ::flixel::util::FlxVerticalAlign_obj::__boot();
 ::flixel::util::FlxSaveStatus_obj::__boot();
 ::flixel::util::FlxHorizontalAlign_obj::__boot();
@@ -4797,8 +4699,8 @@ __files__boot();
 ::openfl::display::DisplayObject_obj::__boot();
 ::ClientPrefs_obj::__boot();
 ::Constants_obj::__boot();
-::FmodSFX_obj::__boot();
 ::flixel::FlxBasic_obj::__boot();
+::FmodSFX_obj::__boot();
 ::flixel::addons::transition::FlxTransitionableState_obj::__boot();
 ::__ASSET__flixel_sounds_beep_ogg_obj::__boot();
 ::__ASSET__flixel_sounds_flixel_ogg_obj::__boot();
@@ -4980,11 +4882,6 @@ __files__boot();
 ::flixel::util::FlxSort_obj::__boot();
 ::flixel::util::FlxSpriteUtil_obj::__boot();
 ::flixel::util::LabelValuePair_obj::__boot();
-::format::gfx::GfxBytes_obj::__boot();
-::format::svg::PathParser_obj::__boot();
-::format::svg::PathSegment_obj::__boot();
-::format::svg::SVGData_obj::__boot();
-::format::svg::SVGRenderer_obj::__boot();
 ::gameplay::PlayState_obj::__boot();
 ::sys::thread::_Thread::HaxeThread_obj::__boot();
 ::haxe::Serializer_obj::__boot();

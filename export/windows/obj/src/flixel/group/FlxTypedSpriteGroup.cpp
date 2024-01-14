@@ -77,8 +77,8 @@ HX_LOCAL_STACK_FRAME(_hx_pos_790ec110ce1e7f7f_620_transformChildren_Bool,"flixel
 HX_LOCAL_STACK_FRAME(_hx_pos_790ec110ce1e7f7f_620_transformChildren_Array_flixel_FlxCamera,"flixel.group.FlxTypedSpriteGroup","transformChildren_Array_flixel_FlxCamera",0x8df728db,"flixel.group.FlxTypedSpriteGroup.transformChildren_Array_flixel_FlxCamera","flixel/group/FlxSpriteGroup.hx",620,0xeb1fa7f3)
 HX_LOCAL_STACK_FRAME(_hx_pos_790ec110ce1e7f7f_620_transformChildren_flixel_FlxCamera,"flixel.group.FlxTypedSpriteGroup","transformChildren_flixel_FlxCamera",0x864ae155,"flixel.group.FlxTypedSpriteGroup.transformChildren_flixel_FlxCamera","flixel/group/FlxSpriteGroup.hx",620,0xeb1fa7f3)
 HX_LOCAL_STACK_FRAME(_hx_pos_790ec110ce1e7f7f_620_transformChildren_flixel_math_FlxPoint,"flixel.group.FlxTypedSpriteGroup","transformChildren_flixel_math_FlxPoint",0xcdc8d2f3,"flixel.group.FlxTypedSpriteGroup.transformChildren_flixel_math_FlxPoint","flixel/group/FlxSpriteGroup.hx",620,0xeb1fa7f3)
-HX_LOCAL_STACK_FRAME(_hx_pos_790ec110ce1e7f7f_620_transformChildren_Float,"flixel.group.FlxTypedSpriteGroup","transformChildren_Float",0x2758683b,"flixel.group.FlxTypedSpriteGroup.transformChildren_Float","flixel/group/FlxSpriteGroup.hx",620,0xeb1fa7f3)
 HX_LOCAL_STACK_FRAME(_hx_pos_790ec110ce1e7f7f_639_multiTransformChildren_Float,"flixel.group.FlxTypedSpriteGroup","multiTransformChildren_Float",0x31c44efc,"flixel.group.FlxTypedSpriteGroup.multiTransformChildren_Float","flixel/group/FlxSpriteGroup.hx",639,0xeb1fa7f3)
+HX_LOCAL_STACK_FRAME(_hx_pos_790ec110ce1e7f7f_620_transformChildren_Float,"flixel.group.FlxTypedSpriteGroup","transformChildren_Float",0x2758683b,"flixel.group.FlxTypedSpriteGroup.transformChildren_Float","flixel/group/FlxSpriteGroup.hx",620,0xeb1fa7f3)
 HX_LOCAL_STACK_FRAME(_hx_pos_790ec110ce1e7f7f_89_initVars,"flixel.group.FlxTypedSpriteGroup","initVars",0xad6ba309,"flixel.group.FlxTypedSpriteGroup.initVars","flixel/group/FlxSpriteGroup.hx",89,0xeb1fa7f3)
 HX_LOCAL_STACK_FRAME(_hx_pos_790ec110ce1e7f7f_114_destroy,"flixel.group.FlxTypedSpriteGroup","destroy",0xd803c96d,"flixel.group.FlxTypedSpriteGroup.destroy","flixel/group/FlxSpriteGroup.hx",114,0xeb1fa7f3)
 HX_LOCAL_STACK_FRAME(_hx_pos_790ec110ce1e7f7f_133_clone,"flixel.group.FlxTypedSpriteGroup","clone",0x21249d10,"flixel.group.FlxTypedSpriteGroup.clone","flixel/group/FlxSpriteGroup.hx",133,0xeb1fa7f3)
@@ -425,34 +425,6 @@ HXLINE( 627)					Function(sprite,Value);
 
 HX_DEFINE_DYNAMIC_FUNC2(FlxTypedSpriteGroup_obj,transformChildren_flixel_math_FlxPoint,(void))
 
-void FlxTypedSpriteGroup_obj::transformChildren_Float( ::Dynamic Function,Float Value){
-            	HX_STACKFRAME(&_hx_pos_790ec110ce1e7f7f_620_transformChildren_Float)
-HXLINE( 621)		bool _hx_tmp;
-HXDLIN( 621)		if (!(this->_skipTransformChildren)) {
-HXLINE( 621)			_hx_tmp = ::hx::IsNull( this->group );
-            		}
-            		else {
-HXLINE( 621)			_hx_tmp = true;
-            		}
-HXDLIN( 621)		if (_hx_tmp) {
-HXLINE( 622)			return;
-            		}
-HXLINE( 624)		{
-HXLINE( 624)			int _g = 0;
-HXDLIN( 624)			::Array< ::Dynamic> _g1 = this->_sprites;
-HXDLIN( 624)			while((_g < _g1->length)){
-HXLINE( 624)				 ::flixel::FlxSprite sprite = _g1->__get(_g).StaticCast<  ::flixel::FlxSprite >();
-HXDLIN( 624)				_g = (_g + 1);
-HXLINE( 626)				if (::hx::IsNotNull( sprite )) {
-HXLINE( 627)					Function(sprite,Value);
-            				}
-            			}
-            		}
-            	}
-
-
-HX_DEFINE_DYNAMIC_FUNC2(FlxTypedSpriteGroup_obj,transformChildren_Float,(void))
-
 void FlxTypedSpriteGroup_obj::multiTransformChildren_Float(::Array< ::Dynamic> FunctionArray,::Array< Float > ValueArray){
             	HX_STACKFRAME(&_hx_pos_790ec110ce1e7f7f_639_multiTransformChildren_Float)
 HXLINE( 640)		bool _hx_tmp;
@@ -499,6 +471,34 @@ HXLINE( 655)						lambda(sprite,ValueArray->__get(i));
 
 
 HX_DEFINE_DYNAMIC_FUNC2(FlxTypedSpriteGroup_obj,multiTransformChildren_Float,(void))
+
+void FlxTypedSpriteGroup_obj::transformChildren_Float( ::Dynamic Function,Float Value){
+            	HX_STACKFRAME(&_hx_pos_790ec110ce1e7f7f_620_transformChildren_Float)
+HXLINE( 621)		bool _hx_tmp;
+HXDLIN( 621)		if (!(this->_skipTransformChildren)) {
+HXLINE( 621)			_hx_tmp = ::hx::IsNull( this->group );
+            		}
+            		else {
+HXLINE( 621)			_hx_tmp = true;
+            		}
+HXDLIN( 621)		if (_hx_tmp) {
+HXLINE( 622)			return;
+            		}
+HXLINE( 624)		{
+HXLINE( 624)			int _g = 0;
+HXDLIN( 624)			::Array< ::Dynamic> _g1 = this->_sprites;
+HXDLIN( 624)			while((_g < _g1->length)){
+HXLINE( 624)				 ::flixel::FlxSprite sprite = _g1->__get(_g).StaticCast<  ::flixel::FlxSprite >();
+HXDLIN( 624)				_g = (_g + 1);
+HXLINE( 626)				if (::hx::IsNotNull( sprite )) {
+HXLINE( 627)					Function(sprite,Value);
+            				}
+            			}
+            		}
+            	}
+
+
+HX_DEFINE_DYNAMIC_FUNC2(FlxTypedSpriteGroup_obj,transformChildren_Float,(void))
 
 void FlxTypedSpriteGroup_obj::initVars(){
             	HX_GC_STACKFRAME(&_hx_pos_790ec110ce1e7f7f_89_initVars)
@@ -2238,8 +2238,8 @@ static ::String FlxTypedSpriteGroup_obj_sMemberFields[] = {
 	HX_("transformChildren_Array_flixel_FlxCamera",ae,0c,c0,d3),
 	HX_("transformChildren_flixel_FlxCamera",e8,54,28,43),
 	HX_("transformChildren_flixel_math_FlxPoint",06,0c,c3,75),
-	HX_("transformChildren_Float",c8,75,5b,82),
 	HX_("multiTransformChildren_Float",4f,02,e4,0f),
+	HX_("transformChildren_Float",c8,75,5b,82),
 	HX_("group",3f,b3,f4,99),
 	HX_("directAlpha",75,b7,cb,e0),
 	HX_("_skipTransformChildren",8d,52,b5,7c),

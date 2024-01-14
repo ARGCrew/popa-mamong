@@ -15,16 +15,17 @@ class Note extends FlxSprite {
 	}
 
 	public function new(struct:NoteStruct) {
+		data = struct.data;
+		time = struct.time;
+
 		super((Constants.STRUM_SIZE + Constants.STRUM_SPACING) * (data % 3), (Constants.STRUM_SIZE + Constants.STRUM_SPACING) * Std.int(data / 3), Assets.graphic('notes/SQUARE'));
-		this.data = struct.data;
-		this.time = struct.time;
 
 		if (FlxG.sound.music != null && FlxG.sound.music.playing)
 			scaleMult = (FlxG.sound.music.time - (time - PlayState.SONG.speed * 1000)) * (Constants.NOTE_PERFECT_SCALE / 1000);
+		else
+			scaleMult = 0;
 	}
 
-	public var hitted:Bool = false;
-	public var show(default, null):Bool = false;
 	public var hittable(default, null):Bool = false;
 	override function update(elapsed:Float) {
 		createThread(() -> {
@@ -34,25 +35,17 @@ class Note extends FlxSprite {
 					hittable = true;
 	
 				scaleMult = (FlxG.sound.music.time - (time - PlayState.SONG.speed * 1000)) * (Constants.NOTE_PERFECT_SCALE / 1000);
+				if (scaleMult < 0)
+					visible = false;
+				else
+					visible = true;
 	
-				if (scaleMult > 0)
-					show = true;
 				if (deltaTime > Constants.NOTE_HIT_WINDOW)
-					show = false;
+					kill();
 			}
 		});
 
-		if (!show || hitted)
-			return;
-		
 		super.update(elapsed);
-	}
-
-	override function draw() {
-		if (!show || hitted)
-			return;
-
-		super.draw();
 	}
 }
 

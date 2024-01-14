@@ -2,8 +2,6 @@ import haxefmod.FmodManager;
 import openfl.events.UncaughtErrorEvent;
 import openfl.Lib;
 import flixel.FlxSprite;
-import openfl.events.Event;
-import lime.graphics.RenderContext;
 #if windows
 import native.Windows;
 #end
@@ -19,12 +17,13 @@ class Main extends FlxGame {
 		Windows.setDarkMode(true);
 		#end
 
+		FlxSprite.defaultAntialiasing = true;
+
 		final framerate:Int = FlxG.stage.application.window.displayMode.refreshRate;
 		super(1920, 1080, IntroState, framerate, framerate, false, false);
+		FlxG.plugins.add(new Fmod());
 
 		FmodManager.EnableDebugMessages();
-
-		FlxSprite.defaultAntialiasing = true;
 
 		FlxG.mouse.useSystemCursor = true;
 		

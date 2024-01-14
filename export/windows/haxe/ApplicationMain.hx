@@ -35,7 +35,7 @@ class ApplicationMain
 		ManifestResources.init(config);
 		#end
 
-		app.meta["build"] = "90";
+		app.meta["build"] = "91";
 		app.meta["company"] = "ARGTeam";
 		app.meta["file"] = "ARGame";
 		app.meta["name"] = "Another Rhythm Game";
@@ -68,7 +68,7 @@ class ApplicationMain
 
 		attributes.context = {
 			antialiasing: 0,
-			background: 16777215,
+			background: 0,
 			colorDepth: 32,
 			depth: true,
 			hardware: true,
@@ -104,7 +104,7 @@ class ApplicationMain
 		#elseif air
 		app.window.title = "Another Rhythm Game";
 		#else
-		app.window.context.attributes.background = 16777215;
+		app.window.context.attributes.background = 0;
 		app.window.frameRate = 30;
 		#end
 

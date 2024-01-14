@@ -54,12 +54,12 @@ class PlayState extends FlxTransitionableState {
 
 		notes.setPosition(strums.x, strums.y);
 
+		FlxG.sound.playMusic(Sound.fromFile('niggeres/lost_error.ogg'));
+
 		super.create();
 	}
 
 	override function update(elapsed:Float) {
-		Fmod.update();
-
 		for (i in 0...strums.length) {
 			var keys:Array<FlxKey> = Constants.CONTROLS[i];
 			var pressed:Bool = FlxG.keys.anyJustPressed(keys);
@@ -67,11 +67,25 @@ class PlayState extends FlxTransitionableState {
 			var strum:Strum = strums.members[i];
 
 			if (pressed) {
-				strum.color = Constants.STRUM_HIT_COLOR;
-				Fmod.playSoundOneshot(FmodSFX.NoteHitPress);
+				final possibleNotes:Array<Note> = [
+					for (note in notes) {
+						if (note.alive && note.data == i && note.hittable)
+							note;
+					}
+				];
+				if (possibleNotes.length > 0) {
+					possibleNotes[0].kill();
+					strum.color = Constants.STRUM_HIT_COLOR;
+					Fmod.playSoundOneshot(FmodSFX.NoteHitPress);
+				} else {
+					strum.color = Constants.STRUM_MISS_COLOR;
+					Fmod.playSoundOneshot(FmodSFX.NoteMissPress);
+				}
 			} else if (released) {
 				strum.color = Constants.STRUM_RELEASE_COLOR;
 			}
 		}
+
+		super.update(elapsed);
 	}
 }

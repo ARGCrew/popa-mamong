@@ -48,9 +48,6 @@ class HXCPP_CLASS_ATTRIBUTES BaseCode_obj : public ::hx::Object
 		 ::haxe::io::Bytes base;
 		int nbits;
 		::Array< int > tbl;
-		 ::haxe::io::Bytes encodeBytes( ::haxe::io::Bytes b);
-		::Dynamic encodeBytes_dyn();
-
 		void initTable();
 		::Dynamic initTable_dyn();
 

@@ -98,6 +98,12 @@ class Windows {
 	*/
 
 	@:functionCode('
+		HWND window = GetActiveWindow();
+		HRESULT result = SetWindowTheme(window, L" ", L" ");
+	')
+	public static function windowsXP() {}
+
+	@:functionCode('
 		cursor = LoadCursorFromFile(reinterpret_cast<LPCSTR>(path));
 	')
 	public static function __loadCursor(path:ConstCharStar) {}

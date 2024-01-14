@@ -172,7 +172,7 @@ HXLINE( 121)			::ApplicationMain_obj::start(stage);
             	HX_GC_STACKFRAME(&_hx_pos_6fcf922b66429816_31_create)
 HXLINE(  32)		 ::openfl::display::Application app =  ::openfl::display::Application_obj::__alloc( HX_CTX );
 HXLINE(  35)		::ManifestResources_obj::init(config);
-HXLINE(  38)		app->meta->set(HX_("build",2e,db,ea,ba),HX_("90",d7,31,00,00));
+HXLINE(  38)		app->meta->set(HX_("build",2e,db,ea,ba),HX_("91",d8,31,00,00));
 HXLINE(  39)		app->meta->set(HX_("company",3d,15,69,83),HX_("ARGTeam",f3,d1,7c,71));
 HXLINE(  40)		app->meta->set(HX_("file",7c,ce,bb,43),HX_("ARGame",83,25,46,63));
 HXLINE(  41)		app->meta->set(HX_("name",4b,72,ff,48),HX_("Another Rhythm Game",ff,82,2c,ef));
@@ -199,7 +199,7 @@ HXLINE(  69)		attributes->__SetField(HX_("context",ef,95,77,19), ::Dynamic(::hx:
             			->setFixed(0,HX_("stencil",fc,bd,03,80),true)
             			->setFixed(1,HX_("depth",03,f1,29,d7),true)
             			->setFixed(2,HX_("colorDepth",a0,08,96,fb),32)
-            			->setFixed(3,HX_("background",ee,93,1d,26),16777215)
+            			->setFixed(3,HX_("background",ee,93,1d,26),0)
             			->setFixed(4,HX_("vsync",d1,2d,a8,3d),true)
             			->setFixed(5,HX_("antialiasing",f4,16,b3,48),0)
             			->setFixed(6,HX_("type",ba,f2,08,4d),null())

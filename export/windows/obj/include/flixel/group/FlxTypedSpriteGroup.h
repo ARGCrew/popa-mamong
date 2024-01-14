@@ -82,11 +82,11 @@ class HXCPP_CLASS_ATTRIBUTES FlxTypedSpriteGroup_obj : public  ::flixel::FlxSpri
 		void transformChildren_flixel_math_FlxPoint( ::Dynamic Function, ::flixel::math::FlxBasePoint Value);
 		::Dynamic transformChildren_flixel_math_FlxPoint_dyn();
 
-		void transformChildren_Float( ::Dynamic Function,Float Value);
-		::Dynamic transformChildren_Float_dyn();
-
 		void multiTransformChildren_Float(::Array< ::Dynamic> FunctionArray,::Array< Float > ValueArray);
 		::Dynamic multiTransformChildren_Float_dyn();
+
+		void transformChildren_Float( ::Dynamic Function,Float Value);
+		::Dynamic transformChildren_Float_dyn();
 
 		 ::flixel::group::FlxTypedGroup group;
 		bool directAlpha;

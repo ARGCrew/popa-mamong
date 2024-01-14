@@ -1,6 +1,11 @@
+import flixel.FlxBasic;
 import haxefmod.FmodManager;
 
-class Fmod {
+class Fmod extends FlxBasic {
+	public function new() {
+		super();
+	}
+
 	public static inline function initialize() {
 		FmodManager.Initialize();
 	}
@@ -10,7 +15,7 @@ class Fmod {
 		return FmodManager.IsInitialized();
 	}
 
-	public static inline function update() {
+	override function update(elapsed:Float) {
 		FmodManager.Update();
 	}
 

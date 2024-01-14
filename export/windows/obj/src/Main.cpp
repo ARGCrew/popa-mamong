@@ -7,6 +7,9 @@
 #ifndef INCLUDED_ClientSave
 #include <ClientSave.h>
 #endif
+#ifndef INCLUDED_Fmod
+#include <Fmod.h>
+#endif
 #ifndef INCLUDED_IntroState
 #include <IntroState.h>
 #endif
@@ -51,6 +54,9 @@
 #endif
 #ifndef INCLUDED_flixel_input_mouse_FlxMouse
 #include <flixel/input/mouse/FlxMouse.h>
+#endif
+#ifndef INCLUDED_flixel_system_frontEnds_PluginFrontEnd
+#include <flixel/system/frontEnds/PluginFrontEnd.h>
 #endif
 #ifndef INCLUDED_flixel_util_IFlxDestroyable
 #include <flixel/util/IFlxDestroyable.h>
@@ -128,21 +134,23 @@
 #include <openfl/events/UncaughtErrorEvent.h>
 #endif
 
-HX_DEFINE_STACK_FRAME(_hx_pos_e47a9afac0942eb9_14_new,"Main","new",0x6616a5cb,"Main.new","Main.hx",14,0x087e5c05)
-HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_47_upgradeFullscreen,"Main","upgradeFullscreen",0x5c22a8a2,"Main.upgradeFullscreen","Main.hx",47,0x087e5c05)
-HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_45_upgradeFullscreen,"Main","upgradeFullscreen",0x5c22a8a2,"Main.upgradeFullscreen","Main.hx",45,0x087e5c05)
-HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_66_onUncaughtError,"Main","onUncaughtError",0x63b2ca3f,"Main.onUncaughtError","Main.hx",66,0x087e5c05)
+HX_DEFINE_STACK_FRAME(_hx_pos_e47a9afac0942eb9_12_new,"Main","new",0x6616a5cb,"Main.new","Main.hx",12,0x087e5c05)
+HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_46_upgradeFullscreen,"Main","upgradeFullscreen",0x5c22a8a2,"Main.upgradeFullscreen","Main.hx",46,0x087e5c05)
+HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_44_upgradeFullscreen,"Main","upgradeFullscreen",0x5c22a8a2,"Main.upgradeFullscreen","Main.hx",44,0x087e5c05)
+HX_LOCAL_STACK_FRAME(_hx_pos_e47a9afac0942eb9_65_onUncaughtError,"Main","onUncaughtError",0x63b2ca3f,"Main.onUncaughtError","Main.hx",65,0x087e5c05)
 
 void Main_obj::__construct(){
-            	HX_STACKFRAME(&_hx_pos_e47a9afac0942eb9_14_new)
-HXLINE(  15)		::openfl::Lib_obj::get_current()->get_loaderInfo()->addEventListener(HX_("uncaughtError",f3,98,8b,8b),this->onUncaughtError_dyn(),null(),null(),null());
-HXLINE(  17)		this->upgradeFullscreen();
-HXLINE(  19)		::native::Windows_obj::setDarkMode(true);
+            	HX_GC_STACKFRAME(&_hx_pos_e47a9afac0942eb9_12_new)
+HXLINE(  13)		::openfl::Lib_obj::get_current()->get_loaderInfo()->addEventListener(HX_("uncaughtError",f3,98,8b,8b),this->onUncaughtError_dyn(),null(),null(),null());
+HXLINE(  15)		this->upgradeFullscreen();
+HXLINE(  17)		::native::Windows_obj::setDarkMode(true);
+HXLINE(  20)		::flixel::FlxSprite_obj::defaultAntialiasing = true;
 HXLINE(  22)		int framerate = ::openfl::Lib_obj::get_current()->stage->application->_hx___window->get_displayMode()->refreshRate;
 HXLINE(  23)		super::__construct(1920,1080,::hx::ClassOf< ::IntroState >(),framerate,framerate,false,false);
-HXLINE(  25)		::haxefmod::FmodManager_obj::EnableDebugMessages();
-HXLINE(  27)		::flixel::FlxSprite_obj::defaultAntialiasing = true;
-HXLINE(  29)		::flixel::FlxG_obj::mouse->set_useSystemCursor(true);
+HXLINE(  24)		 ::flixel::_hx_system::frontEnds::PluginFrontEnd _hx_tmp = ::flixel::FlxG_obj::plugins;
+HXDLIN(  24)		_hx_tmp->add_Fmod( ::Fmod_obj::__alloc( HX_CTX ));
+HXLINE(  26)		::haxefmod::FmodManager_obj::EnableDebugMessages();
+HXLINE(  28)		::flixel::FlxG_obj::mouse->set_useSystemCursor(true);
             	}
 
 Dynamic Main_obj::__CreateEmpty() { return new Main_obj; }
@@ -179,48 +187,48 @@ bool Main_obj::_hx_isInstanceOf(int inClassId) {
 void Main_obj::upgradeFullscreen(){
             		HX_BEGIN_LOCAL_FUNC_S1(::hx::LocalFunc,_hx_Closure_0,::Array< bool >,windowFullscreen) HXARGC(0)
             		void _hx_run(){
-            			HX_STACKFRAME(&_hx_pos_e47a9afac0942eb9_47_upgradeFullscreen)
-HXLINE(  48)			if ((::ClientPrefs_obj::data->displayType != HX_("Borderless",65,4a,22,0e))) {
-HXLINE(  49)				return;
+            			HX_STACKFRAME(&_hx_pos_e47a9afac0942eb9_46_upgradeFullscreen)
+HXLINE(  47)			if ((::ClientPrefs_obj::data->displayType != HX_("Borderless",65,4a,22,0e))) {
+HXLINE(  48)				return;
             			}
-HXLINE(  51)			::openfl::Lib_obj::get_current()->stage->application->_hx___window->set_fullscreen(false);
-HXLINE(  52)			if (!(windowFullscreen->__get(0))) {
-HXLINE(  53)				::openfl::Lib_obj::get_current()->stage->application->_hx___window->set_borderless(true);
-HXLINE(  54)				{
-HXLINE(  54)					 ::lime::ui::Window _this = ::openfl::Lib_obj::get_current()->stage->application->_hx___window;
-HXDLIN(  54)					_this->_hx___minimized = false;
-HXDLIN(  54)					_this->_hx___maximized = _this->_hx___backend->setMaximized(true);
+HXLINE(  50)			::openfl::Lib_obj::get_current()->stage->application->_hx___window->set_fullscreen(false);
+HXLINE(  51)			if (!(windowFullscreen->__get(0))) {
+HXLINE(  52)				::openfl::Lib_obj::get_current()->stage->application->_hx___window->set_borderless(true);
+HXLINE(  53)				{
+HXLINE(  53)					 ::lime::ui::Window _this = ::openfl::Lib_obj::get_current()->stage->application->_hx___window;
+HXDLIN(  53)					_this->_hx___minimized = false;
+HXDLIN(  53)					_this->_hx___maximized = _this->_hx___backend->setMaximized(true);
             				}
-HXLINE(  55)				windowFullscreen[0] = true;
+HXLINE(  54)				windowFullscreen[0] = true;
             			}
             			else {
-HXLINE(  57)				{
-HXLINE(  57)					 ::lime::ui::Window _this1 = ::openfl::Lib_obj::get_current()->stage->application->_hx___window;
-HXDLIN(  57)					_this1->_hx___minimized = false;
-HXDLIN(  57)					_this1->_hx___maximized = _this1->_hx___backend->setMaximized(false);
+HXLINE(  56)				{
+HXLINE(  56)					 ::lime::ui::Window _this1 = ::openfl::Lib_obj::get_current()->stage->application->_hx___window;
+HXDLIN(  56)					_this1->_hx___minimized = false;
+HXDLIN(  56)					_this1->_hx___maximized = _this1->_hx___backend->setMaximized(false);
             				}
-HXLINE(  58)				::openfl::Lib_obj::get_current()->stage->application->_hx___window->set_borderless(false);
-HXLINE(  59)				windowFullscreen[0] = false;
+HXLINE(  57)				::openfl::Lib_obj::get_current()->stage->application->_hx___window->set_borderless(false);
+HXLINE(  58)				windowFullscreen[0] = false;
             			}
             		}
             		HX_END_LOCAL_FUNC0((void))
 
-            	HX_STACKFRAME(&_hx_pos_e47a9afac0942eb9_45_upgradeFullscreen)
-HXLINE(  46)		::Array< bool > windowFullscreen = ::Array_obj< bool >::__new(1)->init(0,!(::openfl::Lib_obj::get_current()->stage->application->_hx___window->_hx___fullscreen));
-HXLINE(  47)		 ::Dynamic onFullscreen =  ::Dynamic(new _hx_Closure_0(windowFullscreen));
-HXLINE(  62)		onFullscreen();
-HXLINE(  63)		 ::lime::ui::Window _hx_tmp = ::openfl::Lib_obj::get_current()->stage->application->_hx___window;
-HXDLIN(  63)		_hx_tmp->onFullscreen->add(onFullscreen,null(),null());
+            	HX_STACKFRAME(&_hx_pos_e47a9afac0942eb9_44_upgradeFullscreen)
+HXLINE(  45)		::Array< bool > windowFullscreen = ::Array_obj< bool >::__new(1)->init(0,!(::openfl::Lib_obj::get_current()->stage->application->_hx___window->_hx___fullscreen));
+HXLINE(  46)		 ::Dynamic onFullscreen =  ::Dynamic(new _hx_Closure_0(windowFullscreen));
+HXLINE(  61)		onFullscreen();
+HXLINE(  62)		 ::lime::ui::Window _hx_tmp = ::openfl::Lib_obj::get_current()->stage->application->_hx___window;
+HXDLIN(  62)		_hx_tmp->onFullscreen->add(onFullscreen,null(),null());
             	}
 
 
 HX_DEFINE_DYNAMIC_FUNC0(Main_obj,upgradeFullscreen,(void))
 
 void Main_obj::onUncaughtError( ::openfl::events::UncaughtErrorEvent e){
-            	HX_STACKFRAME(&_hx_pos_e47a9afac0942eb9_66_onUncaughtError)
-HXLINE(  67)		 ::lime::ui::Window _hx_tmp = ::openfl::Lib_obj::get_current()->stage->application->_hx___window;
-HXDLIN(  67)		_hx_tmp->alert(::Std_obj::string(e),HX_("Error!",79,f7,fc,85));
-HXLINE(  68)		::Sys_obj::exit(1);
+            	HX_STACKFRAME(&_hx_pos_e47a9afac0942eb9_65_onUncaughtError)
+HXLINE(  66)		 ::lime::ui::Window _hx_tmp = ::openfl::Lib_obj::get_current()->stage->application->_hx___window;
+HXDLIN(  66)		_hx_tmp->alert(::Std_obj::string(e),HX_("Error!",79,f7,fc,85));
+HXLINE(  67)		::Sys_obj::exit(1);
             	}
 
 

@@ -18,8 +18,6 @@
 -D hxCodec=2.6.1
 -cp C:/HaxeToolkit/haxe/lib/haxefmod/0,7,1-alpha
 -D haxefmod=0.7.1-alpha
--cp C:/HaxeToolkit/haxe/lib/svg/1,1,3
--D svg=1.1.3
 -cp source
 -D lime-openal
 -D THREADING

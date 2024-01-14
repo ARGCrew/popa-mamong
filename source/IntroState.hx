@@ -1,8 +1,5 @@
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import openfl.display.BitmapData;
-import openfl.display.Shape;
-import format.SVG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.addons.display.FlxBackdrop;
@@ -31,12 +28,13 @@ class IntroState extends FlxTransitionableState {
 		diamond.persist = true;
 		diamond.destroyOnNoUse = false;
 		FlxTransitionableState.defaultTransIn = new TransitionData(TILES, 0xffffffff, 0.3, FlxPoint.get(-1, 1), {asset: diamond, width: 32, height: 32}, FlxRect.get(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
+		FlxTransitionableState.defaultTransOut = FlxTransitionableState.defaultTransIn;
+		FlxTransitionableState.skipNextTransOut = true;
 
 		fmodIntro = new FmodIntro();
 		fmodIntro.finishCallback = () -> {
 			haxe.Timer.delay(() -> {
-				FlxG.switchState(new gameplay.PlayState());
-				FlxTransitionableState.defaultTransOut = FlxTransitionableState.defaultTransIn;
+				FlxG.switchState(new menus.MainMenuState());
 			}, 300);
 		}
 		add(fmodIntro);

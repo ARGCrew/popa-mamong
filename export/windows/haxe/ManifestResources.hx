@@ -432,6 +432,10 @@ import sys.FileSystem;
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_cursor_cur extends null { }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_fmod_desktop_master_bank extends null { }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_fmod_desktop_master_strings_bank extends null { }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_mainmenu_credits_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_mainmenu_logo_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_mainmenu_play_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_mainmenu_settings_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_notes_circle_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_notes_square_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind @:noCompletion #if display private #end class __ASSET__assets_images_strums_circle_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }

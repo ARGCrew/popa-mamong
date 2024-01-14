@@ -1,36 +1,70 @@
-import arg.backend.Utils;
-import openfl.display.BitmapData;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.math.FlxRect;
-import flixel.math.FlxPoint;
-import flixel.util.FlxColor;
-import flixel.addons.transition.TransitionData;
-import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
-import flixel.graphics.FlxGraphic;
+import haxefmod.FmodManager;
+import openfl.events.UncaughtErrorEvent;
+import openfl.Lib;
+import flixel.FlxSprite;
 import openfl.events.Event;
+import lime.graphics.RenderContext;
+#if windows
+import native.Windows;
+#end
 import flixel.FlxG;
 import flixel.FlxGame;
-import openfl.Lib;
 
-class Main {
-    static function main() {
-        Lib.current.addChild(new FlxGame(1920, 1080, arg.states.MainMenuState));
-        FlxG.stage.addEventListener(Event.ENTER_FRAME, enterFrame);
+class Main extends FlxGame {
+	function new() {
+		Lib.current.loaderInfo.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 
-        var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
-		diamond.persist = true;
-		diamond.destroyOnNoUse = false;
-        var data:TransitionData = new TransitionData(TILES, FlxColor.WHITE, 0.3, new FlxPoint(-1, 1),
-			{asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
-        
-        FlxTransitionableState.defaultTransIn = data;
-        FlxTransitionableState.defaultTransOut = data;
-        FlxTransitionableState.skipNextTransOut = true;
-    }
+		upgradeFullscreen();
+		#if windows
+		Windows.setDarkMode(true);
+		#end
 
-    static function enterFrame(?e:Event) {
-        var bitmapData:BitmapData = new BitmapData(FlxG.stage.stageWidth, FlxG.stage.stageHeight);
-        bitmapData.draw(FlxG.stage);
-        Utils.changeWindowColor(0xffFFC0CB);
-    }
+		final framerate:Int = FlxG.stage.application.window.displayMode.refreshRate;
+		super(1920, 1080, IntroState, framerate, framerate, false, false);
+
+		FmodManager.EnableDebugMessages();
+
+		FlxSprite.defaultAntialiasing = true;
+
+		FlxG.mouse.useSystemCursor = true;
+		
+		// FlxG.mouse.load(Paths.image('cursor'));
+		/*FlxG.mouse.useSystemCursor = true;
+		Windows.loadCursor('assets/cursor.cur');
+		FlxG.stage.application.window.onMouseMove.add(function(x:Float, y:Float) {
+			Windows.updateCusror();
+		});
+		FlxG.stage.application.window.onMouseMoveRelative.add(function(x:Float, y:Float) {
+			Windows.updateCusror();
+		});
+		FlxG.stage.addEventListener(Event.ENTER_FRAME, function(e:Event) {
+			Windows.updateCusror();
+		});*/
+	}
+
+	function upgradeFullscreen() { // бесконечный костыль мортиса
+		var windowFullscreen:Bool = !FlxG.stage.application.window.fullscreen;
+		function onFullscreen() {
+			if (ClientPrefs.data.displayType != 'Borderless')
+				return;
+	
+			FlxG.stage.application.window.fullscreen = false;
+			if (!windowFullscreen) {
+				FlxG.stage.application.window.borderless = true;
+				FlxG.stage.application.window.maximized = true;
+				windowFullscreen = true;
+			} else {
+				FlxG.stage.application.window.maximized = false;
+				FlxG.stage.application.window.borderless = false;
+				windowFullscreen = false;
+			}
+		}
+		onFullscreen();
+		FlxG.stage.application.window.onFullscreen.add(onFullscreen);
+	}
+
+	function onUncaughtError(e:UncaughtErrorEvent) {
+		FlxG.stage.application.window.alert(Std.string(e), 'Error!');
+		Sys.exit(1);
+	}
 }

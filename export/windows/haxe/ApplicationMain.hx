@@ -35,12 +35,12 @@ class ApplicationMain
 		ManifestResources.init(config);
 		#end
 
-		app.meta["build"] = "22";
-		app.meta["company"] = "ARG Team";
+		app.meta["build"] = "90";
+		app.meta["company"] = "ARGTeam";
 		app.meta["file"] = "ARGame";
 		app.meta["name"] = "Another Rhythm Game";
-		app.meta["packageName"] = "com.ARGTeam.arg";
-		app.meta["version"] = "0.1-dev";
+		app.meta["packageName"] = "com.ARGTeam.ARG";
+		app.meta["version"] = "0.1.0";
 
 		
 
@@ -74,7 +74,7 @@ class ApplicationMain
 			hardware: true,
 			stencil: true,
 			type: null,
-			vsync: false
+			vsync: true
 		};
 
 		if (app.window == null)
@@ -101,7 +101,9 @@ class ApplicationMain
 
 		app.createWindow(attributes);
 		
-		#elseif !air
+		#elseif air
+		app.window.title = "Another Rhythm Game";
+		#else
 		app.window.context.attributes.background = 16777215;
 		app.window.frameRate = 30;
 		#end

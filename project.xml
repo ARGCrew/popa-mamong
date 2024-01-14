@@ -1,15 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <project>
 	
-	<meta title="Another Rhythm Game" package="com.ARGTeam.arg" version="0.1-dev" company="ARG Team"/>
-	<app main="Main" path="export" file="ARGame"/>
-	<window width="1280" height="720"/>
+	<meta title='Another Rhythm Game' package='com.ARGTeam.ARG' version='0.1.0' company='ARGTeam'/>
+	<app main='Main' path='export' file='ARGame'/>
+	<window width='1280' height='720' vsync='true'/>
+
+	<!-- <app preloader='Preloader'/> -->
 	
-	<source path="source"/>
+	<source path='source'/>
 	
-	<haxelib name="flixel"/>
-	<haxelib name="flixel-addons"/>
-	
-	<assets path="assets"/>
+	<haxelib name='lime' version='8.1.1'/>
+	<haxelib name='openfl' version='9.3.2'/>
+	<haxelib name='flixel' version='5.5.0'/>
+	<haxelib name='flixel-addons' version='3.2.1'/>
+	<haxelib name='flixel-ui' version='2.5.0'/>
+	<haxelib name='hxCodec' version='2.6.1'/>
+	<haxelib name='haxefmod' version='0.7.1-alpha'/>
+	<haxelib name='svg' version='1.1.3'/>
+
+	<assets path='assets'/>
+	<assets path='embed' embed='true'/>
+
+	<define name='THREADING' if='desktop'/>
+
+	<haxedef name='NAPE_RELEASE_BUILD'/>
+	<haxedef name='FLX_NO_FOCUS_LOST_SCREEN'/>
+
+	<icon path='embed/ico/logo16.png' size='16'/>
+	<icon path='embed/ico/logo32.png' size='32'/>
+	<icon path='embed/ico/logo64.png' size='64'/>
+	<icon path='embed/ico/logo128.png' size='128'/>
+	<icon path='embed/ico/logo256.png' size='256'/>
+	<icon path='embed/ico/logo600.png'/>
 	
 </project>

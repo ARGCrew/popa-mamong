@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{2d2cf2ad-239f-48aa-99eb-fb48f61a4670}">
+		<property name="assetPath">
+			<value>NoteHitPress.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.81696145124716557</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{51c2c5d5-8895-418b-ad39-f77fba16fc3d}</destination>
+		</relationship>
+	</object>
+</objects>

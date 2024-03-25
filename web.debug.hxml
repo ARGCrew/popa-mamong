@@ -1,0 +1,7 @@
+art\base.hxml
+
+--debug
+
+--define web
+
+--js bin/client.js

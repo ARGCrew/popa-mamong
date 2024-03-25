@@ -1,0 +1,12 @@
+--define release
+--define hlgen.makefile=vs2019
+
+--each
+
+art\directx.hxml
+--hl hlc\directx\ARGame.c
+
+--next
+
+art\opengl.hxml
+--hl hlc\opengl\ARGame_gl.c

@@ -1,0 +1,1 @@
+import hxd.Window as Stage; // да пофиг мне на ваши депрекатед

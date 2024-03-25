@@ -1,0 +1,11 @@
+--debug
+
+--each
+
+art\directx.hxml
+--hl bin\ARGame.hl
+
+--next
+
+art\opengl.hxml
+--hl bin\ARGame_gl.hl

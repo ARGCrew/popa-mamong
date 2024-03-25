@@ -1,0 +1,7 @@
+art\base.hxml
+
+--define release
+
+--define web
+
+--js bin/client.js

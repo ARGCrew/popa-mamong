@@ -1,0 +1,9 @@
+art\base.hxml
+
+--library hlopenal
+--library hldiscord
+
+--define desktop
+--define heaps_enable_hl_mp3
+--define windowTitle=Another Rhythm Game
+--define windowSize=1280x720

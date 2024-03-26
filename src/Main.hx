@@ -32,8 +32,8 @@ class Main extends App {
 
 		cursor = Custom(new CustomCursor([Res.backend.cursor.toBitmap()], 0, 2, 2));
 
-		// setScene(new Gameplay());
-		setScene(new Settings());
+		setScene(new gameplay.Gameplay());
+		// setScene(new settings.Settings());
 	}
 
 	override function update(deltaTime:Float) {

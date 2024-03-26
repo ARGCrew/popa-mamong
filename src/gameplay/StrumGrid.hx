@@ -1,3 +1,5 @@
+package gameplay;
+
 import h2d.RenderContext;
 import hxd.Res;
 import h2d.Bitmap;
@@ -20,8 +22,8 @@ class StrumGrid extends Object {
 	}
 
 	override function sync(ctx:RenderContext) {
-		x = Stage.getInstance().width - STRUM_SIZE * 3 - STRUM_SPACING * 2;
-		y = Stage.getInstance().height - STRUM_SIZE * 3 - STRUM_SPACING * 2;
+		x = Stage.getInstance().width - getSize().width;
+		y = Stage.getInstance().height - getSize().height;
 		
 		x /= 2;
 		y /= 2;

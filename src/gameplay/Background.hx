@@ -1,3 +1,5 @@
+package gameplay;
+
 import h2d.RenderContext;
 import h2d.Tile;
 import h2d.Object;
